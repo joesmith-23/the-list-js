@@ -1,0 +1,119 @@
+*** USERS ***
+const mongoose = require('mongoose');
+
+const UserSchema = new mongoose.Schema({
+  firstName: {
+    type: String,
+    required: true
+  },
+  lastName: {
+    type: String,
+    required: true
+  },
+  email: {
+    type: String,
+    required: true,
+    unique: true
+  },
+  password: {
+    type: String,
+    required: true
+  },
+  date: {
+    type: Date,
+    default: Date.now
+  }
+});
+
+module.exports = User = mongoose.model('user', UserSchema);
+
+// Maybe need to add a list of groups that the user is part of and ratings the user has submitted
+
+**************
+
+
+
+
+*** GROUPS *** 
+
+const mongoose = require('mongoose');
+
+const GroupSchema = new mongoose.Schema({
+  owner: {
+      type: mongoose.Scheme.Types.ObjectId,
+      ref: 'user'
+  },
+  name: {
+    type: String,
+    required: true
+  },
+  members: [{
+        user: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'user'
+        },
+  }],
+  date: {
+    type: Date,
+    default: Date.now
+  }
+});
+
+module.exports = Group = mongoose.model('group', GroupSchema);
+
+**************
+
+
+
+
+*** LISTS *** 
+
+const mongoose = require('mongoose');
+
+const ListSchema = new mongoose.Schema({
+  group: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'group'
+  },
+  name: {
+      type: String,
+      required: true
+  },
+  items: [
+    {
+        name:{
+            type: String,
+            required: true
+        }
+        date: {
+            type: Date,
+            default: Date.now
+        }
+        rating: [
+            {
+            user: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'users'
+            }
+            value: {
+                type: mongoose.Schema.Types.Double,
+                required: true
+            }
+            }
+        ],
+    } 
+  ],
+});
+
+module.exports = List = mongoose.model('list', ListSchema);
+
+**************
+
+
+
+
+NOTES
+
+For the JWT for groups, the system can create a JWT token for the group then use that to transport the group ID so it can be accessed by specific people
+Or... just don't...
+Maybe when you log in you get all of the tokens for the groups that you're part of...? <============ I think this one works well 
