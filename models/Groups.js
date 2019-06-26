@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const GroupSchema = new mongoose.Schema({
   owner: {
-      type: mongoose.Scheme.Types.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: 'user'
   },
   name: {
