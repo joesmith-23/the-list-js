@@ -15,10 +15,6 @@ const ListSchema = new mongoose.Schema({
             type: String,
             required: true
         },
-        date: {
-            type: Date,
-            default: Date.now
-        },
         rating: [
             {
             user: {
@@ -26,13 +22,21 @@ const ListSchema = new mongoose.Schema({
                 ref: 'users'
             },
             value: {
-                type: mongoose.Schema.Types.Double,
+                type: Number,
                 required: true
             }
             }
         ],
+        date: {
+            type: Date,
+            default: Date.now
+        },
     } 
   ],
+  date: {
+    type: Date,
+    default: Date.now
+  },  
 });
 
 module.exports = List = mongoose.model('list', ListSchema);
