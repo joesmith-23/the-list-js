@@ -282,7 +282,9 @@ router.get('/:id/:list_id/:item_id/', auth, async (req, res) => {
       // Find item
       const item = list.items.find(item => item.id === req.params.item_id);
 
-      const averageRating = await 
+      // const averageRating = await 
+
+      // LEARN ABOUT MONGODB AND MONGODB AGGREGATION
 
       res.json(lists);
   } catch (error) {
@@ -310,7 +312,19 @@ router.delete('/items/ratings/:id/:list_id/:item_id/:rating_id', auth, async (re
         return res.status(400).json({ errors: [{ msg: 'You are not part of this group' }] });
     }
 
-    // LEARN ABOUT MONGODB AND MONGODB AGGREGATION
+    // Find list
+    const list = await List.findById(req.params.list_id)
+    // Find item
+    const item = list.items.find(item => item.id === req.params.item_id);
+    // Find rating
+    const rating = item.rating.find(rating => rating.id === req.params.rating_id);
+
+    if(!rating) {
+      return res.status(404).json({ msg: 'Rating does not exist' });
+    }
+
+    await rating.remove()
+    await list.save()
 
     res.json(list.items)
   } catch (error) {
