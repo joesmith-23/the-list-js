@@ -57,11 +57,14 @@ router.get('/:group_id/', auth, async (req, res) => {
         const group = await Group.findById(req.params.group_id)
 
         // Check to see if currently logged in user is part of group - stops random people viewing the groups members
-        const currentUser = req.user.id;
-        const currentUserCheck = group.members.find(member => member.id === currentUser);
-        if(!currentUserCheck) {
-            return res.status(400).json({ errors: [{ msg: 'You are not part of this group' }] });
-        }
+        // const currentUser = req.user.id;
+        // const currentUserCheck = group.members.find(member => member.id === currentUser);
+        // if(!currentUserCheck) {
+        //     return res.status(400).json({ errors: [{ msg: 'You are not part of this group' }] });
+        // }
+
+        // TODO - refactor all this stuff
+        partOfGroup(req.user.id, group)
 
         const lists = await List.find({ group });
 
@@ -268,7 +271,7 @@ router.post(
 router.get('/:id/:list_id/:item_id/', auth, async (req, res) => {
   try {
       // Find group
-      const group = await Group.findById(req.params.group_id)
+      const group = await Group.findById(req.params.id)
 
       // Check to see if currently logged in user is part of group - stops random people viewing the groups members
       const currentUser = req.user.id;
@@ -281,8 +284,15 @@ router.get('/:id/:list_id/:item_id/', auth, async (req, res) => {
       const list = await List.findById(req.params.list_id)
       // Find item
       const item = list.items.find(item => item.id === req.params.item_id);
+      // Get ratings
+      // const ratings = item.find( {rating} );
 
-      // const averageRating = await 
+      // const averageRating = await List.aggregate( [
+      //   { $match: items.rating }
+      //   ] 
+      // );
+
+      // console.log(list.items)
 
       // LEARN ABOUT MONGODB AND MONGODB AGGREGATION
 
@@ -332,5 +342,14 @@ router.delete('/items/ratings/:id/:list_id/:item_id/:rating_id', auth, async (re
     res.status(500).send('Server Error');
   }
 });
+
+
+const partOfGroup = (user, group) => {
+    const currentUser = user;
+    const currentUserCheck = group.members.find(member => member.id === currentUser);
+    if(!currentUserCheck) {
+        return res.status(400).json({ errors: [{ msg: 'You are not part of this group' }] });
+    }
+} 
 
 module.exports = router;
