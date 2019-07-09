@@ -1,16 +1,17 @@
 import React, { Fragment, useState } from 'react';
 import axios from 'axios';
 
-const Register = () => {
+const Register = (props) => {
     const [formData, setFormData] = useState({
         firstName: '',
         lastName: '',
         email: '',
         password: '',
-        password2: ''
+        password2: '',
+        token: ''
     });
 
-    const { firstName, lastName, email, password, password2 } = formData 
+    let { firstName, lastName, email, password, password2, token } = formData 
 
     const onChange = e => setFormData({
         ...formData, 
@@ -26,7 +27,7 @@ const Register = () => {
                 firstName,
                 lastName,
                 email,
-                password
+                password,
             }
 
             try {
@@ -39,7 +40,13 @@ const Register = () => {
                 const body = JSON.stringify(newUser);
 
                 const res = await axios.post('/api/users', body, config);
-                console.log(res.data)
+                
+                token = res.data.token;
+
+                localStorage.setItem('token', token)
+
+                props.history.push('/');
+
             } catch (error) {
                 console.error(error.response.data)
             }
@@ -48,7 +55,8 @@ const Register = () => {
 
     return (
         <Fragment>
-            <form onSubmit={e => onSubmit(e)} action='/'>
+            <h1>Register</h1>
+            <form onSubmit={e => onSubmit(e)} >
                 <input 
                     type='text' 
                     placeholder='First Name' 

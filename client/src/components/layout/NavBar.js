@@ -1,19 +1,37 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { Fragment } from 'react';
+import { Link, withRouter } from 'react-router-dom';
 
-const NavBar = () => {
+const NavBar = (props) => {
+
+    const token = localStorage.getItem('token');
+
+    const logout = e => {
+        localStorage.removeItem('token');
+        props.history.push('/');
+    }
+
+    const authLinks = (
+        <ul>
+            <li onClick={e => logout()}>Log Out</li>
+        </ul>
+    );
+
+    const guestLinks =  (
+        <ul>
+            <li><Link to="/register">Register</Link></li>
+            <li><Link to="/login">Login</Link></li>
+        </ul>
+    );
+
     return (
         <nav className="navbar">
             <h1>
                 <Link to="/">The List</Link>
             </h1>
-            <ul>
-                <li><Link to="/register">Register</Link></li>
-                <li><Link to="/login">Login</Link></li>
-            </ul>
+            <Fragment>{ token ? authLinks : guestLinks }</Fragment>
         </nav>
 
     )
 }
 
-export default NavBar
+export default withRouter(NavBar)
