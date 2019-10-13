@@ -1,19 +1,25 @@
-const express = require('express');
-const connectDB = require('./config/db');
+const mongoose = require('mongoose');
+const dotenv = require('dotenv');
 
-const app = express();
+dotenv.config({ path: './config.env' });
+const app = require('./app');
 
-// Connect Database
-connectDB();
+const DB = process.env.DATABASE.replace(
+  '<PASSWORD>',
+  process.env.DATABASE_PASSWORD
+);
 
-// Init Middleware
-app.use(express.json({ extended: false }));
+mongoose
+  .connect(DB, {
+    useNewUrlParser: true,
+    useCreateIndex: true,
+    useFindAndModify: false,
+    useUnifiedTopology: true
+  })
+  .then(() => {
+    console.log('Connected to Database');
+  });
 
-// Define Routes
-app.use('/api/users', require('./routes/api/users'));
-app.use('/api/lists', require('./routes/api/lists'));
-app.use('/api/groups', require('./routes/api/groups'));
-
+// START SERVER
 const PORT = process.env.PORT || 5000;
-
-app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
+app.listen(PORT, () => console.log(`Server started on port ${PORT}...`));

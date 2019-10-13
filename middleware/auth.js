@@ -14,7 +14,7 @@ module.exports = function(req, res, next) {
   try {
     const decoded = jwt.verify(token, config.get('jwtSecret'));
 
-    req.user = decoded.user; // The decoded.user comes from the Payload object that has a user 
+    req.user = decoded.user; // The decoded.user comes from the Payload object that has a user
     next();
   } catch (err) {
     res.status(401).json({ msg: 'Token is not valid' });
