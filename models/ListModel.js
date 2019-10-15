@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const ListSchema = new mongoose.Schema({
   group: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'group'
+    ref: 'Group'
   },
   name: {
     type: String,
@@ -19,7 +19,7 @@ const ListSchema = new mongoose.Schema({
         {
           user: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: 'users'
+            ref: 'User'
           },
           value: {
             type: Number,
@@ -39,5 +39,5 @@ const ListSchema = new mongoose.Schema({
   }
 });
 
-const List = mongoose.model('list', ListSchema);
+const List = mongoose.model('List', ListSchema);
 module.exports = List;

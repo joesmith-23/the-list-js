@@ -2,8 +2,8 @@ const mongoose = require('mongoose');
 
 const GroupSchema = new mongoose.Schema({
   owner: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'user'
+    type: mongoose.Schema.ObjectId,
+    ref: 'User'
   },
   name: {
     type: String,
@@ -12,8 +12,8 @@ const GroupSchema = new mongoose.Schema({
   members: [
     {
       user: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'user'
+        type: mongoose.Schema.ObjectId,
+        ref: 'User'
       }
     }
   ],
@@ -23,5 +23,14 @@ const GroupSchema = new mongoose.Schema({
   }
 });
 
-const Group = mongoose.model('group', GroupSchema);
+// QUERY MIDDLEWEAR
+
+// GroupSchema.pre(/^find/, function(next) {
+//   this.populate({
+//     path: 'members.user'
+//   });
+//   next();
+// });
+
+const Group = mongoose.model('Group', GroupSchema);
 module.exports = Group;

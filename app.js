@@ -1,7 +1,7 @@
 const express = require('express');
-const userRoutes = require('./routes/api/userRoutes');
-const listRoutes = require('./routes/api/listRoutes');
-const groupRoutes = require('./routes/api/groupRoutes');
+const userRoutes = require('./routes/userRoutes');
+const listRoutes = require('./routes/listRoutes');
+const groupRoutes = require('./routes/groupRoutes');
 
 const app = express();
 
