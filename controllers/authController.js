@@ -5,6 +5,7 @@ const config = require('config');
 
 const User = require('../models/UserModel');
 const catchAsync = require('../utils/catchAsync');
+const AppError = require('../utils/appError');
 
 exports.register = catchAsync(async (req, res, next) => {
   // Pulling out data from the request body
@@ -13,7 +14,7 @@ exports.register = catchAsync(async (req, res, next) => {
 
   // If user exists throw an error
   if (user) {
-    return res.status(400).json({ errors: [{ msg: 'User already exists' }] });
+    return next(new AppError('User already exists', 404));
   }
 
   // Create new user object
@@ -61,15 +62,12 @@ exports.login = catchAsync(async (req, res, next) => {
 
   const user = await User.findOne({ email }).select('+password');
 
-  if (!user) {
-    return res.status(400).json({ errors: [{ msg: 'Invalid Credentials' }] });
-  }
+  if (!user) return next(new AppError('Email or password is incorrect', 404));
 
   const isMatch = await bcrypt.compare(password, user.password);
 
-  if (!isMatch) {
-    return res.status(400).json({ errors: [{ msg: 'Invalid Credentials' }] });
-  }
+  if (!isMatch)
+    return next(new AppError('Email or password is incorrect', 404));
 
   const payload = {
     user: {
