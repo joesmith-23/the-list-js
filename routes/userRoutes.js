@@ -7,23 +7,30 @@ const userController = require('../controllers/userController');
 
 const router = express.Router();
 
-router.post(
-  '/',
-  [
-    check('firstName', 'A first name is required')
-      .not()
-      .isEmpty(),
-    check('lastName', 'A last name is required')
-      .not()
-      .isEmpty(),
-    check('email', 'Please include a valid email').isEmail(),
-    check(
-      'password',
-      'Please enter a password with 6 or more characters'
-    ).isLength({ min: 6 })
-  ],
-  authController.register
-);
+router
+  .route('/')
+  .post(
+    [
+      check('firstName', 'A first name is required')
+        .not()
+        .isEmpty(),
+      check('lastName', 'A last name is required')
+        .not()
+        .isEmpty(),
+      check('email', 'Please include a valid email').isEmail(),
+      check(
+        'password',
+        'Please enter a password with 6 or more characters'
+      ).isLength({ min: 6 })
+    ],
+    authController.register
+  )
+  .get(auth, userController.getAllUsers);
+
+router
+  .route('/:id')
+  .patch(auth, userController.updateUser)
+  .delete(auth, userController.deleteUser);
 
 router.get('/me', auth, userController.getUser);
 
