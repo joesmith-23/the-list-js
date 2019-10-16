@@ -9,18 +9,8 @@ const router = express.Router();
 
 router
   .route('/')
-  .post(
-    [
-      auth,
-      [
-        check('name', 'A group name is required')
-          .not()
-          .isEmpty()
-      ]
-    ],
-    groupController.createGroup
-  )
-  .get(groupController.getAllGroups);
+  .get(groupController.getAllGroups)
+  .post(auth, groupController.createGroup);
 
 router.get('/all-user-groups', auth, groupController.getGroupsUserMemberOf);
 router.get(

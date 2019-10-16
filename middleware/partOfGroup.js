@@ -1,27 +1,20 @@
 const Group = require('../models/GroupModel');
+const catchAsync = require('../utils/catchAsync');
+const AppError = require('../utils/appError');
 
-const partOfGroup = async (req, res, next) => {
-  try {
-    const group = await Group.findById(req.params.group_id);
-    if (!group) {
-      res.status(404).json({
-        errors: [{ msg: 'Group does not exist' }]
-      });
-    }
-    const currentUserCheck = group.members.find(
-      member => member.id === req.user.id
-    );
-    if (!currentUserCheck) {
-      res.status(400).json({
-        errors: [{ msg: 'You are not part of this group' }]
-      });
-    } else {
-      req.group = group;
-      next();
-    }
-  } catch (error) {
-    console.log(error.response.message);
+const partOfGroup = catchAsync(async (req, res, next) => {
+  const group = await Group.findById(req.params.group_id);
+  if (!group) next(new AppError('Group does not exist', 404));
+
+  const currentUserCheck = group.members.find(
+    member => member.id === req.user.id
+  );
+  if (!currentUserCheck) {
+    next(new AppError('You are not part of this group', 401));
+  } else {
+    req.group = group;
+    next();
   }
-};
+});
 
 module.exports = partOfGroup;
