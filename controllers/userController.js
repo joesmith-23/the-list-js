@@ -1,17 +1,16 @@
 const User = require('../models/UserModel');
+const catchAsync = require('../utils/catchAsync');
+const AppError = require('../utils/appError');
 
-exports.getUser = async (req, res) => {
-  try {
-    const user = await User.findById(req.user.id);
-    res.json(user);
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Server Error');
-  }
-};
+exports.getUser = catchAsync(async (req, res, next) => {
+  const user = await User.findById(req.user.id);
+  res.json(user);
+});
 
-exports.getAllUsers = async (req, res) => {
+exports.getAllUsers = catchAsync(async (req, res, next) => {
   const users = await User.find();
+
+  if (users.length < 1) return next(new AppError('No users found', 404));
 
   res.status(200).json({
     status: 'success',
@@ -20,16 +19,16 @@ exports.getAllUsers = async (req, res) => {
       users
     }
   });
-};
+});
 
-exports.updateUser = async (req, res, next) => {
+exports.updateUser = catchAsync(async (req, res, next) => {
   const user = await User.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
     runValidators: true
   });
 
   if (!user) {
-    res.json({ msg: 'No user with that id' });
+    return next(new AppError('That user could not be found', 404));
   }
 
   res.status(200).json({
@@ -38,17 +37,17 @@ exports.updateUser = async (req, res, next) => {
       user
     }
   });
-};
+});
 
-exports.deleteUser = async (req, res) => {
+exports.deleteUser = catchAsync(async (req, res, next) => {
   const user = await User.findByIdAndDelete(req.params.id);
 
   if (!user) {
-    res.json({ msg: 'No user with that id' });
+    return next(new AppError('That user could not be found', 404));
   }
 
   res.status(204).json({
     status: 'success',
     data: null
   });
-};
+});

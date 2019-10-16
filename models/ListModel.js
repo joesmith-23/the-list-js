@@ -7,13 +7,13 @@ const ListSchema = new mongoose.Schema({
   },
   name: {
     type: String,
-    required: true
+    required: [true, 'You must enter a name for your list']
   },
   items: [
     {
       name: {
         type: String,
-        required: true
+        required: [true, 'You must enter a name']
       },
       rating: [
         {
@@ -23,17 +23,22 @@ const ListSchema = new mongoose.Schema({
           },
           value: {
             type: Number,
-            required: true
+            required: [true, 'Please enter a value for the rating'],
+            min: 1,
+            max: 10
           }
         }
       ],
-      date: {
+      averageRating: {
+        type: Number
+      },
+      createdAt: {
         type: Date,
         default: Date.now
       }
     }
   ],
-  date: {
+  createdAt: {
     type: Date,
     default: Date.now
   }

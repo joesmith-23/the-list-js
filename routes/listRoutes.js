@@ -9,18 +9,7 @@ const router = express.Router();
 
 router
   .route('/:group_id')
-  .post(
-    [
-      auth,
-      [
-        check('name', 'You must enter a name for your list')
-          .not()
-          .isEmpty()
-      ]
-    ],
-    partOfGroup,
-    listController.addList
-  )
+  .post(auth, partOfGroup, listController.addList)
   .get(auth, partOfGroup, listController.getAllListsWithinGroup);
 
 router.delete(
@@ -32,14 +21,7 @@ router.delete(
 
 router.post(
   '/items/:group_id/:list_id',
-  [
-    auth,
-    [
-      check('name', 'This is required')
-        .not()
-        .isEmpty()
-    ]
-  ],
+  auth,
   partOfGroup,
   listController.addItem
 );
@@ -53,7 +35,7 @@ router.delete(
 
 router.post(
   '/items/ratings/:group_id/:list_id/:item_id',
-  [auth, [check('value', 'A rating is required between 0 and 10').isNumeric()]],
+  auth,
   partOfGroup,
   listController.addRating
 );
