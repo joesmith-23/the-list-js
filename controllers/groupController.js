@@ -21,8 +21,6 @@ exports.createGroup = catchAsync(async (req, res, next) => {
 exports.getAllGroups = catchAsync(async (req, res, next) => {
   const groups = await Group.find();
 
-  if (groups.length < 1) return next(new AppError('No groups found', 404));
-
   res.json(groups);
 });
 
@@ -31,8 +29,8 @@ exports.getGroupsUserOwnerOf = catchAsync(async (req, res, next) => {
     owner: req.user.id
   });
 
-  if (groups.length < 1) return next(new AppError('No groups found', 404));
-  console.log(groups);
+  if (groups.length < 1)
+    return next(new AppError("You don't have any groups, make one now", 404));
 
   res.json(groups);
 });
@@ -42,7 +40,8 @@ exports.getGroupsUserMemberOf = catchAsync(async (req, res, next) => {
     'members._id': req.user.id
   });
 
-  if (groups.length < 1) return next(new AppError('No groups found', 404));
+  if (groups.length < 1)
+    return next(new AppError("You don't have any groups, make one now", 404));
 
   res.json(groups);
 });

@@ -1,6 +1,13 @@
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 
+// Global Uncaught Exception error fix
+process.on('uncaughtException', err => {
+  console.log('\nUNCAUGHT EXCEPTION: Shutting down...\n');
+  console.log(err.name, err.message);
+  process.exit(1);
+});
+
 dotenv.config({ path: './config.env' });
 const app = require('./app');
 
@@ -22,4 +29,15 @@ mongoose
 
 // START SERVER
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server started on port ${PORT}...`));
+const server = app.listen(PORT, () =>
+  console.log(`Server started on port ${PORT}...`)
+);
+
+// Global Unhandled Rejection error fix
+process.on('unhandledRejection', err => {
+  console.log('\nUNHANDLED REJECTION: Shutting down...\n');
+  console.log(err.name, err.message);
+  server.close(() => {
+    process.exit(1);
+  });
+});
