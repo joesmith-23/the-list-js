@@ -1,5 +1,5 @@
 const express = require('express');
-const { check } = require('express-validator');
+// const { check } = require('express-validator');
 
 const auth = require('../middleware/auth');
 const authController = require('../controllers/authController');
@@ -21,11 +21,12 @@ router.get('/me', auth, userController.getUser);
 
 router.post(
   '/login',
-  [
-    check('email', 'Please include a valid email').isEmail(),
-    check('password', 'Password is required').exists()
-  ],
+  // [
+  //   check('email', 'Please include a valid email').isEmail(),
+  //   check('password', 'Password is required').exists()
+  // ],
   authController.login
 );
+router.get('/logout', authController.logout);
 
 module.exports = router;

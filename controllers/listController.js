@@ -120,7 +120,7 @@ exports.addRating = catchAsync(async (req, res, next) => {
 
   item.rating.unshift(rating);
 
-  // item.averageRating = 5;
+  await list.save();
 
   // console.log(req.params.item_id);
   const averageRating = await List.aggregate([
@@ -234,26 +234,31 @@ exports.removeRating = catchAsync(async (req, res, next) => {
 
   await rating.remove();
 
-  const averageRating = await List.aggregate([
-    { $unwind: '$items' },
-    {
-      $match: {
-        'items._id': mongoose.Types.ObjectId(`${req.params.item_id}`)
+  if (item.rating < 1) {
+    // TODO - maybe make this null - need to go over it and how it interacts with add/update rating
+    item.averageRating = 0;
+  } else {
+    const averageRating = await List.aggregate([
+      { $unwind: '$items' },
+      {
+        $match: {
+          'items._id': mongoose.Types.ObjectId(`${req.params.item_id}`)
+        }
+      },
+      { $unwind: '$items.rating' },
+      {
+        $replaceRoot: { newRoot: '$items.rating' }
+      },
+      {
+        $group: {
+          _id: '',
+          avgRating: { $avg: '$value' }
+        }
       }
-    },
-    { $unwind: '$items.rating' },
-    {
-      $replaceRoot: { newRoot: '$items.rating' }
-    },
-    {
-      $group: {
-        _id: '',
-        avgRating: { $avg: '$value' }
-      }
-    }
-  ]);
+    ]);
 
-  item.averageRating = averageRating[0].avgRating;
+    item.averageRating = averageRating[0].avgRating;
+  }
 
   await list.save();
 
