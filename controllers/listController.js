@@ -1,3 +1,5 @@
+const mongoose = require('mongoose');
+
 const List = require('../models/ListModel');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
@@ -118,39 +120,141 @@ exports.addRating = catchAsync(async (req, res, next) => {
 
   item.rating.unshift(rating);
 
+  // item.averageRating = 5;
+
+  // console.log(req.params.item_id);
+  const averageRating = await List.aggregate([
+    { $unwind: '$items' },
+    {
+      $match: {
+        'items._id': mongoose.Types.ObjectId(`${req.params.item_id}`)
+      }
+    },
+    { $unwind: '$items.rating' },
+    {
+      $replaceRoot: { newRoot: '$items.rating' }
+    },
+    {
+      $group: {
+        _id: '',
+        avgRating: { $avg: '$value' }
+      }
+    }
+  ]);
+
+  item.averageRating = averageRating[0].avgRating;
+
   await list.save();
 
-  res.json(item.rating);
+  res.json(item);
 });
 
 exports.getAverageRating = catchAsync(async (req, res, next) => {
-  // // Find list
-  // const list = await List.findById(req.params.list_id);
-  // // Find item
-  // const item = list.items.find(item => item.id === req.params.item_id);
-  // // Get ratings
-  // // const ratings = item.find( {rating} );
-  // // const averageRating = await List.aggregate( [
-  // //   { $match: items.rating }
-  // //   ]
-  // // );
-  // console.log(list.items)
-  // LEARN ABOUT MONGODB AND MONGODB AGGREGATION
-  // res.json(lists);
-});
-
-exports.removeRating = catchAsync(async (req, res, next) => {
-  // TODO - refactor this to make just a single request
   // Find list
   const list = await List.findById(req.params.list_id);
   // Find item
   const item = list.items.find(el => el.id === req.params.item_id);
+
+  res.json(item.averageRating);
+});
+
+exports.updateRating = catchAsync(async (req, res, next) => {
+  // TODO - make it so you can only update your own rating
+  // Find list
+  const list = await List.findById(req.params.list_id);
+  if (!list) {
+    return next(new AppError('Could not find that list', 404));
+  }
+  // Find item
+  const item = list.items.find(el => el.id === req.params.item_id);
+  if (!item) {
+    return next(new AppError('Could not find that item', 404));
+  }
+
+  // Find rating
+  const rating = item.rating.find(el => el.id === req.params.rating_id);
+  if (!rating) {
+    return next(new AppError('Rating does not exist', 404));
+  }
+
+  const { newRating } = req.body;
+
+  rating.value = newRating;
+
+  await list.save();
+
+  const averageRating = await List.aggregate([
+    { $unwind: '$items' },
+    {
+      $match: {
+        'items._id': mongoose.Types.ObjectId(`${req.params.item_id}`)
+      }
+    },
+    { $unwind: '$items.rating' },
+    {
+      $replaceRoot: { newRoot: '$items.rating' }
+    },
+    {
+      $group: {
+        _id: '',
+        avgRating: { $avg: '$value' }
+      }
+    }
+  ]);
+
+  item.averageRating = averageRating[0].avgRating;
+
+  await list.save();
+
+  res.status(200).json({
+    status: 'success',
+    data: {
+      list
+    }
+  });
+});
+
+exports.removeRating = catchAsync(async (req, res, next) => {
+  // TODO - refactor this to make just a single request
+  // TODO - make it so you can only remove your own rating
+  // Find list
+  const list = await List.findById(req.params.list_id);
+  if (!list) {
+    return next(new AppError('Could not find that list', 404));
+  }
+  // Find item
+  const item = list.items.find(el => el.id === req.params.item_id);
+  if (!item) {
+    return next(new AppError('Could not find that item', 404));
+  }
   // Find rating
   const rating = item.rating.find(el => el.id === req.params.rating_id);
 
   if (!rating) return next(new AppError('Rating does not exist', 404));
 
   await rating.remove();
+
+  const averageRating = await List.aggregate([
+    { $unwind: '$items' },
+    {
+      $match: {
+        'items._id': mongoose.Types.ObjectId(`${req.params.item_id}`)
+      }
+    },
+    { $unwind: '$items.rating' },
+    {
+      $replaceRoot: { newRoot: '$items.rating' }
+    },
+    {
+      $group: {
+        _id: '',
+        avgRating: { $avg: '$value' }
+      }
+    }
+  ]);
+
+  item.averageRating = averageRating[0].avgRating;
+
   await list.save();
 
   res.json(list.items);

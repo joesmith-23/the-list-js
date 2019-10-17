@@ -40,18 +40,15 @@ router.post(
   listController.addRating
 );
 
-// TODO - finish this
 router.get(
   '/ratings/:group_id/:list_id/:item_id/',
   auth,
   listController.getAverageRating
 );
 
-router.delete(
-  '/items/ratings/:group_id/:list_id/:item_id/:rating_id',
-  auth,
-  partOfGroup,
-  listController.removeRating
-);
+router
+  .route('/items/ratings/:group_id/:list_id/:item_id/:rating_id')
+  .delete(auth, partOfGroup, listController.removeRating)
+  .patch(auth, partOfGroup, listController.updateRating);
 
 module.exports = router;
