@@ -1,5 +1,3 @@
-// const { validationResult } = require('express-validator');
-
 const Group = require('../models/GroupModel');
 const User = require('../models/UserModel');
 const catchAsync = require('../utils/catchAsync');
@@ -79,15 +77,9 @@ exports.getGroup = catchAsync(async (req, res, next) => {
 });
 
 exports.addUserToGroupWithEmail = catchAsync(async (req, res, next) => {
-  // TODO - add email validation - check that the email is an email first
-  // const errors = validationResult(req);
-  // if (!errors.isEmpty()) {
-  //   return res.status(400).json({ errors: errors.array() });
-  // }
-
   const { email } = req.body;
 
-  // Check to see if the user exists
+  // Check to see if the desired user exists
   const user = await User.findOne({ email });
 
   // If user doesn't exist - show error for now - TODO - send email to ask user to sign up
@@ -134,28 +126,34 @@ exports.getGroupMembers = catchAsync(async (req, res, next) => {
 });
 
 exports.removeMember = catchAsync(async (req, res, next) => {
-  // TODO - add functionality to stop normal members removing the owner and stop the owner deleting themselves from the members list
-  // Right now anyone can remove anyone - need to tighten this up a bit
-  const member = req.group.members.find(el => el.id === req.params.member_id);
+  // Only the owner can remove a member
+  // eslint-disable-next-line eqeqeq
+  if (req.group.owner == req.user.id) {
+    const member = req.group.members.find(el => el.id === req.params.member_id);
 
-  // Make sure member exists
-  if (!member) next(new AppError('Member is not part of group', 400));
+    // Make sure member exists
+    if (!member) next(new AppError('Member is not part of group', 400));
+    // Make sure owner isn't deleting themselves
+    // eslint-disable-next-line eqeqeq
+    if (member.id == req.user.id)
+      next(new AppError('You cannot delete yourself', 400));
 
-  // Get remove index
-  const removeIndex = req.group.members
-    .map(el => el.id)
-    .indexOf(req.params.member_id);
+    // Get remove index
+    const removeIndex = req.group.members
+      .map(el => el.id)
+      .indexOf(req.params.member_id);
 
-  req.group.members.splice(removeIndex, 1);
+    req.group.members.splice(removeIndex, 1);
 
-  await req.group.save();
+    await req.group.save();
 
-  res.status(200).json({
-    status: 'success',
-    data: {
-      group: req.group
-    }
-  });
+    res.status(200).json({
+      status: 'success',
+      data: {
+        group: req.group
+      }
+    });
+  }
 });
 
 exports.deleteGroup = catchAsync(async (req, res, next) => {

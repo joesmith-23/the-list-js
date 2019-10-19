@@ -125,9 +125,11 @@ exports.addRating = catchAsync(async (req, res, next) => {
   // Get rating value from req.body
   const { value } = req.body;
 
-  // Number validation - TODO - make sure only whole digits can be added
+  // Number validation
   if (value < 0 || value > 10)
     return next(new AppError('Please enter a number between 1 and 10', 400));
+
+  Math.round(value);
 
   // Check if the item has already been rated
   if (
@@ -147,7 +149,6 @@ exports.addRating = catchAsync(async (req, res, next) => {
 
   await list.save();
 
-  // console.log(req.params.item_id);
   const averageRating = await List.aggregate([
     { $unwind: '$items' },
     {
@@ -194,7 +195,6 @@ exports.getAverageRating = catchAsync(async (req, res, next) => {
 });
 
 exports.updateRating = catchAsync(async (req, res, next) => {
-  // TODO - make it so you can only update your own rating
   // Find list
   const list = await List.findById(req.params.list_id);
   if (!list) {
@@ -210,6 +210,12 @@ exports.updateRating = catchAsync(async (req, res, next) => {
   const rating = item.rating.find(el => el.id === req.params.rating_id);
   if (!rating) {
     return next(new AppError('Rating does not exist', 404));
+  }
+
+  if (rating.id !== req.user.id) {
+    return next(
+      new AppError("You can't update a rating that isn't yours", 404)
+    );
   }
 
   const { newRating } = req.body;
@@ -250,8 +256,6 @@ exports.updateRating = catchAsync(async (req, res, next) => {
 });
 
 exports.removeRating = catchAsync(async (req, res, next) => {
-  // TODO - refactor this to make just a single request
-  // TODO - make it so you can only remove your own rating
   // Find list
   const list = await List.findById(req.params.list_id);
   if (!list) {
@@ -267,11 +271,17 @@ exports.removeRating = catchAsync(async (req, res, next) => {
 
   if (!rating) return next(new AppError('Rating does not exist', 404));
 
+  if (rating.id !== req.user.id) {
+    return next(
+      new AppError("You can't remove a rating that isn't yours", 404)
+    );
+  }
+
   await rating.remove();
 
   if (item.rating < 1) {
-    // TODO - maybe make this null - need to go over it and how it interacts with add/update rating
-    item.averageRating = 0;
+    // TODO - maybe make this 0 - need to go over it and how it interacts with add/update rating
+    item.averageRating = null;
   } else {
     const averageRating = await List.aggregate([
       { $unwind: '$items' },

@@ -7,26 +7,22 @@ const userController = require('../controllers/userController');
 
 const router = express.Router();
 
+router.patch('/updateMyPassword', auth, authController.updatePassword);
+
 router
   .route('/')
   .post(authController.register)
   .get(auth, authController.restrictTo('admin'), userController.getAllUsers);
 
-router
-  .route('/:id')
-  .patch(auth, userController.updateUser)
-  .delete(auth, userController.deleteUser);
-
+router.patch('/updateMe', auth, userController.updateMe);
 router.get('/me', auth, userController.getUser);
 
-router.post(
-  '/login',
-  // [
-  //   check('email', 'Please include a valid email').isEmail(),
-  //   check('password', 'Password is required').exists()
-  // ],
-  authController.login
-);
+router
+  .route('/:id')
+  .patch(auth, authController.restrictTo('admin'), userController.updateUser)
+  .delete(auth, authController.restrictTo('admin'), userController.deleteUser);
+
+router.post('/login', authController.login);
 router.get('/logout', authController.logout);
 
 module.exports = router;

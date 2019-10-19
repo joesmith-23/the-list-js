@@ -1,7 +1,5 @@
-// const { validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-// const config = require('config');
 
 const User = require('../models/UserModel');
 const catchAsync = require('../utils/catchAsync');
@@ -40,7 +38,7 @@ const createSendToken = (user, statusCode, res) => {
 
 exports.register = catchAsync(async (req, res, next) => {
   // Pulling out data from the request body
-  const { firstName, lastName, email, password } = req.body;
+  const { firstName, lastName, email, password, passwordConfirm } = req.body;
   const user = await User.findOne({ email });
 
   // If user exists throw an error
@@ -53,44 +51,17 @@ exports.register = catchAsync(async (req, res, next) => {
     firstName,
     lastName,
     email,
-    password
+    password,
+    passwordConfirm
   });
-
-  // Password encrypting
-  const salt = await bcrypt.genSalt(12);
-  newUser.password = await bcrypt.hash(password, salt);
 
   // Save new user object with encrypted password
   await newUser.save();
 
   createSendToken(newUser, 201, res);
-
-  // JWT
-  // The payload is the data that is being sent
-  // This one confirms that the user is logged in and can access private areas
-  // const payload = {
-  //   user: {
-  //     id: user.id
-  //   }
-  // };
-
-  // jwt.sign(
-  //   payload,
-  //   config.get('jwtSecret'),
-  //   // { expiresIn: 360000 }, // Optional - add back at a reasonable amount when deploying
-  //   (err, token) => {
-  //     if (err) throw err;
-  //     res.json({ token });
-  //   }
-  // );
 });
 
 exports.login = catchAsync(async (req, res, next) => {
-  // const errors = validationResult(req);
-  // if (!errors.isEmpty()) {
-  //   return res.status(400).json({ errors: errors.array() });
-  // }
-
   const { email, password } = req.body;
 
   const user = await User.findOne({ email }).select('+password');
@@ -101,22 +72,6 @@ exports.login = catchAsync(async (req, res, next) => {
 
   if (!isMatch)
     return next(new AppError('Email or password is incorrect', 404));
-
-  // const payload = {
-  //   user: {
-  //     id: user.id
-  //   }
-  // };
-
-  // jwt.sign(
-  //   payload,
-  //   config.get('jwtSecret'),
-  //   // { expiresIn: 360000 },
-  //   (err, token) => {
-  //     if (err) throw err;
-  //     res.json({ token });
-  //   }
-  // );
 
   createSendToken(user, 200, res);
 });
@@ -137,7 +92,6 @@ exports.logout = (req, res) => {
 
 exports.restrictTo = (...roles) => {
   return (req, res, next) => {
-    console.log(req.user.role);
     // roles is an array e.g. ['admin', 'lead-guide']
     if (!roles.includes(req.user.role)) {
       return next(new AppError('You do not have permission', 403));
@@ -145,3 +99,26 @@ exports.restrictTo = (...roles) => {
     next();
   };
 };
+
+exports.updatePassword = catchAsync(async (req, res, next) => {
+  // 1. Get user from collection
+  const user = await User.findById(req.user.id).select('+password');
+  const { passwordCurrent } = req.body;
+
+  // 2. Check if POSTed password is correct
+  const isMatch = await bcrypt.compare(passwordCurrent, user.password);
+
+  if (!isMatch) {
+    return next(new AppError('The password is incorrect', 401));
+  }
+
+  // 3. If so, update password
+  user.password = req.body.password;
+  user.passwordConfirm = req.body.passwordConfirm;
+  // The above is then passed through the userModel middlewear to encrypt the password
+  // TODO - add 'passwordChangedAt'
+  await user.save();
+
+  // 4. Log user in, send JWT
+  createSendToken(user, 200, res);
+});

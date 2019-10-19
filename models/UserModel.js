@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
+const bcrypt = require('bcryptjs');
 
 const UserSchema = new mongoose.Schema({
   firstName: {
@@ -23,6 +24,17 @@ const UserSchema = new mongoose.Schema({
     minlength: 8,
     select: false
   },
+  passwordConfirm: {
+    type: String,
+    required: [true, 'Please confirm your password'],
+    validate: {
+      // This only works on CREATE and SAVE!! ( .create() and .save() ) not on update
+      validator: function(el) {
+        return el === this.password;
+      },
+      message: 'Passwords do not match'
+    }
+  },
   createdAt: {
     type: Date,
     default: Date.now
@@ -32,6 +44,18 @@ const UserSchema = new mongoose.Schema({
     enum: ['user', 'admin'],
     default: 'user'
   }
+});
+
+UserSchema.pre('save', async function(next) {
+  // Only run this function if the password has been modified
+  if (!this.isModified('password')) return next();
+
+  // Hash the password with a cost of 12
+  this.password = await bcrypt.hash(this.password, 12);
+
+  // Delete the passwordConfirm field
+  this.passwordConfirm = undefined;
+  next();
 });
 
 const User = mongoose.model('User', UserSchema);

@@ -1,5 +1,4 @@
 const express = require('express');
-const { check } = require('express-validator');
 
 const auth = require('../middleware/auth');
 const groupController = require('../controllers/groupController');
@@ -23,11 +22,7 @@ router.get(
 router
   .route('/:group_id')
   .get(auth, partOfGroup, groupController.getGroup)
-  .post(
-    [[check('email', 'You must enter an email address').isEmail()], auth],
-    partOfGroup,
-    groupController.addUserToGroupWithEmail
-  );
+  .post(auth, partOfGroup, groupController.addUserToGroupWithEmail);
 router.get(
   '/:group_id/members',
   auth,

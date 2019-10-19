@@ -1,5 +1,4 @@
 const express = require('express');
-// const { check } = require('express-validator');
 
 const auth = require('../middleware/auth');
 const partOfGroup = require('../middleware/partOfGroup');
