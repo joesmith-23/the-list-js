@@ -15,13 +15,24 @@ exports.createGroup = catchAsync(async (req, res, next) => {
 
   await group.save();
 
-  res.json(group);
+  res.status(200).json({
+    status: 'success',
+    data: {
+      group
+    }
+  });
 });
 
 exports.getAllGroups = catchAsync(async (req, res, next) => {
   const groups = await Group.find();
 
-  res.json(groups);
+  res.status(200).json({
+    status: 'success',
+    results: groups.length,
+    data: {
+      groups
+    }
+  });
 });
 
 exports.getGroupsUserOwnerOf = catchAsync(async (req, res, next) => {
@@ -32,7 +43,13 @@ exports.getGroupsUserOwnerOf = catchAsync(async (req, res, next) => {
   if (groups.length < 1)
     return next(new AppError("You don't have any groups, make one now", 404));
 
-  res.json(groups);
+  res.status(200).json({
+    status: 'success',
+    results: groups.length,
+    data: {
+      groups
+    }
+  });
 });
 
 exports.getGroupsUserMemberOf = catchAsync(async (req, res, next) => {
@@ -43,11 +60,22 @@ exports.getGroupsUserMemberOf = catchAsync(async (req, res, next) => {
   if (groups.length < 1)
     return next(new AppError("You don't have any groups, make one now", 404));
 
-  res.json(groups);
+  res.status(200).json({
+    status: 'success',
+    results: groups.length,
+    data: {
+      groups
+    }
+  });
 });
 
 exports.getGroup = catchAsync(async (req, res, next) => {
-  res.json(req.group);
+  res.status(200).json({
+    status: 'success',
+    data: {
+      group: req.group
+    }
+  });
 });
 
 exports.addUserToGroupWithEmail = catchAsync(async (req, res, next) => {
@@ -73,7 +101,12 @@ exports.addUserToGroupWithEmail = catchAsync(async (req, res, next) => {
 
   req.group.save();
 
-  res.json(req.group);
+  res.status(200).json({
+    status: 'success',
+    data: {
+      group: req.group
+    }
+  });
 });
 
 exports.getGroupMembers = catchAsync(async (req, res, next) => {
@@ -91,7 +124,13 @@ exports.getGroupMembers = catchAsync(async (req, res, next) => {
 
   const populatedMembers = await Promise.all(membersArray);
 
-  res.json(populatedMembers);
+  res.status(200).json({
+    status: 'success',
+    results: populatedMembers.length,
+    data: {
+      members: populatedMembers
+    }
+  });
 });
 
 exports.removeMember = catchAsync(async (req, res, next) => {
@@ -111,11 +150,18 @@ exports.removeMember = catchAsync(async (req, res, next) => {
 
   await req.group.save();
 
-  res.json({ msg: 'Member removed' });
+  res.status(200).json({
+    status: 'success',
+    data: {
+      group: req.group
+    }
+  });
 });
 
 exports.deleteGroup = catchAsync(async (req, res, next) => {
   await Group.findOneAndRemove({ _id: req.params.group_id });
 
-  res.json({ msg: 'Group deleted' });
+  res.status(200).json({
+    status: 'success'
+  });
 });

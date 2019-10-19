@@ -60,7 +60,7 @@ const ListSchema = new mongoose.Schema({
 //   console.log(stats);
 // };
 
-// ListSchema.pre('save', function(next) {
+// ListSchema.post('save', function(next) {
 //   this.constructor.calcAverageRatings(this.items.rating);
 //   next();
 // });

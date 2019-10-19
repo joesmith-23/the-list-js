@@ -10,7 +10,7 @@ const router = express.Router();
 router
   .route('/')
   .post(authController.register)
-  .get(auth, userController.getAllUsers);
+  .get(auth, authController.restrictTo('admin'), userController.getAllUsers);
 
 router
   .route('/:id')

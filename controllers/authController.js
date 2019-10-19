@@ -126,5 +126,22 @@ exports.logout = (req, res) => {
     expires: new Date(Date.now() + 10 * 1000),
     httpOnly: true
   });
-  res.status(200).json({ status: 'success' });
+  res.status(200).json({
+    status: 'success',
+    token: null,
+    data: {
+      data: null
+    }
+  });
+};
+
+exports.restrictTo = (...roles) => {
+  return (req, res, next) => {
+    console.log(req.user.role);
+    // roles is an array e.g. ['admin', 'lead-guide']
+    if (!roles.includes(req.user.role)) {
+      return next(new AppError('You do not have permission', 403));
+    }
+    next();
+  };
 };

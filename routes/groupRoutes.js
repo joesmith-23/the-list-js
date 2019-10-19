@@ -3,13 +3,14 @@ const { check } = require('express-validator');
 
 const auth = require('../middleware/auth');
 const groupController = require('../controllers/groupController');
+const authController = require('../controllers/authController');
 const partOfGroup = require('../middleware/partOfGroup');
 
 const router = express.Router();
 
 router
   .route('/')
-  .get(groupController.getAllGroups)
+  .get(auth, authController.restrictTo('admin'), groupController.getAllGroups)
   .post(auth, groupController.createGroup);
 
 router.get('/all-user-groups', auth, groupController.getGroupsUserMemberOf);

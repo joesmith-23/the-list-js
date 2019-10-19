@@ -28,9 +28,11 @@ module.exports = catchAsync(async function(req, res, next) {
     req.headers.authorization.startsWith('Bearer')
   ) {
     token = req.headers.authorization.split(' ')[1];
-  } else if (req.cookies.jwt && req.cookies.jwt !== 'loggedout') {
-    token = req.cookies.jwt;
   }
+  // TODO - Add this back in when we add the front end
+  // } else if (req.cookies.jwt && req.cookies.jwt !== '') {
+  //   token = req.cookies.jwt;
+  // }
 
   if (!token) {
     return next(new AppError('You need to be logged in', 401));

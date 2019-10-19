@@ -14,7 +14,12 @@ exports.addList = catchAsync(async (req, res, next) => {
 
   const list = await newList.save();
 
-  res.json(list);
+  res.status(200).json({
+    status: 'success',
+    data: {
+      list
+    }
+  });
 });
 
 exports.getAllListsWithinGroup = catchAsync(async (req, res, next) => {
@@ -22,7 +27,12 @@ exports.getAllListsWithinGroup = catchAsync(async (req, res, next) => {
 
   const lists = await List.find({ group });
 
-  res.json(lists);
+  res.status(200).json({
+    status: 'success',
+    data: {
+      lists
+    }
+  });
 });
 
 exports.deleteList = catchAsync(async (req, res, next) => {
@@ -38,7 +48,9 @@ exports.deleteList = catchAsync(async (req, res, next) => {
 
   await List.findOneAndRemove({ _id: req.params.list_id });
 
-  res.json({ msg: 'List deleted' });
+  res.status(200).json({
+    status: 'success'
+  });
 });
 
 exports.addItem = catchAsync(async (req, res, next) => {
@@ -58,7 +70,12 @@ exports.addItem = catchAsync(async (req, res, next) => {
 
   await list.save();
 
-  res.json(list);
+  res.status(200).json({
+    status: 'success',
+    data: {
+      list
+    }
+  });
 });
 
 exports.deleteItem = catchAsync(async (req, res, next) => {
@@ -85,7 +102,12 @@ exports.deleteItem = catchAsync(async (req, res, next) => {
   await list.save();
 
   // Do I need to return something?
-  res.json(list.items);
+  res.status(200).json({
+    status: 'success',
+    data: {
+      list
+    }
+  });
 });
 
 exports.addRating = catchAsync(async (req, res, next) => {
@@ -94,6 +116,9 @@ exports.addRating = catchAsync(async (req, res, next) => {
 
   // Find list
   const list = await List.findById(req.params.list_id);
+
+  if (!list) return next(new AppError("That list doesn't exist", 400));
+
   // Find item
   const item = list.items.find(el => el.id === req.params.item_id);
 
@@ -146,7 +171,12 @@ exports.addRating = catchAsync(async (req, res, next) => {
 
   await list.save();
 
-  res.json(item);
+  res.status(200).json({
+    status: 'success',
+    data: {
+      item
+    }
+  });
 });
 
 exports.getAverageRating = catchAsync(async (req, res, next) => {
@@ -155,7 +185,12 @@ exports.getAverageRating = catchAsync(async (req, res, next) => {
   // Find item
   const item = list.items.find(el => el.id === req.params.item_id);
 
-  res.json(item.averageRating);
+  res.status(200).json({
+    status: 'success',
+    data: {
+      averageRating: item.averageRating
+    }
+  });
 });
 
 exports.updateRating = catchAsync(async (req, res, next) => {
@@ -209,7 +244,7 @@ exports.updateRating = catchAsync(async (req, res, next) => {
   res.status(200).json({
     status: 'success',
     data: {
-      list
+      item
     }
   });
 });
@@ -262,5 +297,10 @@ exports.removeRating = catchAsync(async (req, res, next) => {
 
   await list.save();
 
-  res.json(list.items);
+  res.status(200).json({
+    status: 'success',
+    data: {
+      item
+    }
+  });
 });
