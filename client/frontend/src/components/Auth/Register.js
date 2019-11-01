@@ -1,17 +1,24 @@
-import React, { Fragment, useState } from 'react';
-import axios from 'axios';
+import React, { Fragment, useState } from "react";
+import axios from "axios";
 
 const Register = props => {
   const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    password: '',
-    password2: '',
-    token: ''
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+    passwordConfirm: "",
+    token: ""
   });
 
-  let { firstName, lastName, email, password, password2, token } = formData;
+  let {
+    firstName,
+    lastName,
+    email,
+    password,
+    passwordConfirm,
+    token
+  } = formData;
 
   const onChange = e =>
     setFormData({
@@ -21,32 +28,33 @@ const Register = props => {
 
   const onSubmit = async e => {
     e.preventDefault();
-    if (password !== password2) {
-      console.log('Passwords do not match');
+    if (password !== passwordConfirm) {
+      console.log("Passwords do not match");
     } else {
       const newUser = {
         firstName,
         lastName,
         email,
-        password
+        password,
+        passwordConfirm
       };
 
       try {
         const config = {
           headers: {
-            'Content-Type': 'application/json'
+            "Content-Type": "application/json"
           }
         };
 
         const body = JSON.stringify(newUser);
 
-        const res = await axios.post('/api/users', body, config);
+        const res = await axios.post("/api/users", body, config);
 
         token = res.data.token;
 
-        localStorage.setItem('token', token);
+        localStorage.setItem("token", token);
 
-        props.history.push('/');
+        props.history.push("/dashboard");
       } catch (error) {
         console.error(error.response.data);
       }
@@ -92,8 +100,8 @@ const Register = props => {
         <input
           type="password"
           placeholder="Confirm Password"
-          name="password2"
-          value={password2}
+          name="passwordConfirm"
+          value={passwordConfirm}
           onChange={e => onChange(e)}
           minLength="6"
         />
