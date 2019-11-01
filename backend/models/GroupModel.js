@@ -11,10 +11,8 @@ const GroupSchema = new mongoose.Schema({
   },
   members: [
     {
-      user: {
-        type: mongoose.Schema.ObjectId,
-        ref: 'User'
-      }
+      type: mongoose.Schema.ObjectId,
+      ref: 'User'
     }
   ],
   date: {

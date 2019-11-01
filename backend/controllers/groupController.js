@@ -36,7 +36,9 @@ exports.getAllGroups = catchAsync(async (req, res, next) => {
 exports.getGroupsUserOwnerOf = catchAsync(async (req, res, next) => {
   const groups = await Group.find({
     owner: req.user.id
-  });
+  })
+    .populate('owner', 'firstName lastName')
+    .populate('members', 'firstName lastName');
 
   if (groups.length < 1)
     return next(new AppError("You don't have any groups, make one now", 404));
@@ -52,8 +54,10 @@ exports.getGroupsUserOwnerOf = catchAsync(async (req, res, next) => {
 
 exports.getGroupsUserMemberOf = catchAsync(async (req, res, next) => {
   const groups = await Group.find({
-    'members._id': req.user.id
-  });
+    members: req.user.id
+  })
+    .populate('owner', 'firstName lastName')
+    .populate('members', 'firstName lastName');
 
   if (groups.length < 1)
     return next(new AppError("You don't have any groups, make one now", 404));
@@ -102,25 +106,31 @@ exports.addUserToGroupWithEmail = catchAsync(async (req, res, next) => {
 });
 
 exports.getGroupMembers = catchAsync(async (req, res, next) => {
-  const { members } = req.group;
+  // const { members } = req.group;
+  const group = await Group.findById(req.group._id).populate(
+    'members',
+    '-role'
+  );
+
+  const { members } = group;
 
   if (members.length < 1)
     return next(
       new AppError('There are no members of this group, somehow...', 404)
     );
 
-  const membersArray = [];
-  members.forEach(el =>
-    membersArray.push(User.findById(el._id).select('firstName lastName'))
-  );
+  // const membersArray = [];
+  // members.forEach(el =>
+  //   membersArray.push(User.findById(el._id).select('firstName lastName'))
+  // );
 
-  const populatedMembers = await Promise.all(membersArray);
+  // const populatedMembers = await Promise.all(membersArray);
 
   res.status(200).json({
     status: 'success',
-    results: populatedMembers.length,
+    results: members.length,
     data: {
-      members: populatedMembers
+      members: members
     }
   });
 });
