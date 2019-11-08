@@ -132,12 +132,12 @@ exports.addRating = catchAsync(async (req, res, next) => {
   Math.round(value);
 
   // Check if the item has already been rated
-  if (
-    item.rating.filter(rating => rating.user.toString() === req.user.id)
-      .length > 0
-  ) {
-    return next(new AppError('You can only rate it once', 404));
-  }
+  // if (
+  //   item.rating.filter(rating => rating.user.toString() === req.user.id)
+  //     .length > 0
+  // ) {
+  //   return next(new AppError('You can only rate it once', 400));
+  // }
 
   // Do we need to send all the user object?!?!?!?!  or just the id
   const rating = {

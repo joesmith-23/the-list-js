@@ -1,0 +1,58 @@
+.group__container {
+  display: flex;
+  flex-direction: column;
+}
+
+.group__information--title {
+  display: flex;
+  flex-direction: row;
+}
+
+.group__information--title h3,
+.group__information--title p {
+  margin: 20px 0 0 0;
+}
+
+.spacer {
+  flex: 1;
+}
+
+.group__information--body {
+  display: flex;
+  justify-content: space-around;
+  border: 1px solid #eee;
+  box-shadow: 0 2px 3px #ccc;
+  padding: 10px;
+  /* margin: 10px auto; */
+  box-sizing: border-box;
+}
+
+.group__information--lists {
+  margin: 20px;
+  border: 1px solid #eee;
+  box-shadow: 0 2px 3px #ccc;
+  padding: 20px;
+  box-sizing: border-box;
+  flex-grow: 1;
+}
+
+.group__information--members {
+  margin: 20px;
+  border: 1px solid #eee;
+  box-shadow: 0 2px 3px #ccc;
+  padding: 20px;
+  box-sizing: border-box;
+  flex-grow: 1;
+}
+
+.group__information--delete {
+  cursor: pointer;
+}
+
+.group__information--delete:hover {
+  color: red;
+}
+
+.group__information--owner {
+  font-weight: 700;
+}

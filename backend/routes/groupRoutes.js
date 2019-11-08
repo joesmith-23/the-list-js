@@ -9,7 +9,7 @@ const router = express.Router();
 
 router
   .route('/')
-  .get(auth, authController.restrictTo('admin'), groupController.getAllGroups)
+  .get(auth, groupController.getAllGroups)
   .post(auth, groupController.createGroup);
 
 router.get('/all-user-groups', auth, groupController.getGroupsUserMemberOf);

@@ -1,11 +1,11 @@
-import React, { Fragment, useState } from 'react';
-import axios from 'axios';
+import React, { Fragment, useState } from "react";
+import axios from "axios";
 
 const Login = props => {
   const [formData, setFormData] = useState({
-    email: '',
-    password: '',
-    token: ''
+    email: "",
+    password: "",
+    token: ""
   });
 
   let { email, password, token } = formData;
@@ -18,28 +18,26 @@ const Login = props => {
 
   const onSubmit = async e => {
     e.preventDefault();
-
     const user = {
       email,
       password
     };
-
     try {
       const config = {
         headers: {
-          'Content-Type': 'application/json'
+          "Content-Type": "application/json"
         }
       };
 
       const body = JSON.stringify(user);
 
-      const res = await axios.post('/api/users/login', body, config);
+      const res = await axios.post("/api/users/login", body, config);
 
       token = res.data.token;
 
-      localStorage.setItem('token', token);
+      localStorage.setItem("token", token);
 
-      props.history.push('/dashboard');
+      props.history.push("/dashboard");
     } catch (error) {
       console.error(error.response.data);
     }

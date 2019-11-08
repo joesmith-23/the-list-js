@@ -1,0 +1,22 @@
+.item__container ul {
+  padding: 0px;
+}
+
+.item__card {
+  display: flex;
+  width: 100%;
+}
+
+.item__name {
+}
+
+.item__name:hover {
+}
+
+.item__delete {
+  cursor: pointer;
+}
+
+.spacer {
+  flex: 1;
+}

@@ -1,0 +1,37 @@
+.lists__container {
+  display: flex;
+}
+
+.lists__information {
+  margin: 0 10px;
+}
+
+.lists__information ul {
+  padding: 0;
+}
+
+.lists__contents {
+  margin: 0 10px;
+}
+
+.lists__card {
+  display: flex;
+  width: 100%;
+  padding: 5px 5px;
+}
+
+.lists__name {
+  cursor: pointer;
+}
+
+.lists__name:hover {
+  color: #555;
+}
+
+.spacer {
+  flex: 1;
+}
+
+.lists__delete {
+  cursor: pointer;
+}

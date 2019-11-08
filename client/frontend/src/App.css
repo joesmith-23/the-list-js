@@ -15,7 +15,8 @@ body {
 }
 
 .main-container {
-  margin-top: 64px;
+  width: 80%;
+  margin: 64px auto 0 auto;
   flex: 1;
 }
 
@@ -26,6 +27,7 @@ body {
   width: 100%;
   height: 56px;
   font-weight: 600;
+  background-color: #3b77c0;
 }
 
 .navbar__navigation {
@@ -58,7 +60,7 @@ body {
 
 .navbar__navigation-items a:hover,
 .navbar__navigation-items a:active {
-  color: #3b77c0;
+  color: white;
 }
 
 .navbar__logo a {
@@ -69,7 +71,11 @@ body {
 
 .navbar__logo a:hover,
 .navbar__logo a:active {
-  color: #3b77c0;
+  color: white;
+}
+
+.add-element {
+  color: #555;
 }
 
 footer {

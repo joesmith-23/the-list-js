@@ -1,18 +1,21 @@
-import React from 'react';
-import { Link, withRouter } from 'react-router-dom';
+import React from "react";
+import { Link, withRouter } from "react-router-dom";
 
-import '../../../App.css';
+import "../../../App.css";
 
 const NavBar = props => {
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem("token");
 
   const logout = e => {
-    localStorage.removeItem('token');
-    props.history.push('/');
+    localStorage.removeItem("token");
+    props.history.push("/");
   };
 
   const authLinks = (
     <ul>
+      <li>
+        <Link to="/dashboard">Dashboard</Link>
+      </li>
       <li onClick={e => logout()}>Log Out</li>
     </ul>
   );
