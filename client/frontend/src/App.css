@@ -8,6 +8,7 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  background: #f1f1f1;
 }
 
 .App {
@@ -18,6 +19,7 @@ body {
   width: 80%;
   margin: 64px auto 0 auto;
   flex: 1;
+  position: relative;
 }
 
 .navbar {
@@ -28,6 +30,7 @@ body {
   height: 56px;
   font-weight: 600;
   background-color: #3b77c0;
+  z-index: 100;
 }
 
 .navbar__navigation {
@@ -76,6 +79,10 @@ body {
 
 .add-element {
   color: #555;
+}
+
+.logout {
+  cursor: pointer;
 }
 
 footer {

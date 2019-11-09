@@ -16,7 +16,9 @@ const NavBar = props => {
       <li>
         <Link to="/dashboard">Dashboard</Link>
       </li>
-      <li onClick={e => logout()}>Log Out</li>
+      <li className="logout" role="button" onClick={e => logout()}>
+        Log Out
+      </li>
     </ul>
   );
 

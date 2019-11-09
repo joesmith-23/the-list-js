@@ -61,25 +61,6 @@ const Dashboard = () => {
     setDeletedGroup(groupId);
   };
 
-  // const newGroupHandler = newGroup => {
-  //   setGroups(prevGroups => prevGroups.concat(newGroup));
-  // };
-
-  // TODO - Show the user's group's lists
-  // useEffect(() => {
-  //   const fetchLists = async groupId => {
-  //     const response = await axios.get(`/api/lists/${groupId}/`, config);
-  //     const listArray = response.data.data.lists;
-  //     console.log(listArray);
-  //     setLists([...listArray]);
-  //   };
-  //   if (token && groups) {
-  //     groups.map(group => {
-  //       return fetchLists(group._id);
-  //     });
-  //   }
-  // }, [groups]);
-
   // Set the title depending on if the user is logged in or not
   let title = token ? (
     <div>

@@ -1,5 +1,8 @@
 import React, { Fragment, useState } from "react";
+import { Link } from "react-router-dom";
 import axios from "axios";
+
+import "./Login.css";
 
 const Login = props => {
   const [formData, setFormData] = useState({
@@ -7,6 +10,8 @@ const Login = props => {
     password: "",
     token: ""
   });
+  const [emailFocused, setEmailFocused] = useState(false);
+  const [passwordFocused, setPasswordFocused] = useState(false);
 
   let { email, password, token } = formData;
 
@@ -43,27 +48,61 @@ const Login = props => {
     }
   };
 
+  const emailFocusHandler = () => {
+    if (formData.email) {
+      setEmailFocused(true);
+    } else {
+      setEmailFocused(!emailFocused);
+    }
+  };
+
+  const passwordFocusHandler = () => {
+    if (formData.password) {
+      setPasswordFocused(true);
+    } else {
+      setPasswordFocused(!passwordFocused);
+    }
+  };
+
   return (
     <Fragment>
-      <h1>Login</h1>
-      <form onSubmit={e => onSubmit(e)} action="/">
-        <input
-          type="email"
-          placeholder="Email Address"
-          name="email"
-          value={email}
-          onChange={e => onChange(e)}
-          required
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          name="password"
-          value={password}
-          onChange={e => onChange(e)}
-        />
-        <input type="submit" value="Log In" />
-      </form>
+      <div className="container">
+        <div className="login__container">
+          <h1 className="login__title">Welcome</h1>
+          <form className="login__form" onSubmit={e => onSubmit(e)} action="/">
+            <div className="login__input">
+              <input
+                className={emailFocused && "focus"}
+                onFocus={() => emailFocusHandler()}
+                onBlur={() => emailFocusHandler()}
+                type="email"
+                // placeholder="Email Address"
+                name="email"
+                value={email}
+                onChange={e => onChange(e)}
+                required
+              />
+              <span data-placeholder="Email Address"></span>
+            </div>
+            <div className="login__input">
+              <input
+                className={passwordFocused && "focus"}
+                onFocus={() => passwordFocusHandler()}
+                onBlur={() => passwordFocusHandler()}
+                type="password"
+                name="password"
+                value={password}
+                onChange={e => onChange(e)}
+              />
+              <span data-placeholder="Password"></span>
+            </div>
+            <input className="login__button" type="submit" value="LOGIN" />
+          </form>
+          <small className="login__signup">
+            Don't have an account? <Link to="/register">Sign Up</Link>
+          </small>
+        </div>
+      </div>
     </Fragment>
   );
 };
