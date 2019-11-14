@@ -1,0 +1,21 @@
+.add-rating__submit {
+  color: #333;
+  margin: 0 0 0 0;
+  font-weight: bold;
+  font-size: 13px !important;
+  line-height: 17px;
+  padding: 6px 12px 7px 12px;
+  display: inline-block;
+  white-space: nowrap;
+  text-decoration: none !important;
+  text-align: center;
+  cursor: pointer;
+}
+
+.add-rating__submit:hover {
+  color: #555;
+}
+
+.rating__number {
+  padding: 6px 12px;
+}

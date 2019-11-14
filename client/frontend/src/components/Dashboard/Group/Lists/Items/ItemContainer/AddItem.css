@@ -1,9 +1,13 @@
-.add-group__input {
+.add-element {
+  padding: 0 0 0 7px;
+}
+
+.add-item__input {
   padding-right: 20px;
   margin-top: 2px;
 }
 
-.add-group__name {
+.add-item__name {
   width: 100%;
   border: 1px solid #ddd;
   background-color: white !important;
@@ -13,7 +17,7 @@
   padding-right: 10px;
 }
 
-.add-group__submit {
+.add-item__submit {
   background: #965caf;
   color: #fff;
   border: 1px solid transparent;
@@ -31,22 +35,22 @@
   cursor: pointer;
 }
 
-.add-group__submit:hover {
+.add-item__submit:hover {
   color: #eee;
 }
 
-.add-group__cancel {
+.add-item__cancel {
   color: #555;
   cursor: pointer;
   font-size: 14px;
   margin: 2px 5px;
 }
 
-.add-group__cancel:hover {
+.add-item__cancel:hover {
   color: #222;
 }
 
-.add-group__text {
+.add-item__text {
   cursor: pointer;
   color: #555;
 }

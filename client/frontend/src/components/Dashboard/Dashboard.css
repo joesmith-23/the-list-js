@@ -1,13 +1,18 @@
-.lists__container {
+.groups-content__container {
   display: flex;
   justify-content: space-evenly;
 }
 
-.main-content__container {
-  display: flex;
+.groups__wrapper {
   padding: 10px;
   background-color: #fff;
   width: 655px;
   border: 1px solid #dddddd;
   box-shadow: 0px 1px 8px 0px rgba(0, 0, 0, 0.08);
+  min-height: 100%;
+}
+
+.groups-list__wrapper {
+  margin: 0;
+  padding: 0 40px;
 }

@@ -1,0 +1,31 @@
+.group-side-bar__container {
+  width: 20%;
+}
+
+.group-side-bar__title {
+  margin-bottom: 8px;
+  color: #333;
+}
+
+.group-side-bar__container ul {
+  padding: 0;
+  margin: 10px 0;
+}
+
+.group-side-bar__container li {
+  display: flex;
+  padding: 2px 0;
+  color: #333;
+}
+
+.spacer {
+  flex: 1;
+}
+
+.member__options {
+  color: #333;
+}
+
+.member__options:hover {
+  cursor: pointer;
+}

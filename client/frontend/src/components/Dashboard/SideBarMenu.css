@@ -1,0 +1,43 @@
+.sidebar__container {
+  width: 20%;
+  margin: 0;
+}
+
+.group-names {
+  list-style-type: none;
+  margin: 0;
+  padding: 7px 0;
+  text-decoration: none;
+  color: #555;
+}
+
+.group-names li {
+  padding: 7px 0;
+}
+
+.group-names a {
+  text-decoration: none;
+  color: #555;
+}
+
+.group-names a:hover {
+  text-decoration: none;
+  color: #222;
+}
+
+.icon__groups {
+  color: #965caf;
+}
+
+.icon__settings {
+  color: #3b77c0;
+}
+
+.settings__text a {
+  text-decoration: none;
+  color: #555;
+}
+
+.settings__text a:hover {
+  color: #222;
+}

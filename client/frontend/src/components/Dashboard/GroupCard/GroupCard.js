@@ -4,6 +4,9 @@ import axios from "axios";
 // import Group from "../Group/Group";
 
 import "./GroupCard.css";
+import { AiOutlineDelete } from "react-icons/ai";
+import { IoMdArrowRoundForward } from "react-icons/io";
+import { FiUsers, FiList } from "react-icons/fi";
 
 const GroupCard = props => {
   const [lists, setLists] = useState([]);
@@ -44,17 +47,48 @@ const GroupCard = props => {
         </p>
       </div>
       <div className="group__information--body">
-        <div className="group__information--lists">
-          <h4>Lists</h4>
-          <ul>{renderLists}</ul>
+        <div className="group__information--main-content">
+          <div className="group__information--content">
+            <span className="content-title__wrapper">
+              <span className="content-title__icons">
+                <FiList />
+              </span>
+              <h4>Lists</h4>
+            </span>
+            <ul>{renderLists}</ul>
+          </div>
+          <div className="group__information--content">
+            <span className="content-title__wrapper">
+              <span className="content-title__icons">
+                <FiUsers />
+              </span>
+              <h4>Members</h4>
+            </span>
+            <ul>{groupMembers} </ul>
+          </div>
         </div>
-        <div className="group__information--members">
-          <h4>Members</h4>
-          <ul>{groupMembers} </ul>
+        <div className="button__wrapper">
+          <Link to={`/dashboard/groups/${props.group._id}`}>
+            <button className="group__button">
+              <span>Go to group</span>
+              <span className="arrow__icon">
+                <IoMdArrowRoundForward />
+              </span>
+            </button>
+          </Link>
+          {props.currentUser._id === props.group.owner._id ? (
+            <span
+              className="group__information--delete "
+              onClick={() => props.deleteGroup(props.group._id)}
+              role="button"
+            >
+              <span className="delete__icon">
+                <AiOutlineDelete />
+              </span>
+              <span>Delete Group</span>
+            </span>
+          ) : null}
         </div>
-        <span onClick={() => props.deleteGroup(props.group._id)} role="button">
-          <p className="group__information--delete">Delete Group</p>
-        </span>
       </div>
     </div>
   );

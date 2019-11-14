@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { withRouter } from "react-router-dom";
 import axios from "axios";
 
+import "./AddGroup.css";
+
 const AddGroup = props => {
   const [show, setShow] = useState();
   const [groupName, setGroupName] = useState("");
@@ -18,23 +20,23 @@ const AddGroup = props => {
   let content = null;
   if (show)
     content = (
-      <div className="add-project__input">
+      <div className="add-group__input">
         <input
           value={groupName}
           onChange={e => setGroupName(e.target.value)}
-          className="add-project__name"
+          className="add-group__name"
           type="text"
           placeholder="Name your group"
         />
         <button
-          className="add-project__submit"
+          className="add-group__submit"
           type="button"
           onClick={() => addGroupHandler(props.token)}
         >
           Add Group
         </button>
         <span
-          className="add-project__cancel"
+          className="add-group__cancel"
           onClick={() => setShow(false)}
           onKeyDown={() => setShow(false)}
           role="button"
@@ -43,18 +45,25 @@ const AddGroup = props => {
         </span>
       </div>
     );
+
+  let addGroupText = null;
+  if (!show)
+    addGroupText = (
+      <div className="add-group__text">
+        <span>+ </span>
+        <span
+          onClick={() => setShow(!show)}
+          onKeyDown={() => setShow(!show)}
+          role="button"
+        >
+          Add Group
+        </span>
+      </div>
+    );
   return (
     <div>
       {content}
-      <span className="add-project__plus">+</span>
-      <span
-        className="add-project__text"
-        onClick={() => setShow(!show)}
-        onKeyDown={() => setShow(!show)}
-        role="button"
-      >
-        Add Group
-      </span>
+      {addGroupText}
     </div>
   );
 };

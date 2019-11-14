@@ -2,6 +2,7 @@ import React, { Fragment, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
+import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import "./Login.css";
 
 const Login = props => {
@@ -12,6 +13,7 @@ const Login = props => {
   });
   const [emailFocused, setEmailFocused] = useState(false);
   const [passwordFocused, setPasswordFocused] = useState(false);
+  const [hidden, setHidden] = useState(true);
 
   let { email, password, token } = formData;
 
@@ -64,6 +66,10 @@ const Login = props => {
     }
   };
 
+  const setHiddenHandler = () => {
+    setHidden(!hidden);
+  };
+
   return (
     <Fragment>
       <div className="container">
@@ -72,7 +78,7 @@ const Login = props => {
           <form className="login__form" onSubmit={e => onSubmit(e)} action="/">
             <div className="login__input">
               <input
-                className={emailFocused && "focus"}
+                className={emailFocused ? "focus" : ""}
                 onFocus={() => emailFocusHandler()}
                 onBlur={() => emailFocusHandler()}
                 type="email"
@@ -86,15 +92,21 @@ const Login = props => {
             </div>
             <div className="login__input">
               <input
-                className={passwordFocused && "focus"}
+                className={passwordFocused ? "focus" : ""}
                 onFocus={() => passwordFocusHandler()}
                 onBlur={() => passwordFocusHandler()}
-                type="password"
+                type={hidden ? "password" : "text"}
                 name="password"
                 value={password}
                 onChange={e => onChange(e)}
               />
               <span data-placeholder="Password"></span>
+              <span
+                className="password__hidden"
+                onClick={() => setHiddenHandler()}
+              >
+                {hidden ? <FaRegEye /> : <FaRegEyeSlash />}
+              </span>
             </div>
             <input className="login__button" type="submit" value="LOGIN" />
           </form>

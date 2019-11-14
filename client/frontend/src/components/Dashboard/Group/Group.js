@@ -1,12 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import axios from "axios";
 // import { Link } from "react-router-dom";
 
-import { FaTimes } from "react-icons/fa";
-
-import AddList from "./Lists/AddList";
-import AddMember from "./AddMember";
 import ItemContainer from "./Lists/Items/ItemContainer/ItemContainer";
+import ListContainer from "./Lists/ListContainer";
+import GroupSideBar from "./GroupSideBar/GroupSideBar";
 import "./Group.css";
 
 const Group = props => {
@@ -15,6 +13,7 @@ const Group = props => {
   const [clickedListId, setClickedListId] = useState("");
   const [clickedListItems, setClickedListItems] = useState("");
   const [members, setMembers] = useState([]);
+  const [offset, setOffset] = useState(0);
 
   const token = localStorage.getItem("token");
   const config = {
@@ -91,55 +90,31 @@ const Group = props => {
     setMembers(prevMember => [...prevMember, newMember]);
   };
 
-  let renderList = [];
-  if (lists) {
-    renderList = lists.map(list => (
-      <li className="lists__card" key={list._id}>
-        <span className="lists__name" onClick={() => clickedListHandler(list)}>
-          {list.name}
-        </span>
-        <span className="spacer"></span>
-        <span className="lists__delete" onClick={() => deleteList(list._id)}>
-          <FaTimes />
-        </span>
-      </li>
-    ));
-  }
-
-  let renderMembers = null;
-  if (members) {
-    renderMembers = members.map(member => (
-      <li key={member._id}>
-        <span>{member.firstName}</span>
-        <span className="spacer"></span>
-        <span
-          className="lists__delete"
-          onClick={() => deleteMember(member._id)}
-        >
-          <FaTimes />
-        </span>
-      </li>
-    ));
-  }
+  const offsetHandler = offset => {
+    setOffset(offset);
+  };
 
   let renderGroupInfo = null;
   if (group) {
     renderGroupInfo = (
       <div className="lists__container">
-        <div>
-          <h3>{group._id}</h3>
-          <h3>{group.name}</h3>
-          <AddMember token={token} group={group} addMember={addMemberHandler} />
-          <ul>{renderMembers}</ul>
-        </div>
-        <div className="lists__information">
-          <h4>Lists</h4>
-          <ul>{renderList}</ul>
-          <span>
-            <AddList token={token} group={group} newList={newListHandler} />
-          </span>
-        </div>
-        <div className="lists__contents">
+        <GroupSideBar
+          group={group}
+          token={token}
+          addMember={addMemberHandler}
+          members={members}
+          deleteMember={deleteMember}
+        />
+        <div className="main-content__container">
+          <ListContainer
+            lists={lists}
+            clickedListHandler={clickedListHandler}
+            deleteList={deleteList}
+            token={token}
+            group={group}
+            newList={newListHandler}
+            offsetHandler={offsetHandler}
+          />
           <ItemContainer
             config={config}
             list={clickedListId}
@@ -148,13 +123,14 @@ const Group = props => {
             groupId={group._id}
             newItemHandler={newItemHandler}
             deleteItem={deleteItemHandler}
+            offset={offset}
           />
         </div>
       </div>
     );
   }
 
-  return <div>{renderGroupInfo}</div>;
+  return <Fragment>{renderGroupInfo}</Fragment>;
 };
 
 export default Group;

@@ -3,13 +3,15 @@ import { withRouter } from "react-router-dom";
 import axios from "axios";
 
 import GroupCard from "./GroupCard/GroupCard";
-import AddGroup from "./Add Group/AddGroup";
+import SideBarMenu from "./SideBarMenu";
+import "./Dashboard.css";
 
 const Dashboard = () => {
   const [groups, setGroups] = useState([]);
   const [newGroup, setNewGroup] = useState("");
   const [deletedGroup, setDeletedGroup] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [currentUser, setCurrentUser] = useState("");
 
   const token = localStorage.getItem("token");
   const config = {
@@ -29,12 +31,26 @@ const Dashboard = () => {
     }
   };
 
+  const fetchCurrentUser = async () => {
+    try {
+      const response = await axios.get("/api/users/me", config);
+      let user = response.data.data.user;
+      console.log("USER FETCHED");
+      setCurrentUser(user);
+    } catch (error) {
+      setErrorMessage(error.response.data.message);
+    }
+  };
+
   const deleteGroup = async id => {
     await axios.delete(`/api/groups/${id}`, config);
   };
 
   useEffect(() => {
-    if (token) fetchGroups();
+    if (token) {
+      fetchGroups();
+      fetchCurrentUser();
+    }
   }, []);
 
   useEffect(() => {
@@ -77,6 +93,7 @@ const Dashboard = () => {
       group={group}
       deleteGroup={deleteGroupHandler}
       config={config}
+      currentUser={currentUser}
     />
   ));
 
@@ -87,15 +104,23 @@ const Dashboard = () => {
 
   return (
     <div>
-      {title}
-      {renderErrorMessage}
-      <AddGroup token={token} config={config} />
-      <ul>{renderGroups}</ul>
-      <input
-        onChange={() => console.log(groups, newGroup, deletedGroup)}
-        type="text"
-        name="text"
-      ></input>
+      <div className="groups-content__container">
+        <SideBarMenu
+          groups={groups}
+          token={token}
+          config={config}
+          title={title}
+          renderErrorMessage={renderErrorMessage}
+        />
+        <div className="groups__wrapper">
+          <ul className="groups-list__wrapper">{renderGroups}</ul>
+        </div>
+        {/* <input
+          onChange={() => console.log(groups, currentUser)}
+          type="text"
+          name="text"
+        ></input> */}
+      </div>
     </div>
   );
 };

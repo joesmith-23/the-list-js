@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import axios from "axios";
 
+import "./AddMember.css";
+
 const AddMember = props => {
   const [show, setShow] = useState();
   const [newMember, setNewMember] = useState("");
@@ -31,23 +33,23 @@ const AddMember = props => {
   let content = null;
   if (show)
     content = (
-      <div className="add-project__input">
+      <div className="add-member__input">
         <input
           value={newMember}
           onChange={e => setNewMember(e.target.value)}
-          className="add-project__name"
+          className="add-member__name"
           type="text"
           placeholder="Enter a user's email"
         />
         <button
-          className="add-project__submit"
+          className="add-member__submit"
           type="button"
           onClick={() => addMemberHandler(props.token)}
         >
           Add Member
         </button>
         <span
-          className="add-project__cancel"
+          className="add-member__cancel"
           onClick={() => setShow(false)}
           onKeyDown={() => setShow(false)}
           role="button"
@@ -56,18 +58,28 @@ const AddMember = props => {
         </span>
       </div>
     );
+
+  let addMemberText = null;
+  if (!show) {
+    addMemberText = (
+      <div>
+        <span className="add-member__plus add-element">+</span>
+        <span
+          className="add-member__text add-element"
+          onClick={() => setShow(!show)}
+          onKeyDown={() => setShow(!show)}
+          role="button"
+        >
+          Add Member
+        </span>
+      </div>
+    );
+  }
+
   return (
     <div>
       {content}
-      <span className="add-project__plus add-element">+</span>
-      <span
-        className="add-project__text add-element"
-        onClick={() => setShow(!show)}
-        onKeyDown={() => setShow(!show)}
-        role="button"
-      >
-        Add Member
-      </span>
+      {addMemberText}
     </div>
   );
 };

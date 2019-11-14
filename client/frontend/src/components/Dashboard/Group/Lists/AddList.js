@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import axios from "axios";
 
+import "./AddList.css";
+
 const AddList = props => {
   const [show, setShow] = useState();
   const [listName, setListName] = useState("");
@@ -24,23 +26,23 @@ const AddList = props => {
   let content = null;
   if (show)
     content = (
-      <div className="add-project__input">
+      <div className="add-list__input">
         <input
           value={listName}
           onChange={e => setListName(e.target.value)}
-          className="add-project__name"
+          className="add-list__name"
           type="text"
           placeholder="Name your list"
         />
         <button
-          className="add-project__submit"
+          className="add-list__submit"
           type="button"
           onClick={() => addListHandler(props.token)}
         >
           Add List
         </button>
         <span
-          className="add-project__cancel"
+          className="add-list__cancel"
           onClick={() => setShow(false)}
           onKeyDown={() => setShow(false)}
           role="button"
@@ -49,18 +51,28 @@ const AddList = props => {
         </span>
       </div>
     );
+
+  let addListText = null;
+  if (!show) {
+    addListText = (
+      <div>
+        <span className="add-list__plus add-element">+</span>
+        <span
+          className="add-list__text add-element"
+          onClick={() => setShow(!show)}
+          onKeyDown={() => setShow(!show)}
+          role="button"
+        >
+          Add List
+        </span>
+      </div>
+    );
+  }
+
   return (
     <div>
       {content}
-      <span className="add-project__plus add-element">+</span>
-      <span
-        className="add-project__text add-element"
-        onClick={() => setShow(!show)}
-        onKeyDown={() => setShow(!show)}
-        role="button"
-      >
-        Add List
-      </span>
+      {addListText}
     </div>
   );
 };

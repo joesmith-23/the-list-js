@@ -13,46 +13,127 @@
   margin: 20px 0 0 0;
 }
 
+.group__information--title a {
+  text-decoration: none;
+  color: #333;
+  font-size: 22px;
+}
+
+.group__information--title a:hover {
+  color: #555;
+}
+
 .spacer {
   flex: 1;
 }
 
 .group__information--body {
   display: flex;
-  justify-content: space-around;
-  border: 1px solid #eee;
-  box-shadow: 0 2px 3px #ccc;
-  padding: 10px;
+  flex-direction: column;
+  border: 1px solid #dddddd;
+  box-shadow: 0px 1px 8px 0px rgba(0, 0, 0, 0.08);
+  padding: 10px 10px 0px 10px;
   /* margin: 10px auto; */
   box-sizing: border-box;
+  margin-bottom: 30px;
 }
 
-.group__information--lists {
-  margin: 20px;
-  border: 1px solid #eee;
-  box-shadow: 0 2px 3px #ccc;
-  padding: 20px;
+.group__information--main-content {
+  display: flex;
+}
+
+.group__information--content {
+  margin: 5px;
+  border: 1px solid #dddddd;
+  box-shadow: 0px 1px 8px 0px rgba(0, 0, 0, 0.08);
+  padding: 8px 13px 8px 13px;
   box-sizing: border-box;
   flex-grow: 1;
 }
 
-.group__information--members {
-  margin: 20px;
-  border: 1px solid #eee;
-  box-shadow: 0 2px 3px #ccc;
-  padding: 20px;
-  box-sizing: border-box;
-  flex-grow: 1;
+.group__information--content ul {
+  padding: 0px;
+  list-style-type: none;
+}
+
+.group__information--content li {
+  padding: 5px 0px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.group__information--content li:last-child {
+  padding: 5px 0px;
+  border-bottom: none;
+}
+
+.group__information--content h4 {
+  color: #333;
+  margin: 5px 0px;
+}
+
+.content-title__wrapper {
+  display: flex;
+}
+
+.content-title__icons {
+  margin: 6px 0px 5px 0px;
+  padding: 0 5px 0 0;
 }
 
 .group__information--delete {
+  color: #555;
+  font-size: 15px;
+  margin: 11px 5px 11px 5px;
+  padding: 5px 0px 5px 20px;
   cursor: pointer;
+  position: relative;
 }
 
 .group__information--delete:hover {
   color: red;
 }
 
+.delete__icon {
+  padding: 5px 5px 0 0;
+  position: absolute;
+  left: 0;
+  top: 1px;
+}
+
+.button__wrapper {
+  display: flex;
+  justify-content: space-between;
+}
+
+.group__button {
+  background: #965caf;
+  color: #fff;
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 20px;
+  padding: 6px 22px 7px 12px;
+  margin: 8px 8px 13px 8px;
+  display: inline-block;
+  border: none;
+  white-space: nowrap;
+  border-radius: 5px;
+  text-decoration: none;
+  text-align: center;
+  cursor: pointer;
+  position: relative;
+}
+
+.group__button:hover {
+  color: #eee;
+}
+
+.arrow__icon {
+  position: absolute;
+  top: 7px;
+  right: 5px;
+}
+
 .group__information--owner {
+  color: #333;
   font-weight: 700;
 }

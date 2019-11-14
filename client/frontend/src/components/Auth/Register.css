@@ -7,10 +7,10 @@
   justify-content: center;
 }
 
-.login__container {
+.register__container {
   width: 360px;
   background: #ffffff;
-  height: 60vh;
+  height: 70vh;
   margin: auto;
   display: flex;
   flex-direction: column;
@@ -19,25 +19,25 @@
   box-shadow: 7.5px 6px 4px #aaa;
 }
 
-.login__title {
+.register__title {
   text-align: center;
 }
 
-.login__form {
+.register__form {
   display: flex;
   flex-direction: column;
   justify-content: center;
   padding: 0 12.5% 0 12.5%;
 }
 
-.login__input {
+.register__input {
   margin: 7.5% 0 0 0;
   border-bottom: 2px solid #aaa;
   box-sizing: border-box;
   position: relative;
 }
 
-.login__input input {
+.register__input input {
   font-size: 16px;
   color: #333;
   border: none;
@@ -45,10 +45,9 @@
   outline: none;
   height: 50px;
   width: 100%;
-  position: relative;
 }
 
-.login__input span::before {
+.register__input span::before {
   content: attr(data-placeholder);
   position: absolute;
   top: 50%;
@@ -59,7 +58,7 @@
   pointer-events: none;
 }
 
-.login__input span::after {
+.register__input span::after {
   content: "";
   position: absolute;
   bottom: -2px;
@@ -90,7 +89,7 @@
   color: #965caf;
 }
 
-.login__button {
+.register__button {
   display: block;
   height: 50px;
   background: linear-gradient(120deg, #3b77c0, #965caf, #3b77c0);
@@ -105,22 +104,26 @@
   transition: 0.5s;
 }
 
-.login__button:hover {
+.register__button:hover {
   background-position: right;
 }
 
-.login__signup {
+.register__login {
   text-align: center;
   padding: 20% 12.5% 0 12.5%;
   color: #333;
 }
 
-.login__signup a {
+.register__login a {
   text-decoration: none;
 }
 
 @media only screen and (max-width: 500px) {
   .container {
     margin: auto;
+  }
+
+  .register__login {
+    padding: 0% 12.5% 0 12.5%;
   }
 }
