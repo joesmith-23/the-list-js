@@ -38,7 +38,8 @@ exports.getGroupsUserOwnerOf = catchAsync(async (req, res, next) => {
     owner: req.user.id
   })
     .populate('owner', 'firstName lastName')
-    .populate('members', 'firstName lastName');
+    .populate('members', 'firstName lastName')
+    .sort('-date');
 
   if (groups.length < 1)
     return next(new AppError("You don't have any groups, make one now", 400));
@@ -57,7 +58,8 @@ exports.getGroupsUserMemberOf = catchAsync(async (req, res, next) => {
     members: req.user.id
   })
     .populate('owner', 'firstName lastName')
-    .populate('members', 'firstName lastName');
+    .populate('members', 'firstName lastName')
+    .sort('-date');
 
   if (groups.length < 1)
     return next(new AppError("You don't have any groups, make one now", 404));
