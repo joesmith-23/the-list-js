@@ -1,9 +1,10 @@
 import React from "react";
+import { connect } from "react-redux";
 import { Link, withRouter } from "react-router-dom";
 import { FaCog, FaLayerGroup } from "react-icons/fa";
 
 import "./SideBarMenu.css";
-import AddGroup from "./Add Group/AddGroup";
+import AddGroup from "./AddGroup/AddGroup";
 
 const SideBarMenu = props => {
   let groupNames = null;
@@ -27,7 +28,7 @@ const SideBarMenu = props => {
       {props.title}
       {props.renderErrorMessage}
       <ul className="group-names">{groupNames}</ul>
-      <AddGroup token={props.token} config={props.config} />
+      <AddGroup config={props.config} />
       <p className="settings__text">
         <Link to="#">
           <span className="icon__settings">
@@ -40,4 +41,10 @@ const SideBarMenu = props => {
   );
 };
 
-export default withRouter(SideBarMenu);
+const mapStateToProps = state => {
+  return {
+    groups: state.dashboard.groups
+  };
+};
+
+export default connect(mapStateToProps)(withRouter(SideBarMenu));

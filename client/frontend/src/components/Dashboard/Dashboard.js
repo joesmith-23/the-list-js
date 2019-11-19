@@ -1,122 +1,74 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { withRouter } from "react-router-dom";
-import axios from "axios";
+// import axios from "axios";
+import { connect } from "react-redux";
+import * as dashboardActionCreators from "../../store/actions/dashboardActionCreators";
+import * as userActionCreators from "../../store/actions/userActionCreators";
 
 import GroupCard from "./GroupCard/GroupCard";
 import SideBarMenu from "./SideBarMenu";
 import "./Dashboard.css";
 
-const Dashboard = () => {
-  const [groups, setGroups] = useState([]);
-  const [newGroup, setNewGroup] = useState("");
-  const [deletedGroup, setDeletedGroup] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
-  const [currentUser, setCurrentUser] = useState("");
-
-  const token = localStorage.getItem("token");
+const Dashboard = props => {
   const config = {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${props.token}`
     }
-  };
-
-  const fetchGroups = async () => {
-    try {
-      const response = await axios.get("/api/groups/all-user-groups", config);
-      let groupsData = response.data.data.groups;
-      console.log("GROUPS FETCHED");
-      setGroups([...groupsData]);
-    } catch (error) {
-      setErrorMessage(error.response.data.message);
-    }
-  };
-
-  const fetchCurrentUser = async () => {
-    try {
-      const response = await axios.get("/api/users/me", config);
-      let user = response.data.data.user;
-      console.log("USER FETCHED");
-      setCurrentUser(user);
-    } catch (error) {
-      setErrorMessage(error.response.data.message);
-    }
-  };
-
-  const deleteGroup = async id => {
-    await axios.delete(`/api/groups/${id}`, config);
   };
 
   useEffect(() => {
-    if (token) {
-      fetchGroups();
-      fetchCurrentUser();
+    if (props.token) {
+      props.onInitGroups();
+      props.onInitUser();
     }
   }, []);
 
-  useEffect(() => {
-    if (token && newGroup) {
-      console.log("NEW GROUP CHANGED");
-      // TODO - if state has updated, do this
-      fetchGroups();
-    }
-  }, [newGroup]);
-
-  useEffect(() => {
-    if (token && deletedGroup) {
-      const id = deletedGroup;
-      setDeletedGroup("");
-
-      console.log("GROUP DELETED");
-      deleteGroup(id);
-      fetchGroups();
-      setNewGroup(id);
-    }
-  }, [deletedGroup]);
-
-  const deleteGroupHandler = groupId => {
-    setDeletedGroup(groupId);
-  };
-
   // Set the title depending on if the user is logged in or not
-  let title = token ? (
+  let pageTitle = props.token ? (
     <div>
-      <h2>Your Groups</h2>
+      <h2>{`${
+        props.currentUser ? props.currentUser.firstName + "'s" : ""
+      } Groups`}</h2>
     </div>
   ) : (
     <h2>You need to be logged in to access the dashboard</h2>
   );
 
   // Create array to allow React to render the groups to the page
-  let renderGroups = groups.map(group => (
-    <GroupCard
-      key={group._id}
-      group={group}
-      deleteGroup={deleteGroupHandler}
-      config={config}
-      currentUser={currentUser}
-    />
-  ));
+  let renderGroups = null;
+  if (props.groups) {
+    renderGroups = props.groups.map(group => (
+      <GroupCard
+        key={group._id}
+        group={group}
+        deleteGroup={props.deleteGroupHandler}
+        config={config}
+        currentUser={props.currentUser}
+      />
+    ));
+  }
 
   let renderErrorMessage = "";
-  if (errorMessage) {
-    renderErrorMessage = <p>{errorMessage}</p>;
+  if (props.errorMessage) {
+    renderErrorMessage = <p>{props.errorMessage}</p>;
   }
 
   return (
     <div>
       <div className="groups-content__container">
         <SideBarMenu
-          groups={groups}
-          token={token}
           config={config}
-          title={title}
+          title={pageTitle}
           renderErrorMessage={renderErrorMessage}
         />
         <div className="groups__wrapper">
           <ul className="groups-list__wrapper">{renderGroups}</ul>
         </div>
         {/* <input
-          onChange={() => console.log(groups, currentUser)}
+          onChange={
+            props.onCurrentUser
+            // console.log(groups, currentUser);
+          }
           type="text"
           name="text"
         ></input> */}
@@ -125,4 +77,23 @@ const Dashboard = () => {
   );
 };
 
-export default withRouter(Dashboard);
+const mapStateToProps = state => {
+  return {
+    groups: state.dashboard.groups,
+    currentUser: state.user.user,
+    token: state.auth.token
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    onInitGroups: () => dispatch(dashboardActionCreators.initGroups()),
+    onInitUser: () => dispatch(userActionCreators.initUser()),
+    deleteGroupHandler: id => dispatch(dashboardActionCreators.deleteGroup(id))
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withRouter(Dashboard));

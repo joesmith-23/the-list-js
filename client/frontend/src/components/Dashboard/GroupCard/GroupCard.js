@@ -33,6 +33,22 @@ const GroupCard = props => {
     renderLists = lists.map(list => <li key={list._id}>{list.name}</li>);
   }
 
+  let deleteButton = null;
+  if (props.currentUser && props.currentUser._id === props.group.owner._id) {
+    deleteButton = (
+      <span
+        className="group__information--delete "
+        onClick={() => props.deleteGroup(props.group._id)}
+        role="button"
+      >
+        <span className="delete__icon">
+          <AiOutlineDelete />
+        </span>
+        <span>Delete Group</span>
+      </span>
+    );
+  }
+
   return (
     <div className="group__container">
       <div className="group__information--title">
@@ -76,18 +92,20 @@ const GroupCard = props => {
               </span>
             </button>
           </Link>
-          {props.currentUser._id === props.group.owner._id ? (
-            <span
-              className="group__information--delete "
-              onClick={() => props.deleteGroup(props.group._id)}
-              role="button"
-            >
-              <span className="delete__icon">
-                <AiOutlineDelete />
-              </span>
-              <span>Delete Group</span>
+          {deleteButton}
+          {/* FIND A WAY TO DO THIS SO IT DOESN'T ERROR */}
+          {/* {props.currentUser._id === props.group.owner._id ? ( */}
+          {/* <span
+            className="group__information--delete "
+            onClick={() => props.deleteGroup(props.group._id)}
+            role="button"
+          >
+            <span className="delete__icon">
+              <AiOutlineDelete />
             </span>
-          ) : null}
+            <span>Delete Group</span>
+          </span> */}
+          {/* ) : null} */}
         </div>
       </div>
     </div>

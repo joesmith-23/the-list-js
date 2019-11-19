@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { withRouter } from "react-router-dom";
-import axios from "axios";
+import { connect } from "react-redux";
+
+import * as dashboardActionCreators from "../../../store/actions/dashboardActionCreators";
 
 import "./AddGroup.css";
 
@@ -12,7 +14,7 @@ const AddGroup = props => {
     const body = {
       name: groupName
     };
-    const res = await axios.post("/api/groups/", body, props.config);
+    props.onAddGroupHandler(body);
     // TODO - Maybe come up with a better way of doing this
     window.location.reload();
   };
@@ -68,4 +70,10 @@ const AddGroup = props => {
   );
 };
 
-export default withRouter(AddGroup);
+const mapDispatchToProps = dispatch => {
+  return {
+    onAddGroupHandler: body => dispatch(dashboardActionCreators.addGroup(body))
+  };
+};
+
+export default connect(null, mapDispatchToProps)(withRouter(AddGroup));

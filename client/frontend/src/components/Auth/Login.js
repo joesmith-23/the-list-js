@@ -1,6 +1,8 @@
 import React, { Fragment, useState } from "react";
-import { Link } from "react-router-dom";
-import axios from "axios";
+import { connect } from "react-redux";
+import { Link, withRouter } from "react-router-dom";
+
+import * as actions from "../../store/actions/authActionCreators";
 
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import "./Login.css";
@@ -15,7 +17,7 @@ const Login = props => {
   const [passwordFocused, setPasswordFocused] = useState(false);
   const [hidden, setHidden] = useState(true);
 
-  let { email, password, token } = formData;
+  let { email, password } = formData;
 
   const onChange = e =>
     setFormData({
@@ -25,29 +27,31 @@ const Login = props => {
 
   const onSubmit = async e => {
     e.preventDefault();
-    const user = {
-      email,
-      password
-    };
-    try {
-      const config = {
-        headers: {
-          "Content-Type": "application/json"
-        }
-      };
+    props.onLogin(email, password, props);
 
-      const body = JSON.stringify(user);
+    // const user = {
+    //   email,
+    //   password
+    // };
+    // try {
+    //   const config = {
+    //     headers: {
+    //       "Content-Type": "application/json"
+    //     }
+    //   };
 
-      const res = await axios.post("/api/users/login", body, config);
+    //   const body = JSON.stringify(user);
 
-      token = res.data.token;
+    //   const res = await axios.post("/api/users/login", body, config);
 
-      localStorage.setItem("token", token);
+    //   token = res.data.token;
 
-      props.history.push("/dashboard");
-    } catch (error) {
-      console.error(error.response.data);
-    }
+    //   localStorage.setItem("token", token);
+
+    //   props.history.push("/dashboard");
+    // } catch (error) {
+    //   console.error(error.response.data);
+    // }
   };
 
   const emailFocusHandler = () => {
@@ -119,4 +123,11 @@ const Login = props => {
   );
 };
 
-export default Login;
+const mapDispatchToProps = dispatch => {
+  return {
+    onLogin: (email, password, props) =>
+      dispatch(actions.login(email, password, props))
+  };
+};
+
+export default connect(null, mapDispatchToProps)(withRouter(Login));
