@@ -1,5 +1,7 @@
 import React, { useState } from "react";
-import axios from "axios";
+import { connect } from "react-redux";
+
+import * as dashboardActionCreators from "../../../../store/actions/dashboardActionCreators";
 
 import "./AddMember.css";
 
@@ -7,27 +9,11 @@ const AddMember = props => {
   const [show, setShow] = useState();
   const [newMember, setNewMember] = useState("");
 
-  const addMemberHandler = async token => {
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${props.token}`
-      }
-    };
+  const addMemberHandler = async () => {
     const body = {
       email: newMember
     };
-    try {
-      // /api/groups/:group_id
-      const res = await axios.post(
-        `/api/groups/${props.group._id}`,
-        body,
-        config
-      );
-      props.addMember(res.data.data.user);
-    } catch (error) {
-      console.log(error.response.data.message);
-    }
+    props.onAddMember(body);
   };
 
   let content = null;
@@ -44,7 +30,7 @@ const AddMember = props => {
         <button
           className="add-member__submit"
           type="button"
-          onClick={() => addMemberHandler(props.token)}
+          onClick={() => addMemberHandler()}
         >
           Add Member
         </button>
@@ -84,4 +70,11 @@ const AddMember = props => {
   );
 };
 
-export default AddMember;
+const mapDispatchToProps = dispatch => {
+  return {
+    onAddMember: newMember =>
+      dispatch(dashboardActionCreators.addMember(newMember))
+  };
+};
+
+export default connect(null, mapDispatchToProps)(AddMember);

@@ -2,7 +2,9 @@ import * as actions from "../actions/actionsTypes";
 
 const initialState = {
   groups: [],
-  errorMessage: ""
+  currentGroup: {},
+  lists: [],
+  error: ""
 };
 
 // Deep immutability examples
@@ -26,6 +28,40 @@ const reducer = (state = initialState, action) => {
         ...state,
         groups: action.groups
       };
+    case actions.SET_CURRENT_GROUP:
+      return {
+        ...state,
+        currentGroup: action.group
+      };
+    case actions.SET_LISTS:
+      return {
+        ...state,
+        lists: action.lists
+      };
+    case actions.ADD_LIST:
+      return {
+        ...state,
+        lists: [...state.lists, action.newList]
+      };
+    case actions.DELETE_LIST:
+      const newLists = state.lists.filter(el => el._id !== action.listId);
+      return {
+        ...state,
+        lists: newLists
+      };
+    case actions.SET_MEMBERS:
+      return {
+        ...state,
+        members: action.members
+      };
+    case actions.ADD_MEMBER:
+      return {
+        ...state,
+        currentGroup: {
+          ...state.currentGroup,
+          members: [...state.currentGroup.members, action.newMember]
+        }
+      };
     case actions.SET_ERROR:
       return {
         ...state,
@@ -36,6 +72,17 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         groups: newGroups
+      };
+    case actions.DELETE_MEMBER:
+      const newMembers = state.currentGroup.members.filter(
+        el => el._id !== action.memberId
+      );
+      return {
+        ...state,
+        currentGroup: {
+          ...state.currentGroup,
+          members: newMembers
+        }
       };
 
     default:

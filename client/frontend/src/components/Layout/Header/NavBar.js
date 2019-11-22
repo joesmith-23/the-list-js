@@ -10,7 +10,11 @@ import "../../../App.css";
 const NavBar = props => {
   const token = localStorage.getItem("token");
 
-  if (token) props.onLoadLocalAuth(token);
+  if (token) {
+    props.onLoadLocalAuth(token);
+  }
+
+  if (!props.currentUser) props.onLoadLocalUser();
 
   const logoutHandler = e => {
     localStorage.removeItem("token");
@@ -68,7 +72,8 @@ const mapDispatchToProps = dispatch => {
   return {
     onLoadLocalAuth: token => dispatch(authActionCreators.loadLocalAuth(token)),
     onLogout: () => dispatch(authActionCreators.logout()),
-    onLogoutRemoveUser: () => dispatch(userActionCreators.removeCurrentUser())
+    onLogoutRemoveUser: () => dispatch(userActionCreators.removeCurrentUser()),
+    onLoadLocalUser: () => dispatch(userActionCreators.initUserFromLocal())
   };
 };
 

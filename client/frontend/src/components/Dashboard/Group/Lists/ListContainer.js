@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-
+import ReactTooltip from "react-tooltip";
 import AddList from "./AddList";
 
 import { FaTimes } from "react-icons/fa";
@@ -10,9 +10,6 @@ const ListContainer = ({
   lists,
   clickedListHandler,
   deleteList,
-  token,
-  group,
-  newList,
   offsetHandler
 }) => {
   const [indexClicked, setIndexClicked] = useState();
@@ -45,16 +42,21 @@ const ListContainer = ({
         </span>
         <span className="spacer"></span>
         <span className="lists__delete" onClick={() => deleteList(list._id)}>
-          <FaTimes />
+          <FaTimes data-tip="Delete List" />
+          <ReactTooltip
+            place="bottom"
+            effect="solid"
+            className="lists__tooltip"
+          />
         </span>
       </li>
     ));
   }
   return (
     <div className="lists__information">
-      <h4>Lists</h4>
+      <h2>Lists</h2>
       <ul>{renderList}</ul>
-      <AddList token={token} group={group} newList={newList} />
+      <AddList />
     </div>
   );
 };

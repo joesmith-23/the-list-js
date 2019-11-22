@@ -1,7 +1,8 @@
 import * as actions from "../actions/actionsTypes";
 
 const initialState = {
-  user: null
+  user: null,
+  error: ""
 };
 
 const reducer = (state = initialState, action) => {

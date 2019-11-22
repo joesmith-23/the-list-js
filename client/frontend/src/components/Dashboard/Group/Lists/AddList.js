@@ -1,5 +1,7 @@
 import React, { useState } from "react";
-import axios from "axios";
+import { connect } from "react-redux";
+
+import * as dashboardActionCreators from "../../../../store/actions/dashboardActionCreators";
 
 import "./AddList.css";
 
@@ -7,20 +9,11 @@ const AddList = props => {
   const [show, setShow] = useState();
   const [listName, setListName] = useState("");
 
-  const addListHandler = async token => {
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${props.token}`
-      }
-    };
-
+  const addListHandler = () => {
     const body = {
       name: listName
     };
-
-    const res = await axios.post(`/api/lists/${props.group._id}`, body, config);
-    props.newList(res.data.data.list);
+    props.onAddList(body);
   };
 
   let content = null;
@@ -37,7 +30,7 @@ const AddList = props => {
         <button
           className="add-list__submit"
           type="button"
-          onClick={() => addListHandler(props.token)}
+          onClick={() => addListHandler()}
         >
           Add List
         </button>
@@ -77,4 +70,10 @@ const AddList = props => {
   );
 };
 
-export default AddList;
+const mapDispatchToProps = dispatch => {
+  return {
+    onAddList: newList => dispatch(dashboardActionCreators.addList(newList))
+  };
+};
+
+export default connect(null, mapDispatchToProps)(AddList);

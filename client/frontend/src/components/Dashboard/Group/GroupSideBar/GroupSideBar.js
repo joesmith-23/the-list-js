@@ -1,11 +1,10 @@
 import React from "react";
-
 import AddMember from "./AddMember";
-import "./GroupSideBar.css";
 
+import "./GroupSideBar.css";
 import { FaEllipsisH } from "react-icons/fa";
 
-const GroupSideBar = ({ group, token, addMember, members, deleteMember }) => {
+const GroupSideBar = ({ group, addMember, members, deleteMember }) => {
   let renderMembers = null;
   if (members) {
     renderMembers = members.map(member => (
@@ -28,7 +27,7 @@ const GroupSideBar = ({ group, token, addMember, members, deleteMember }) => {
       <h3 className="group-side-bar__title">Members</h3>
       {/* <h3>{group._id}</h3> */}
       <ul>{renderMembers}</ul>
-      <AddMember token={token} group={group} addMember={addMember} />
+      <AddMember />
     </div>
   );
 };

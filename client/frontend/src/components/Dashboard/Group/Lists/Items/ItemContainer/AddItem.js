@@ -10,8 +10,7 @@ const AddItem = props => {
   const addItemHandler = async token => {
     const config = {
       headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${props.token}`
+        "Content-Type": "application/json"
       }
     };
 

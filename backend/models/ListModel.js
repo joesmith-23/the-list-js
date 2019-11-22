@@ -30,7 +30,8 @@ const ListSchema = new mongoose.Schema({
         }
       ],
       averageRating: {
-        type: Number
+        type: Number,
+        default: 5
       },
       createdAt: {
         type: Date,

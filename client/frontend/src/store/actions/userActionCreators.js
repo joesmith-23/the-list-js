@@ -15,15 +15,24 @@ export const removeCurrentUser = () => {
 };
 
 export const initUser = () => {
-  return async (dispatch, getState) => {
+  return async dispatch => {
     try {
       const response = await axios.get("/api/users/me");
       let user = response.data.data.user;
-      console.log("USER FETCHED");
+      let localUser = JSON.stringify(user);
+      localStorage.setItem("user", localUser);
       dispatch(setCurrentUser(user));
     } catch (error) {
       dispatch(setErrorMessage(error.response.data.message));
     }
+  };
+};
+
+export const initUserFromLocal = () => {
+  return async dispatch => {
+    let user = localStorage.getItem("user");
+    user = JSON.parse(user);
+    dispatch(setCurrentUser(user));
   };
 };
 

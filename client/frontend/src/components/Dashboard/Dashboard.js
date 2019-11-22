@@ -10,12 +10,6 @@ import SideBarMenu from "./SideBarMenu";
 import "./Dashboard.css";
 
 const Dashboard = props => {
-  const config = {
-    headers: {
-      Authorization: `Bearer ${props.token}`
-    }
-  };
-
   useEffect(() => {
     if (props.token) {
       props.onInitGroups();
@@ -42,8 +36,6 @@ const Dashboard = props => {
         key={group._id}
         group={group}
         deleteGroup={props.deleteGroupHandler}
-        config={config}
-        currentUser={props.currentUser}
       />
     ));
   }
@@ -57,7 +49,6 @@ const Dashboard = props => {
     <div>
       <div className="groups-content__container">
         <SideBarMenu
-          config={config}
           title={pageTitle}
           renderErrorMessage={renderErrorMessage}
         />

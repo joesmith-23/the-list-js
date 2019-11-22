@@ -19,12 +19,17 @@ const reducer = (state = initialState, action) => {
     case actions.LOGIN_FAIL:
       return {
         ...state,
-        error: action.error
+        error: action.errorMessage
       };
     case actions.LOAD_LOCAL_AUTH:
       return {
         ...state,
         token: action.token
+      };
+    case actions.SET_ERROR:
+      return {
+        ...state,
+        error: action.errorMessage
       };
     case actions.LOGOUT:
       return {

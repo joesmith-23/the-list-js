@@ -23,7 +23,7 @@ export const loginSuccess = token => {
 export const loginFail = error => {
   return {
     type: actionTypes.LOGIN_FAIL,
-    error: error
+    errorMessage: error
   };
 };
 
@@ -50,8 +50,7 @@ export const login = (email, password, props) => {
 
       props.history.push("/dashboard");
     } catch (error) {
-      console.error(error);
-      dispatch(loginFail(error));
+      dispatch(loginFail(error.response.data.message));
     }
   };
 };
@@ -60,5 +59,12 @@ export const loadLocalAuth = token => {
   return {
     type: actionTypes.LOAD_LOCAL_AUTH,
     token: token
+  };
+};
+
+export const setErrorMessage = error => {
+  return {
+    type: actionTypes.SET_ERROR,
+    errorMessage: error
   };
 };

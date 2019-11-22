@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
-// import Group from "../Group/Group";
+import { connect } from "react-redux";
 
 import "./GroupCard.css";
 import { AiOutlineDelete } from "react-icons/ai";
@@ -17,10 +17,7 @@ const GroupCard = props => {
 
   useEffect(() => {
     const fetchLists = async () => {
-      const response = await axios.get(
-        `/api/lists/${props.group._id}`,
-        props.config
-      );
+      const response = await axios.get(`/api/lists/${props.group._id}`);
       let listData = response.data.data.lists;
       // console.log(listData);
       setLists([...listData]);
@@ -93,23 +90,16 @@ const GroupCard = props => {
             </button>
           </Link>
           {deleteButton}
-          {/* FIND A WAY TO DO THIS SO IT DOESN'T ERROR */}
-          {/* {props.currentUser._id === props.group.owner._id ? ( */}
-          {/* <span
-            className="group__information--delete "
-            onClick={() => props.deleteGroup(props.group._id)}
-            role="button"
-          >
-            <span className="delete__icon">
-              <AiOutlineDelete />
-            </span>
-            <span>Delete Group</span>
-          </span> */}
-          {/* ) : null} */}
         </div>
       </div>
     </div>
   );
 };
 
-export default GroupCard;
+const mapStateToProps = state => {
+  return {
+    currentUser: state.user.user
+  };
+};
+
+export default connect(mapStateToProps)(GroupCard);

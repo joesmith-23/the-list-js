@@ -93,7 +93,7 @@ exports.addUserToGroupWithEmail = catchAsync(async (req, res, next) => {
   const user = await User.findOne({ email }).select('-role');
 
   // If user doesn't exist - show error for now - TODO - send email to ask user to sign up
-  if (!user) return next(new AppError('No user found', 404));
+  if (!user) return next(new AppError('No user found with that email', 404));
 
   // If user already in group, don't add them again
   // eslint-disable-next-line eqeqeq
@@ -148,7 +148,6 @@ exports.removeMember = catchAsync(async (req, res, next) => {
   if (req.group.owner == req.user.id) {
     // eslint-disable-next-line eqeqeq
     const member = req.group.members.find(el => el == req.params.member_id);
-    console.log(member);
 
     // Make sure member exists
     if (!member) next(new AppError('Member is not part of group', 400));
