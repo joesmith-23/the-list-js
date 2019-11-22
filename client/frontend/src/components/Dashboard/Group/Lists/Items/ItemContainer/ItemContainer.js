@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import AddItem from "./AddItem";
 import axios from "axios";
 import ReactTooltip from "react-tooltip";
@@ -10,7 +10,6 @@ import "./ItemContainer.css";
 
 const ItemContainer = props => {
   const [hidden, setHidden] = useState({});
-  const [currentId, setCurrentId] = useState("");
 
   // TODO - I think there needs to be some cleanup here to do with the opening and closing of the items
 
@@ -23,7 +22,6 @@ const ItemContainer = props => {
   };
 
   const ratingVisibleHandler = id => {
-    setCurrentId(id);
     let newValue = hidden[id];
     if (newValue) {
       newValue = !hidden[id];
@@ -112,7 +110,6 @@ const ItemContainer = props => {
           newItem={props.newItemHandler}
         />
       ) : null}
-      <button onClick={() => console.log(hidden)}>SHOW HIDDEN STATE</button>
     </div>
   );
 };
