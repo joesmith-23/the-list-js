@@ -114,6 +114,13 @@ export const initLists = props => {
   };
 };
 
+export const setActiveList = list => {
+  return {
+    type: actionTypes.SET_ACTIVE_LIST,
+    list
+  };
+};
+
 export const addListHandler = newList => {
   return {
     type: actionTypes.ADD_LIST,

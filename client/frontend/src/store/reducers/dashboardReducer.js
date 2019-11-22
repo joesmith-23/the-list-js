@@ -4,6 +4,7 @@ const initialState = {
   groups: [],
   currentGroup: {},
   lists: [],
+  activeList: {},
   error: ""
 };
 
@@ -38,6 +39,11 @@ const reducer = (state = initialState, action) => {
         ...state,
         lists: action.lists
       };
+    case actions.SET_ACTIVE_LIST:
+      return {
+        ...state,
+        activeList: action.list
+      };
     case actions.ADD_LIST:
       return {
         ...state,
@@ -47,7 +53,8 @@ const reducer = (state = initialState, action) => {
       const newLists = state.lists.filter(el => el._id !== action.listId);
       return {
         ...state,
-        lists: newLists
+        lists: newLists,
+        activeList: {}
       };
     case actions.SET_MEMBERS:
       return {

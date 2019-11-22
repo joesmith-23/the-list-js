@@ -49,8 +49,7 @@ const Group = props => {
 
   const clickedListHandler = list => {
     setClickedListId(list);
-    console.log(list.items);
-    setClickedListItems(list.items);
+    props.onSetActiveList(list);
   };
 
   const deleteMemberHandler = id => {
@@ -92,7 +91,7 @@ const Group = props => {
           />
           <ItemContainer
             list={clickedListId}
-            items={clickedListItems}
+            items={props.activeItems}
             groupId={props.currentGroup._id}
             newItemHandler={newItemHandler}
             deleteItem={deleteItemHandler}
@@ -110,7 +109,8 @@ const mapStateToProps = state => {
   return {
     token: state.auth.token,
     currentGroup: state.dashboard.currentGroup,
-    lists: state.dashboard.lists
+    lists: state.dashboard.lists,
+    activeItems: state.dashboard.activeList.items
   };
 };
 
@@ -122,7 +122,9 @@ const mapDispatchToProps = (dispatch, props) => {
     onAddList: newList =>
       dispatch(dashboardActionCreators.addListHandler(newList)),
     onDeleteList: id => dispatch(dashboardActionCreators.deleteList(id)),
-    onDeleteMember: id => dispatch(dashboardActionCreators.deleteMember(id))
+    onDeleteMember: id => dispatch(dashboardActionCreators.deleteMember(id)),
+    onSetActiveList: list =>
+      dispatch(dashboardActionCreators.setActiveList(list))
   };
 };
 
