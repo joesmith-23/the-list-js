@@ -9,8 +9,6 @@ import "./Group.css";
 
 const Group = props => {
   const [clickedListId, setClickedListId] = useState("");
-  // Call the below 'activeItems' in redux
-  const [clickedListItems, setClickedListItems] = useState("");
   const [offset, setOffset] = useState(0);
 
   // KEEPING THE BELOW FOR REFERENCE
@@ -61,11 +59,11 @@ const Group = props => {
   };
 
   const newItemHandler = newItem => {
-    setClickedListItems(prevItem => [...prevItem, newItem]);
+    // setClickedListItems(prevItem => [...prevItem, newItem]);
   };
 
   const deleteItemHandler = itemId => {
-    setClickedListItems(prevItem => prevItem.filter(el => el._id !== itemId));
+    // setClickedListItems(prevItem => prevItem.filter(el => el._id !== itemId));
   };
 
   const offsetHandler = offset => {
@@ -78,6 +76,7 @@ const Group = props => {
       <div className="lists__container">
         <GroupSideBar
           group={props.currentGroup}
+          owner={props.currentGroup.owner}
           token={props.token}
           members={props.currentGroup.members}
           deleteMember={deleteMemberHandler}

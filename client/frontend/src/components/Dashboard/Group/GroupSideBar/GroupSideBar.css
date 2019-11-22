@@ -2,6 +2,14 @@
   width: 20%;
 }
 
+.group-side-bar__container h2 {
+  margin-bottom: 0px;
+  color: #333;
+}
+.group-side-bar__container small {
+  color: #333;
+}
+
 .group-side-bar__title {
   margin-bottom: 8px;
   color: #333;

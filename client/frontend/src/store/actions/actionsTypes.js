@@ -6,6 +6,7 @@ export const SET_CURRENT_GROUP = "SET_CURRENT_GROUP";
 export const SET_LISTS = "SET_LISTS";
 export const SET_MEMBERS = "SET_MEMBERS";
 export const SET_ACTIVE_LIST = "SET_ACTIVE_LIST";
+export const SET_AVERAGE_RATING = "SET_AVERAGE_RATING";
 export const ADD_GROUP = "ADD_GROUP";
 export const ADD_MEMBER = "ADD_MEMBER";
 export const ADD_LIST = "ADD_LIST";

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import AddItem from "./AddItem";
 import axios from "axios";
 import ReactTooltip from "react-tooltip";
+import { connect } from "react-redux";
 
 import Ratings from "./Ratings";
 
@@ -36,8 +37,8 @@ const ItemContainer = props => {
 
   let items = [];
 
-  if (props.items) {
-    items = props.items.map(item => (
+  if (props.activeItems) {
+    items = props.activeItems.map(item => (
       <li className="item__card" key={item._id}>
         <div className="item__card-container">
           <div className="item__card-title">
@@ -57,7 +58,7 @@ const ItemContainer = props => {
                 {item.name}
               </span>
               <span className="rating__number">
-                <strong>#</strong>
+                <strong>{item.averageRating.toFixed(1)}</strong>
                 <small className="out-of-10">/10</small>
                 <small> ({item.rating.length})</small>
               </span>
@@ -74,7 +75,6 @@ const ItemContainer = props => {
               listId={props.list._id}
               groupId={props.groupId}
               itemId={item._id}
-              numberOfRatings={item.rating.length}
             />
             <span className="item__delete" onClick={() => deleteItem(item._id)}>
               {"  "}
@@ -114,4 +114,13 @@ const ItemContainer = props => {
   );
 };
 
-export default ItemContainer;
+const mapStateToProps = state => {
+  return {
+    token: state.auth.token,
+    currentGroup: state.dashboard.currentGroup,
+    lists: state.dashboard.lists,
+    activeItems: state.dashboard.activeList.items
+  };
+};
+
+export default connect(mapStateToProps)(ItemContainer);

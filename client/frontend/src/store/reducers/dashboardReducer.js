@@ -44,6 +44,33 @@ const reducer = (state = initialState, action) => {
         ...state,
         activeList: action.list
       };
+    case actions.SET_AVERAGE_RATING:
+      console.log(action.rating);
+      console.log(action.itemId);
+
+      const activeItems = state.activeList.items;
+
+      console.log("Active Items", activeItems);
+
+      let newArray = [];
+      if (state.activeList.items)
+        newArray = activeItems.map(item => {
+          if (item._id === action.itemId) {
+            console.log("got here bro");
+            item.averageRating = parseFloat(action.rating);
+          }
+          return item;
+        });
+
+      console.log("New Array", newArray);
+
+      return {
+        ...state,
+        activeList: {
+          ...state.activeList,
+          items: newArray
+        }
+      };
     case actions.ADD_LIST:
       return {
         ...state,

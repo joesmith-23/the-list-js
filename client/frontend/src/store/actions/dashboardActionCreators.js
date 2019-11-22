@@ -86,7 +86,7 @@ export const initCurrentGroup = props => {
       dispatch(setCurrentGroup(groupData));
     } catch (error) {
       // dispatch(setErrorMessage("ERROR"));
-      dispatch(setErrorMessage(error.response.data.message));
+      dispatch(setErrorMessage(error));
     }
   };
 };
@@ -206,5 +206,14 @@ export const deleteMember = id => {
     } catch (error) {
       dispatch(setErrorMessage(error.response.data.message));
     }
+  };
+};
+
+export const setAverageRating = (rating, itemId) => {
+  console.log(typeof rating);
+  return {
+    type: actionTypes.SET_AVERAGE_RATING,
+    rating,
+    itemId
   };
 };

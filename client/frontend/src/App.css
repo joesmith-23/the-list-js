@@ -68,7 +68,7 @@ body {
 
 .navbar__navigation-items a:hover,
 .navbar__navigation-items a:active {
-  color: #aaa;
+  color: #f0f0f0;
 }
 
 .navbar__logo a {
@@ -79,7 +79,7 @@ body {
 
 .navbar__logo a:hover,
 .navbar__logo a:active {
-  color: #aaa;
+  color: #f0f0f0;
 }
 
 .add-element {
@@ -88,6 +88,11 @@ body {
 
 .logout {
   cursor: pointer;
+  color: white;
+}
+
+.logout:hover {
+  color: #f0f0f0;
 }
 
 footer {

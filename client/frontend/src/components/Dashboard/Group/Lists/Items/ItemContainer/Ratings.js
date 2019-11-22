@@ -1,35 +1,34 @@
-import React, { useState, useEffect, Fragment } from "react";
+import React, { useState, useEffect, useCallback, Fragment } from "react";
 import axios from "axios";
 import StarRatingComponent from "react-star-rating-component";
+import { connect } from "react-redux";
+
+import * as dashboardActionCreators from "../../../../../../store/actions/dashboardActionCreators";
 
 import "./Ratings.css";
 
-const AddRating = props => {
+const Ratings = props => {
   const [itemRating, setItemRating] = useState(null);
   const [averageRating, setAverageRating] = useState(null);
   const [starHover, setStarHover] = useState(null);
 
+  const getAverageRating = useCallback(() => {
+    props.activeItems.forEach(item => {
+      if (item._id === props.itemId) {
+        setAverageRating(item.averageRating.toFixed(1));
+      }
+    });
+  }, [props.activeItems, props.itemId]);
+
   useEffect(() => {
     getAverageRating();
-  }, []);
-
-  const getAverageRating = async () => {
-    const response = await axios
-      .get(
-        `/api/lists/ratings/${props.groupId}/${props.listId}/${props.itemId}`
-      )
-      .catch(error => console.log(error.response.data.message));
-    if (response) {
-      setAverageRating(parseInt(response.data.data.averageRating));
-    }
-  };
+  }, [getAverageRating]);
 
   const addRatingHandler = async () => {
     const body = {
       value: itemRating
     };
     // /api/lists/items/ratings/:group_id/:list_id/:item_id
-    console.log(props.itemId);
     await axios
       .post(
         `/api/lists/items/ratings/${props.groupId}/${props.listId}/${props.itemId}`,
@@ -37,23 +36,22 @@ const AddRating = props => {
       )
       .then(response => {
         console.log(response);
-        getAverageRating();
+        props.onSetAverageRating(
+          response.data.data.item.averageRating.toFixed(1),
+          props.itemId
+        );
       })
-      .catch(error => console.log(error.response.data.message));
+      .catch(error => console.error(error));
   };
 
   return (
     <Fragment>
-      <span className="rating__number">
-        <strong>{averageRating}</strong>
-        <small className="out-of-10">/10</small>
-      </span>
       <StarRatingComponent
         name="ratings"
         starCount={10}
         value={starHover}
-        onStarClick={(nextValue, prevValue, name) => setItemRating(nextValue)}
-        onStarHover={(nextValue, prevValue, name) => {
+        onStarClick={nextValue => setItemRating(nextValue)}
+        onStarHover={nextValue => {
           setStarHover(nextValue);
           setItemRating(nextValue);
         }}
@@ -69,4 +67,19 @@ const AddRating = props => {
   );
 };
 
-export default AddRating;
+const mapStateToProps = state => {
+  return {
+    currentGroup: state.dashboard.currentGroup,
+    lists: state.dashboard.lists,
+    activeItems: state.dashboard.activeList.items
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    onSetAverageRating: (rating, itemId) =>
+      dispatch(dashboardActionCreators.setAverageRating(rating, itemId))
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Ratings);
