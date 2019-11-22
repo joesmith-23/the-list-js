@@ -21,6 +21,15 @@
 
 .lists__card--active {
   border-bottom: 2px solid #965caf !important;
+  padding: 5px 6px;
+}
+
+.lists__card--active .lists__delete {
+  position: absolute;
+  top: 8px;
+  right: 6px;
+  cursor: pointer;
+  color: #333;
 }
 
 .lists__card:hover {

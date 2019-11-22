@@ -12,7 +12,7 @@
   display: flex;
   width: 100%;
   padding: 5px 5px 5px 15px;
-  border-left: 2px solid #965caf;
+  border-left: 2px solid #965caf !important;
   animation-name: effect-fade-in;
   animation-duration: 500ms;
 }
