@@ -217,3 +217,51 @@ export const setAverageRating = (rating, itemId) => {
     itemId
   };
 };
+
+//// ITEMS ////
+
+export const addItemHandler = newItem => {
+  return {
+    type: actionTypes.ADD_ITEM,
+    newItem
+  };
+};
+
+export const addItem = body => {
+  return async (dispatch, getState) => {
+    const { dashboard } = getState();
+    try {
+      // /api/lists/items/:group_id/:list_id
+      const res = await axios.post(
+        `/api/lists/items/${dashboard.currentGroup._id}/${dashboard.activeList._id}`,
+        body
+      );
+      dispatch(addItemHandler(res.data.data.list.items[0]));
+    } catch (error) {
+      dispatch(setErrorMessage(error.response));
+    }
+  };
+};
+
+export const deleteItemHandler = itemId => {
+  return {
+    type: actionTypes.DELETE_ITEM,
+    itemId
+  };
+};
+
+export const deleteItem = itemId => {
+  return async (dispatch, getState) => {
+    const { dashboard } = getState();
+    try {
+      // /api/lists/items/:group_id/:list_id/:item_id
+      await axios.delete(
+        `/api/lists/items/${dashboard.currentGroup._id}/${dashboard.activeList._id}/${itemId}`
+      );
+      dispatch(deleteItemHandler(itemId));
+    } catch (error) {
+      console.log(error);
+      dispatch(setErrorMessage(error.response));
+    }
+  };
+};

@@ -45,25 +45,15 @@ const reducer = (state = initialState, action) => {
         activeList: action.list
       };
     case actions.SET_AVERAGE_RATING:
-      console.log(action.rating);
-      console.log(action.itemId);
-
       const activeItems = state.activeList.items;
-
-      console.log("Active Items", activeItems);
-
       let newArray = [];
       if (state.activeList.items)
         newArray = activeItems.map(item => {
           if (item._id === action.itemId) {
-            console.log("got here bro");
             item.averageRating = parseFloat(action.rating);
           }
           return item;
         });
-
-      console.log("New Array", newArray);
-
       return {
         ...state,
         activeList: {
@@ -75,6 +65,21 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         lists: [...state.lists, action.newList]
+      };
+    case actions.ADD_ITEM:
+      const newState = { ...state };
+      let newListOfLists = { ...newState.lists };
+
+      const activeListId = state.activeList._id;
+      newListOfLists = state.lists.map(list => {
+        if (list._id === activeListId) {
+          list.items.unshift(action.newItem);
+        }
+        return list;
+      });
+      return {
+        ...state,
+        lists: newListOfLists
       };
     case actions.DELETE_LIST:
       const newLists = state.lists.filter(el => el._id !== action.listId);
@@ -106,6 +111,19 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         groups: newGroups
+      };
+    case actions.DELETE_ITEM:
+      const activeListId_ITEM = state.activeList._id;
+      let newListOfListsWithDeletedItem = state.lists.map(list => {
+        if (list._id === activeListId_ITEM) {
+          console.log(list);
+          list.items = list.items.filter(el => el._id !== action.itemId);
+        }
+        return list;
+      });
+      return {
+        ...state,
+        lists: newListOfListsWithDeletedItem
       };
     case actions.DELETE_MEMBER:
       const newMembers = state.currentGroup.members.filter(

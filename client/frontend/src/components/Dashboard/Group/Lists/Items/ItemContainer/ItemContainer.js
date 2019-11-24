@@ -4,6 +4,7 @@ import axios from "axios";
 import ReactTooltip from "react-tooltip";
 import { connect } from "react-redux";
 
+import * as dashboardActionCreators from "../../../../../../store/actions/dashboardActionCreators";
 import Ratings from "./Ratings";
 
 import { FaTimes, FaChevronDown } from "react-icons/fa";
@@ -16,10 +17,10 @@ const ItemContainer = props => {
 
   const deleteItem = async itemId => {
     // /api/lists/items/:group_id/:list_id/:item_id
-    await axios.delete(
-      `/api/lists/items/${props.groupId}/${props.list._id}/${itemId}`
-    );
-    props.deleteItem(itemId);
+    // await axios.delete(
+    //   `/api/lists/items/${props.groupId}/${props.list._id}/${itemId}`
+    // );
+    props.onDeleteItem(itemId);
   };
 
   const ratingVisibleHandler = id => {
@@ -36,9 +37,8 @@ const ItemContainer = props => {
   };
 
   let items = [];
-
-  if (props.activeItems) {
-    items = props.activeItems.map(item => (
+  if (props.activeList && props.activeList.items) {
+    items = props.activeList.items.map(item => (
       <li className="item__card" key={item._id}>
         <div className="item__card-container">
           <div className="item__card-title">
@@ -102,11 +102,10 @@ const ItemContainer = props => {
       <div className="items-list__container">
         <ul style={offsetStyle}>{items}</ul>
       </div>
-      {props.items ? (
+      {props.activeList ? (
         <AddItem
-          groupId={props.groupId}
+          groupId={props.currentGroup._id}
           listId={props.list._id}
-          token={props.token}
           newItem={props.newItemHandler}
         />
       ) : null}
@@ -119,8 +118,14 @@ const mapStateToProps = state => {
     token: state.auth.token,
     currentGroup: state.dashboard.currentGroup,
     lists: state.dashboard.lists,
-    activeItems: state.dashboard.activeList.items
+    activeList: state.dashboard.activeList
   };
 };
 
-export default connect(mapStateToProps)(ItemContainer);
+const mapDispatchToProps = dispatch => {
+  return {
+    onDeleteItem: itemId => dispatch(dashboardActionCreators.deleteItem(itemId))
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ItemContainer);

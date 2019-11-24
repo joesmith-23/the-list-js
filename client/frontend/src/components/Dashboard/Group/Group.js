@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Fragment } from "react";
+import React, { useState, useEffect, useCallback, Fragment } from "react";
 import { connect } from "react-redux";
 
 import * as dashboardActionCreators from "../../../store/actions/dashboardActionCreators";
@@ -45,10 +45,30 @@ const Group = props => {
     }
   }, []);
 
-  const clickedListHandler = list => {
-    setClickedListId(list);
-    props.onSetActiveList(list);
-  };
+  const { onSetActiveList } = props;
+
+  const clickedListHandler = useCallback(
+    list => {
+      setClickedListId(list);
+      onSetActiveList(list);
+    },
+    [onSetActiveList]
+  );
+
+  const clickedListCleanup = useCallback(() => {
+    const list = {};
+    onSetActiveList(list);
+  }, [onSetActiveList]);
+
+  useEffect(
+    list => {
+      clickedListHandler(list);
+      return () => {
+        clickedListCleanup();
+      };
+    },
+    [clickedListHandler, clickedListCleanup]
+  );
 
   const deleteMemberHandler = id => {
     props.onDeleteMember(id);
@@ -56,14 +76,6 @@ const Group = props => {
 
   const deleteListHandler = id => {
     props.onDeleteList(id);
-  };
-
-  const newItemHandler = newItem => {
-    // setClickedListItems(prevItem => [...prevItem, newItem]);
-  };
-
-  const deleteItemHandler = itemId => {
-    // setClickedListItems(prevItem => prevItem.filter(el => el._id !== itemId));
   };
 
   const offsetHandler = offset => {
@@ -74,13 +86,7 @@ const Group = props => {
   if (props.currentGroup) {
     renderGroupInfo = (
       <div className="lists__container">
-        <GroupSideBar
-          group={props.currentGroup}
-          owner={props.currentGroup.owner}
-          token={props.token}
-          members={props.currentGroup.members}
-          deleteMember={deleteMemberHandler}
-        />
+        <GroupSideBar deleteMember={deleteMemberHandler} />
         <div className="main-content__container">
           <ListContainer
             lists={props.lists}
@@ -90,10 +96,7 @@ const Group = props => {
           />
           <ItemContainer
             list={clickedListId}
-            items={props.activeItems}
             groupId={props.currentGroup._id}
-            newItemHandler={newItemHandler}
-            deleteItem={deleteItemHandler}
             offset={offset}
           />
         </div>
@@ -108,8 +111,7 @@ const mapStateToProps = state => {
   return {
     token: state.auth.token,
     currentGroup: state.dashboard.currentGroup,
-    lists: state.dashboard.lists,
-    activeItems: state.dashboard.activeList.items
+    lists: state.dashboard.lists
   };
 };
 
@@ -118,8 +120,6 @@ const mapDispatchToProps = (dispatch, props) => {
     onInitCurrentGroup: () =>
       dispatch(dashboardActionCreators.initCurrentGroup(props)),
     onInitLists: () => dispatch(dashboardActionCreators.initLists(props)),
-    onAddList: newList =>
-      dispatch(dashboardActionCreators.addListHandler(newList)),
     onDeleteList: id => dispatch(dashboardActionCreators.deleteList(id)),
     onDeleteMember: id => dispatch(dashboardActionCreators.deleteMember(id)),
     onSetActiveList: list =>

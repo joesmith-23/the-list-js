@@ -1,5 +1,7 @@
 import React, { useState } from "react";
-import axios from "axios";
+import { connect } from "react-redux";
+
+import * as dashboardActionCreators from "../../../../../../store/actions/dashboardActionCreators";
 
 import "./AddItem.css";
 
@@ -7,23 +9,11 @@ const AddItem = props => {
   const [show, setShow] = useState();
   const [itemName, setItemName] = useState("");
 
-  const addItemHandler = async token => {
-    const config = {
-      headers: {
-        "Content-Type": "application/json"
-      }
-    };
-
+  const addItemHandler = async () => {
     const body = {
       name: itemName
     };
-    // /api/lists/items/:group_id/:list_id
-    const res = await axios.post(
-      `/api/lists/items/${props.groupId}/${props.listId}`,
-      body,
-      config
-    );
-    props.newItem(res.data.data.list.items[0]);
+    props.onAddItem(body);
   };
 
   let content = null;
@@ -40,7 +30,7 @@ const AddItem = props => {
         <button
           className="add-item__submit"
           type="button"
-          onClick={() => addItemHandler(props.token)}
+          onClick={() => addItemHandler()}
         >
           Add Item
         </button>
@@ -80,4 +70,10 @@ const AddItem = props => {
   );
 };
 
-export default AddItem;
+const mapDispatchToProps = dispatch => {
+  return {
+    onAddItem: body => dispatch(dashboardActionCreators.addItem(body))
+  };
+};
+
+export default connect(null, mapDispatchToProps)(AddItem);

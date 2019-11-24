@@ -15,6 +15,8 @@ const ListContainer = ({
   const [indexClicked, setIndexClicked] = useState();
 
   const listCSSHandler = index => {
+    // The multiplier is the height of each list in px
+    // The total offset is used to display the items below the currently clicked list
     const multiplier = index + 1;
     offsetHandler(33 * multiplier + 20);
     setIndexClicked(index);
