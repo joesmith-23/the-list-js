@@ -1,6 +1,7 @@
 .lists__container {
   display: flex;
   justify-content: space-evenly;
+  min-height: 89.4vh;
 }
 
 .main-content__container {

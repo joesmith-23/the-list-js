@@ -12,6 +12,7 @@ const Group = props => {
   const [offset, setOffset] = useState(0);
 
   // KEEPING THE BELOW FOR REFERENCE
+
   // const fetchLists = async () => {
   //   const response = await axios.get(`/api/lists/${props.match.params.id}`);
   //   let listData = response.data.data.lists;
@@ -45,6 +46,7 @@ const Group = props => {
     }
   }, []);
 
+  // Destructure onSetActiveList for it to work in useCallback
   const { onSetActiveList } = props;
 
   const clickedListHandler = useCallback(

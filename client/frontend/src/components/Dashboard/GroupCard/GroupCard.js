@@ -48,18 +48,17 @@ const GroupCard = props => {
 
   return (
     <div className="group__container">
-      <div className="group__information--title">
-        <h3>
-          <Link to={`/dashboard/groups/${props.group._id}`}>
-            {props.group.name}
-          </Link>
-        </h3>
-        <div className="spacer"></div>
-        <p className="group__information--owner">
-          Owner: {props.group.owner.firstName}
-        </p>
-      </div>
       <div className="group__information--body">
+        <div className="group__information--title">
+          <h3>
+            <Link to={`/dashboard/groups/${props.group._id}`}>
+              {props.group.name}
+            </Link>
+          </h3>
+          <p className="group__information--owner">
+            Owner: {props.group.owner.firstName}
+          </p>
+        </div>
         <div className="group__information--main-content">
           <div className="group__information--content">
             <span className="content-title__wrapper">

@@ -4,6 +4,7 @@ import { Route } from "react-router-dom";
 import NavBar from "./Header/NavBar";
 import Footer from "./Footer/Footer";
 import Landing from "../Static/Landing";
+import About from "../Static/About";
 import Dashboard from "../Dashboard/Dashboard";
 import Register from "../Auth/Register";
 import Login from "../Auth/Login";
@@ -60,6 +61,7 @@ const Layout = props => {
           </div>
         )}
         <Route exact path="/" component={Landing} />
+        <Route exact path="/about" component={About} />
         <Route exact path="/login" component={Login} />
         <Route exact path="/register" component={Register} />
         <Route exact path="/dashboard" component={Dashboard} />

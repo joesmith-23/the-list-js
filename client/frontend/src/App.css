@@ -98,6 +98,24 @@ body {
 footer {
   border-top: 1px solid #3b77c0;
   padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+}
+
+.footer__about {
+  color: #333;
+  text-decoration: none;
+}
+
+.footer__about a:hover,
+.footer__about a:active,
+.footer__about a:visited {
+  color: #333;
+  text-decoration: none;
+}
+
+.footer__copyright {
+  color: #333;
 }
 
 @media only screen and (max-width: 900px) {

@@ -5,12 +5,12 @@
 
 .group__information--title {
   display: flex;
-  flex-direction: row;
+  justify-content: space-between;
 }
 
 .group__information--title h3,
 .group__information--title p {
-  margin: 20px 0 0 0;
+  margin: 0 5px 0 5px;
 }
 
 .group__information--title a {
@@ -21,6 +21,11 @@
 
 .group__information--title a:hover {
   color: #555;
+}
+
+.group__information--owner {
+  line-height: 16px;
+  padding-top: 10px;
 }
 
 .spacer {

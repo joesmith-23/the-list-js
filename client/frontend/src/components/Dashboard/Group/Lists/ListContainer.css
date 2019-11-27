@@ -1,7 +1,7 @@
 .lists__information {
-  width: 40%;
+  width: 50%;
   padding: 0 10px 0 10px;
-  margin: 0 0 0 10px;
+  margin: 0 0 0 0px;
 }
 
 .lists__information ul {
@@ -33,7 +33,11 @@
 }
 
 .lists__card:hover {
-  background-color: #f2f2f2;
+  background-color: #f7f7f7;
+}
+
+.lists__card:hover .lists__delete {
+  color: #555;
 }
 
 .lists__name {
