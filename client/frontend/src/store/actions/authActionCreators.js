@@ -1,4 +1,4 @@
-import * as actionTypes from "./actionsTypes";
+import * as actionTypes from "./actionTypes";
 import axios from "axios";
 
 export const logout = () => {
@@ -51,6 +51,46 @@ export const login = (email, password, props) => {
       props.history.push("/dashboard");
     } catch (error) {
       dispatch(loginFail(error.response.data.message));
+    }
+  };
+};
+
+export const registerStart = () => {
+  return {
+    type: actionTypes.REGISTER_START
+  };
+};
+
+export const registerSuccess = token => {
+  return {
+    type: actionTypes.REGISTER_SUCCESS,
+    token
+  };
+};
+
+export const registerFail = error => {
+  return {
+    type: actionTypes.REGISTER_FAIL,
+    errorMessage: error
+  };
+};
+
+export const register = (body, props) => {
+  return async dispatch => {
+    dispatch(registerStart());
+    const config = {
+      headers: {
+        "Content-Type": "application/json"
+      }
+    };
+    try {
+      const res = await axios.post("/api/users", body, config);
+      const token = res.data.token;
+      dispatch(registerSuccess(token));
+      localStorage.setItem("token", token);
+      props.history.push("/dashboard");
+    } catch (error) {
+      dispatch(registerFail(error.response.data.message));
     }
   };
 };

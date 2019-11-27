@@ -1,4 +1,4 @@
-import * as actions from "../actions/actionsTypes";
+import * as actionTypes from "../actions/actionTypes";
 
 const initialState = {
   user: null,
@@ -7,12 +7,12 @@ const initialState = {
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case actions.SET_USER:
+    case actionTypes.SET_USER:
       return {
         ...state,
         user: action.user
       };
-    case actions.REMOVE_USER:
+    case actionTypes.REMOVE_USER:
       return {
         ...state,
         user: null

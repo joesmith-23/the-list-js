@@ -2,17 +2,20 @@ import React, { Fragment, useState } from "react";
 import { connect } from "react-redux";
 import { Link, withRouter } from "react-router-dom";
 
-import * as actions from "../../store/actions/authActionCreators";
+import * as authActionCreators from "../../store/actions/authActionCreators";
 
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import "./Login.css";
 
 const Login = props => {
+  // Data State
   const [formData, setFormData] = useState({
     email: "",
     password: "",
     token: ""
   });
+
+  // UI State
   const [emailFocused, setEmailFocused] = useState(false);
   const [passwordFocused, setPasswordFocused] = useState(false);
   const [hidden, setHidden] = useState(true);
@@ -28,30 +31,6 @@ const Login = props => {
   const onSubmit = async e => {
     e.preventDefault();
     props.onLogin(email, password, props);
-
-    // const user = {
-    //   email,
-    //   password
-    // };
-    // try {
-    //   const config = {
-    //     headers: {
-    //       "Content-Type": "application/json"
-    //     }
-    //   };
-
-    //   const body = JSON.stringify(user);
-
-    //   const res = await axios.post("/api/users/login", body, config);
-
-    //   token = res.data.token;
-
-    //   localStorage.setItem("token", token);
-
-    //   props.history.push("/dashboard");
-    // } catch (error) {
-    //   console.error(error.response.data);
-    // }
   };
 
   const emailFocusHandler = () => {
@@ -86,7 +65,6 @@ const Login = props => {
                 onFocus={() => emailFocusHandler()}
                 onBlur={() => emailFocusHandler()}
                 type="email"
-                // placeholder="Email Address"
                 name="email"
                 value={email}
                 onChange={e => onChange(e)}
@@ -126,7 +104,7 @@ const Login = props => {
 const mapDispatchToProps = dispatch => {
   return {
     onLogin: (email, password, props) =>
-      dispatch(actions.login(email, password, props))
+      dispatch(authActionCreators.login(email, password, props))
   };
 };
 

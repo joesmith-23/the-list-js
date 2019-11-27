@@ -23,3 +23,7 @@ export const LOGIN_FAIL = "LOGIN_FAIL";
 export const LOAD_LOCAL_AUTH = "LOAD_LOCAL_AUTH";
 export const LOAD_LOCAL_USER = "LOAD_LOCAL_USER";
 export const LOGOUT = "LOGOUT";
+
+export const REGISTER_START = "REGISTER_START";
+export const REGISTER_SUCCESS = "REGISTER_SUCCESS";
+export const REGISTER_FAIL = "REGISTER_FAIL";

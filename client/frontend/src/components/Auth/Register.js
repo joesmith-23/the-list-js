@@ -1,11 +1,15 @@
 import React, { Fragment, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import { connect } from "react-redux";
+
+import * as authActionCreators from "../../store/actions/authActionCreators";
 
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import "./Register.css";
 
 const Register = props => {
+  // Data state
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -15,6 +19,7 @@ const Register = props => {
     token: ""
   });
 
+  // UI state
   const [firstNameFocused, setFirstNameFocused] = useState(false);
   const [lastNameFocused, setLastNameFocused] = useState(false);
   const [emailFocused, setEmailFocused] = useState(false);
@@ -49,20 +54,8 @@ const Register = props => {
       passwordConfirm
     };
 
-    try {
-      const config = {
-        headers: {
-          "Content-Type": "application/json"
-        }
-      };
-      const body = JSON.stringify(newUser);
-      const res = await axios.post("/api/users", body, config);
-      token = res.data.token;
-      localStorage.setItem("token", token);
-      props.history.push("/dashboard");
-    } catch (error) {
-      console.error(error.response.data);
-    }
+    const body = JSON.stringify(newUser);
+    props.onRegister(body, props);
   };
 
   const firstNameFocusHandler = () => {
@@ -211,4 +204,11 @@ const Register = props => {
   );
 };
 
-export default Register;
+const mapDispatchToProps = dispatch => {
+  return {
+    onRegister: (body, props) =>
+      dispatch(authActionCreators.register(body, props))
+  };
+};
+
+export default connect(null, mapDispatchToProps)(Register);

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, Fragment } from "react";
+import React, { useState, Fragment } from "react";
 import axios from "axios";
 import StarRatingComponent from "react-star-rating-component";
 import { connect } from "react-redux";
@@ -9,20 +9,7 @@ import "./Ratings.css";
 
 const Ratings = props => {
   const [itemRating, setItemRating] = useState(null);
-  const [averageRating, setAverageRating] = useState(null);
   const [starHover, setStarHover] = useState(null);
-
-  const getAverageRating = useCallback(() => {
-    props.activeItems.forEach(item => {
-      if (item._id === props.itemId) {
-        setAverageRating(item.averageRating.toFixed(1));
-      }
-    });
-  }, [props.activeItems, props.itemId]);
-
-  useEffect(() => {
-    getAverageRating();
-  }, [getAverageRating]);
 
   const addRatingHandler = async () => {
     const body = {
@@ -38,6 +25,7 @@ const Ratings = props => {
         console.log(response);
         props.onSetAverageRating(
           response.data.data.item.averageRating.toFixed(1),
+          response.data.data.item.rating,
           props.itemId
         );
       })
@@ -77,8 +65,10 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onSetAverageRating: (rating, itemId) =>
-      dispatch(dashboardActionCreators.setAverageRating(rating, itemId))
+    onSetAverageRating: (rating, ratingList, itemId) =>
+      dispatch(
+        dashboardActionCreators.setAverageRating(rating, ratingList, itemId)
+      )
   };
 };
 

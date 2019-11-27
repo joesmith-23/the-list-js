@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import AddItem from "./AddItem";
-import axios from "axios";
 import ReactTooltip from "react-tooltip";
 import { connect } from "react-redux";
 
@@ -98,7 +97,6 @@ const ItemContainer = props => {
   return (
     <div className="item__container">
       <h2>Items</h2>
-      {/* <div>{props.list._id}</div> */}
       <div className="items-list__container">
         <ul style={offsetStyle}>{items}</ul>
       </div>

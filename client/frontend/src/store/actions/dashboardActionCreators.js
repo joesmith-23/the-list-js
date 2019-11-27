@@ -1,4 +1,4 @@
-import * as actionTypes from "./actionsTypes";
+import * as actionTypes from "./actionTypes";
 import axios from "axios";
 
 export const addGroupHandler = id => {
@@ -209,11 +209,11 @@ export const deleteMember = id => {
   };
 };
 
-export const setAverageRating = (rating, itemId) => {
-  console.log(typeof rating);
+export const setAverageRating = (rating, ratingList, itemId) => {
   return {
     type: actionTypes.SET_AVERAGE_RATING,
     rating,
+    ratingList,
     itemId
   };
 };

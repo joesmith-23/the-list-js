@@ -1,4 +1,4 @@
-import * as actions from "../actions/actionsTypes";
+import * as actionTypes from "../actions/actionTypes";
 
 const initialState = {
   token: "",
@@ -7,31 +7,45 @@ const initialState = {
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case actions.LOGIN_START:
+    case actionTypes.LOGIN_START:
       return {
         ...state
       };
-    case actions.LOGIN_SUCCESS:
+    case actionTypes.REGISTER_START:
+      return {
+        ...state
+      };
+    case actionTypes.LOGIN_SUCCESS:
       return {
         ...state,
         token: action.token
       };
-    case actions.LOGIN_FAIL:
-      return {
-        ...state,
-        error: action.errorMessage
-      };
-    case actions.LOAD_LOCAL_AUTH:
+    case actionTypes.REGISTER_SUCCESS:
       return {
         ...state,
         token: action.token
       };
-    case actions.SET_ERROR:
+    case actionTypes.LOGIN_FAIL:
       return {
         ...state,
         error: action.errorMessage
       };
-    case actions.LOGOUT:
+    case actionTypes.REGISTER_FAIL:
+      return {
+        ...state,
+        error: action.errorMessage
+      };
+    case actionTypes.LOAD_LOCAL_AUTH:
+      return {
+        ...state,
+        token: action.token
+      };
+    case actionTypes.SET_ERROR:
+      return {
+        ...state,
+        error: action.errorMessage
+      };
+    case actionTypes.LOGOUT:
       return {
         ...state,
         token: null

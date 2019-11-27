@@ -1,4 +1,4 @@
-import * as actions from "../actions/actionsTypes";
+import * as actionTypes from "../actions/actionTypes";
 
 const initialState = {
   groups: [],
@@ -18,82 +18,118 @@ const initialState = {
 //   }
 // }
 
+const setAverageRating = (state, action) => {
+  const activeItems = state.activeList.items;
+  let newArray = [];
+  if (state.activeList.items)
+    newArray = activeItems.map(item => {
+      if (item._id === action.itemId) {
+        item.averageRating = parseFloat(action.rating);
+        item.rating = action.ratingList;
+      }
+      return item;
+    });
+  return newArray;
+};
+
+const addItem = (state, action) => {
+  const newState = { ...state };
+  let newListOfLists = { ...newState.lists };
+
+  const activeListId = state.activeList._id;
+  newListOfLists = state.lists.map(list => {
+    if (list._id === activeListId) {
+      list.items.unshift(action.newItem);
+    }
+    return list;
+  });
+  return newListOfLists;
+};
+
+const deleteItem = (state, action) => {
+  const activeListId = state.activeList._id;
+  let newListOfLists = state.lists.map(list => {
+    if (list._id === activeListId) {
+      list.items = list.items.filter(el => el._id !== action.itemId);
+    }
+    return list;
+  });
+  return newListOfLists;
+};
+
+const deleteList = (state, action) => {
+  const newLists = state.lists.filter(el => el._id !== action.listId);
+  return newLists;
+};
+
+const deleteGroup = (state, action) => {
+  const newGroups = state.groups.filter(el => el._id !== action.groupId);
+  return newGroups;
+};
+
+const deleteMember = (state, action) => {
+  const newMembers = state.currentGroup.members.filter(
+    el => el._id !== action.memberId
+  );
+  return newMembers;
+};
+
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case actions.ADD_GROUP:
+    case actionTypes.ADD_GROUP:
       return {
         ...state
       };
-    case actions.SET_GROUPS:
+    case actionTypes.SET_GROUPS:
       return {
         ...state,
         groups: action.groups
       };
-    case actions.SET_CURRENT_GROUP:
+    case actionTypes.SET_CURRENT_GROUP:
       return {
         ...state,
         currentGroup: action.group
       };
-    case actions.SET_LISTS:
+    case actionTypes.SET_LISTS:
       return {
         ...state,
         lists: action.lists
       };
-    case actions.SET_ACTIVE_LIST:
+    case actionTypes.SET_ACTIVE_LIST:
       return {
         ...state,
         activeList: action.list
       };
-    case actions.SET_AVERAGE_RATING:
-      const activeItems = state.activeList.items;
-      let newArray = [];
-      if (state.activeList.items)
-        newArray = activeItems.map(item => {
-          if (item._id === action.itemId) {
-            item.averageRating = parseFloat(action.rating);
-          }
-          return item;
-        });
+    case actionTypes.SET_AVERAGE_RATING:
       return {
         ...state,
         activeList: {
           ...state.activeList,
-          items: newArray
+          items: setAverageRating(state, action)
         }
       };
-    case actions.ADD_LIST:
+    case actionTypes.ADD_LIST:
       return {
         ...state,
         lists: [...state.lists, action.newList]
       };
-    case actions.ADD_ITEM:
-      const newState = { ...state };
-      let newListOfLists = { ...newState.lists };
-
-      const activeListId = state.activeList._id;
-      newListOfLists = state.lists.map(list => {
-        if (list._id === activeListId) {
-          list.items.unshift(action.newItem);
-        }
-        return list;
-      });
+    case actionTypes.ADD_ITEM:
       return {
         ...state,
-        lists: newListOfLists
+        lists: addItem(state, action)
       };
-    case actions.DELETE_LIST:
-      const newLists = state.lists.filter(el => el._id !== action.listId);
+    case actionTypes.DELETE_LIST:
       return {
         ...state,
-        lists: newLists,
+        lists: deleteList(state, action),
         activeList: {}
       };
-    case actions.SET_MEMBERS:
+    case actionTypes.SET_MEMBERS:
       return {
         ...state,
         members: action.members
       };
-    case actions.ADD_MEMBER:
+    case actionTypes.ADD_MEMBER:
       return {
         ...state,
         currentGroup: {
@@ -101,39 +137,27 @@ const reducer = (state = initialState, action) => {
           members: [...state.currentGroup.members, action.newMember]
         }
       };
-    case actions.SET_ERROR:
+    case actionTypes.SET_ERROR:
       return {
         ...state,
         error: action.errorMessage
       };
-    case actions.DELETE_GROUP:
-      const newGroups = state.groups.filter(el => el._id !== action.groupId);
+    case actionTypes.DELETE_GROUP:
       return {
         ...state,
-        groups: newGroups
+        groups: deleteGroup(state, action)
       };
-    case actions.DELETE_ITEM:
-      const activeListId_ITEM = state.activeList._id;
-      let newListOfListsWithDeletedItem = state.lists.map(list => {
-        if (list._id === activeListId_ITEM) {
-          console.log(list);
-          list.items = list.items.filter(el => el._id !== action.itemId);
-        }
-        return list;
-      });
+    case actionTypes.DELETE_ITEM:
       return {
         ...state,
-        lists: newListOfListsWithDeletedItem
+        lists: deleteItem(state, action)
       };
-    case actions.DELETE_MEMBER:
-      const newMembers = state.currentGroup.members.filter(
-        el => el._id !== action.memberId
-      );
+    case actionTypes.DELETE_MEMBER:
       return {
         ...state,
         currentGroup: {
           ...state.currentGroup,
-          members: newMembers
+          members: deleteMember(state, action)
         }
       };
 
