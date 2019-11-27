@@ -108,6 +108,15 @@ const reducer = (state = initialState, action) => {
           items: setAverageRating(state, action)
         }
       };
+    case actionTypes.REMOVE_DATA:
+      return {
+        ...state,
+        groups: [],
+        currentGroup: {},
+        lists: [],
+        activeList: {},
+        error: ""
+      };
     case actionTypes.ADD_LIST:
       return {
         ...state,

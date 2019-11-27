@@ -62,12 +62,12 @@ const Group = props => {
 
   useEffect(
     list => {
-      clickedListHandler(list);
+      if (props.token) clickedListHandler(list);
       return () => {
-        clickedListCleanup();
+        if (props.token) clickedListCleanup();
       };
     },
-    [clickedListHandler, clickedListCleanup]
+    [clickedListHandler, clickedListCleanup, props.token]
   );
 
   const deleteMemberHandler = id => {

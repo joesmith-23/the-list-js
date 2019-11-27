@@ -16,6 +16,7 @@ export const DELETE_ITEM = "DELETE_ITEM";
 export const DELETE_MEMBER = "DELETE_MEMBER";
 export const DELETE_LIST = "DELETE_LIST";
 export const SET_ERROR = "SET_ERROR";
+export const REMOVE_DATA = "REMOVE_DATA";
 
 export const LOGIN_START = "LOGIN_START";
 export const LOGIN_SUCCESS = "LOGIN_SUCCESS";

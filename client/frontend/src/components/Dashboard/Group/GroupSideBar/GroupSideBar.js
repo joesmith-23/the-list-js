@@ -23,7 +23,9 @@ const GroupSideBar = props => {
             className="member__options"
             onClick={() => props.deleteMember(member._id)}
           >
-            <FaTimes data-tip="Remove Member" />
+            {member.firstName !== ownerName ? (
+              <FaTimes data-tip="Remove Member" />
+            ) : null}
             <ReactTooltip
               place="bottom"
               effect="solid"
@@ -39,9 +41,7 @@ const GroupSideBar = props => {
     <div className="group-side-bar__container">
       <h2>{props.currentGroup.name}</h2>
       <small>Owner: {ownerName}</small>
-      {/* <small>{group}</small> */}
       <h3 className="group-side-bar__title">Members</h3>
-      {/* <h3>{group._id}</h3> */}
       <ul>{renderMembers}</ul>
       <AddMember />
     </div>

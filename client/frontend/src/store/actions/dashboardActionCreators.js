@@ -91,6 +91,12 @@ export const initCurrentGroup = props => {
   };
 };
 
+export const removeCurrentData = () => {
+  return {
+    type: actionTypes.REMOVE_DATA
+  };
+};
+
 //// LISTS ////
 
 export const setLists = lists => {

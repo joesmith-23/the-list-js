@@ -32,6 +32,7 @@ export const initUserFromLocal = () => {
   return async dispatch => {
     let user = localStorage.getItem("user");
     user = JSON.parse(user);
+    console.log("from local");
     dispatch(setCurrentUser(user));
   };
 };

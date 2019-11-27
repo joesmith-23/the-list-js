@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 
 import * as authActionCreators from "../../../store/actions/authActionCreators";
 import * as userActionCreators from "../../../store/actions/userActionCreators";
+import * as dashboardActionCreators from "../../../store/actions/dashboardActionCreators";
 
 import "../../../App.css";
 
@@ -14,12 +15,14 @@ const NavBar = props => {
     props.onLoadLocalAuth(token);
   }
 
-  if (!props.currentUser) props.onLoadLocalUser();
+  if (!props.currentUser && token) props.onLoadLocalUser();
 
   const logoutHandler = e => {
     localStorage.removeItem("token");
+    localStorage.removeItem("user");
     props.onLogout();
     props.onLogoutRemoveUser();
+    props.onLogoutRemoveDashboardData();
     props.history.push("/");
   };
 
@@ -73,6 +76,8 @@ const mapDispatchToProps = dispatch => {
     onLoadLocalAuth: token => dispatch(authActionCreators.loadLocalAuth(token)),
     onLogout: () => dispatch(authActionCreators.logout()),
     onLogoutRemoveUser: () => dispatch(userActionCreators.removeCurrentUser()),
+    onLogoutRemoveDashboardData: () =>
+      dispatch(dashboardActionCreators.removeCurrentData()),
     onLoadLocalUser: () => dispatch(userActionCreators.initUserFromLocal())
   };
 };
