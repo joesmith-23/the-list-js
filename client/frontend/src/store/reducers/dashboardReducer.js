@@ -138,9 +138,14 @@ const reducer = (state = initialState, action) => {
         lists: [...state.lists, action.newList]
       };
     case actionTypes.ADD_ITEM:
+      const newItems = state.activeList.items.concat(action.newItem);
       return {
         ...state,
-        lists: addItem(state, action)
+        lists: addItem(state, action),
+        activeList: {
+          ...state.activeList,
+          items: newItems
+        }
       };
     case actionTypes.DELETE_LIST:
       return {

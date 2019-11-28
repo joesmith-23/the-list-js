@@ -247,7 +247,6 @@ export const leaveGroup = id => {
       // /api/groups/:group_id/:member_id/remove-self
       await axios.delete(`/api/groups/${groupId}/${user.user._id}/remove-self`);
       dispatch(leaveGroupHandler(user.user._id, groupId));
-      initGroups();
     } catch (error) {
       console.log(error);
       dispatch(setErrorMessage(error.response));
