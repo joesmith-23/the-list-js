@@ -50,6 +50,7 @@ const Layout = props => {
 
   return (
     <Fragment>
+      <title>The List</title>
       <NavBar />
       <main className="main-container">
         {show && (

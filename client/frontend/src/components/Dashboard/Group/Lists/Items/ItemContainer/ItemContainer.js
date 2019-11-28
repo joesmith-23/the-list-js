@@ -103,7 +103,7 @@ const ItemContainer = props => {
       {props.activeList ? (
         <AddItem
           groupId={props.currentGroup._id}
-          listId={props.list._id}
+          listId={props.activeList._id}
           newItem={props.newItemHandler}
         />
       ) : null}

@@ -41,9 +41,6 @@ exports.getGroupsUserOwnerOf = catchAsync(async (req, res, next) => {
     .populate('members', 'firstName lastName')
     .sort('-date');
 
-  if (groups.length < 1)
-    return next(new AppError("You don't have any groups, make one now", 400));
-
   res.status(200).json({
     status: 'success',
     results: groups.length,
@@ -60,9 +57,6 @@ exports.getGroupsUserMemberOf = catchAsync(async (req, res, next) => {
     .populate('owner', 'firstName lastName')
     .populate('members', 'firstName lastName')
     .sort('-date');
-
-  if (groups.length < 1)
-    return next(new AppError("You don't have any groups, make one now", 404));
 
   res.status(200).json({
     status: 'success',
@@ -172,6 +166,22 @@ exports.removeMember = catchAsync(async (req, res, next) => {
   } else {
     next(new AppError('Only the owner of a group can delete members', 401));
   }
+});
+
+exports.leaveGroup = catchAsync(async (req, res, next) => {
+  // Get remove index
+  const removeIndex = req.group.members.map(el => el).indexOf(req.user.id);
+
+  req.group.members.splice(removeIndex, 1);
+
+  await req.group.save();
+
+  res.status(200).json({
+    status: 'success',
+    data: {
+      group: req.group
+    }
+  });
 });
 
 exports.deleteGroup = catchAsync(async (req, res, next) => {

@@ -2,7 +2,6 @@ const express = require('express');
 
 const auth = require('../middleware/auth');
 const groupController = require('../controllers/groupController');
-const authController = require('../controllers/authController');
 const partOfGroup = require('../middleware/partOfGroup');
 
 const router = express.Router();
@@ -36,5 +35,11 @@ router.delete(
   groupController.removeMember
 );
 router.delete('/:group_id', auth, partOfGroup, groupController.deleteGroup);
+router.delete(
+  '/:group_id/:member_id/remove-self',
+  auth,
+  partOfGroup,
+  groupController.leaveGroup
+);
 
 module.exports = router;
