@@ -39,7 +39,7 @@ export const deleteGroup = id => {
 export const setGroups = groups => {
   return {
     type: actionTypes.SET_GROUPS,
-    groups: groups
+    groups
   };
 };
 
@@ -195,10 +195,11 @@ export const addMember = body => {
   };
 };
 
-export const deleteMemberHandler = id => {
+export const deleteMemberHandler = (id, groupId) => {
   return {
     type: actionTypes.DELETE_MEMBER,
-    memberId: id
+    memberId: id,
+    groupId
   };
 };
 
@@ -208,7 +209,7 @@ export const deleteMember = id => {
     try {
       // /api/groups/:group_id/:member_id
       await axios.delete(`/api/groups/${dashboard.currentGroup._id}/${id}`);
-      dispatch(deleteMemberHandler(id));
+      dispatch(deleteMemberHandler(id, dashboard.currentGroup._id));
     } catch (error) {
       dispatch(setErrorMessage(error.response.data.message));
     }
@@ -221,6 +222,36 @@ export const setAverageRating = (rating, ratingList, itemId) => {
     rating,
     ratingList,
     itemId
+  };
+};
+
+export const leaveGroupHandler = (userId, groupId) => {
+  return {
+    type: actionTypes.LEAVE_GROUP,
+    userId,
+    groupId
+  };
+};
+
+export const leaveGroup = id => {
+  return async (dispatch, getState) => {
+    const { dashboard, user } = getState();
+
+    let groupId = null;
+    if (dashboard.currentGroup._id) {
+      groupId = dashboard.currentGroup._id;
+    } else {
+      groupId = id;
+    }
+    try {
+      // /api/groups/:group_id/:member_id/remove-self
+      await axios.delete(`/api/groups/${groupId}/${user.user._id}/remove-self`);
+      dispatch(leaveGroupHandler(user.user._id, groupId));
+      initGroups();
+    } catch (error) {
+      console.log(error);
+      dispatch(setErrorMessage(error.response));
+    }
   };
 };
 

@@ -44,6 +44,17 @@ const GroupCard = props => {
         <span>Delete Group</span>
       </span>
     );
+  } else {
+    deleteButton = (
+      <span
+        className="group__information--delete "
+        onClick={() => props.leaveGroup(props.group._id)}
+        role="button"
+      >
+        <span className="delete__icon"></span>
+        <span>Leave Group</span>
+      </span>
+    );
   }
 
   return (
@@ -101,4 +112,8 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps)(GroupCard);
+const mapDispatchToProps = dispatch => {
+  return {};
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(GroupCard);

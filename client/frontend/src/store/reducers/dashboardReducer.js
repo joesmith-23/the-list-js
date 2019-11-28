@@ -74,6 +74,21 @@ const deleteMember = (state, action) => {
   return newMembers;
 };
 
+const leaveGroup = (state, action) => {
+  const groups = [...state.groups];
+  const newGroups = groups.map(group => {
+    if (group._id === action.groupId) {
+      const newMembers = group.members.filter(el => el._id !== action.userId);
+      group.members = newMembers;
+      return group;
+    }
+    return group;
+  });
+  console.log(newGroups);
+
+  return newGroups;
+};
+
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.ADD_GROUP:
@@ -168,6 +183,12 @@ const reducer = (state = initialState, action) => {
           ...state.currentGroup,
           members: deleteMember(state, action)
         }
+      };
+    case actionTypes.LEAVE_GROUP:
+      const newGroups = leaveGroup(state, action);
+      return {
+        ...state,
+        groups: newGroups
       };
 
     default:

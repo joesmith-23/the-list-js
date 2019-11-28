@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useCallback } from "react";
 import { withRouter } from "react-router-dom";
 // import axios from "axios";
 import { connect } from "react-redux";
@@ -16,6 +16,18 @@ const Dashboard = props => {
       props.onInitUser();
     }
   }, []);
+
+  const leaveGroupHandler = id => {
+    props.onLeaveGroup(id);
+    window.location.reload();
+  };
+
+  // useEffect(
+  //   id => {
+  //     leaveGroupHandler(id);
+  //   },
+  //   [leaveGroupHandler]
+  // );
 
   // Set the title depending on if the user is logged in or not
   let pageTitle = props.token ? (
@@ -36,6 +48,7 @@ const Dashboard = props => {
         key={group._id}
         group={group}
         deleteGroup={props.deleteGroupHandler}
+        leaveGroup={leaveGroupHandler}
       />
     ));
   }
@@ -80,7 +93,8 @@ const mapDispatchToProps = dispatch => {
   return {
     onInitGroups: () => dispatch(dashboardActionCreators.initGroups()),
     onInitUser: () => dispatch(userActionCreators.initUser()),
-    deleteGroupHandler: id => dispatch(dashboardActionCreators.deleteGroup(id))
+    deleteGroupHandler: id => dispatch(dashboardActionCreators.deleteGroup(id)),
+    onLeaveGroup: id => dispatch(dashboardActionCreators.leaveGroup(id))
   };
 };
 
