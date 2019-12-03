@@ -1,6 +1,6 @@
 import React, { useState, Fragment, useEffect } from "react";
 import { connect } from "react-redux";
-import { Route } from "react-router-dom";
+import { Route, withRouter } from "react-router-dom";
 import NavBar from "./Header/NavBar";
 import Footer from "./Footer/Footer";
 import Landing from "../Static/Landing";
@@ -52,7 +52,13 @@ const Layout = props => {
     <Fragment>
       <title>The List</title>
       <NavBar />
-      <main className="main-container">
+      <main
+        className={
+          props.location.pathname !== "/"
+            ? "main-container"
+            : "main-container__landing"
+        }
+      >
         {show && (
           <div className="error-container">
             {errorMessage}
@@ -97,4 +103,4 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Layout);
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Layout));

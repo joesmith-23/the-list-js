@@ -1,0 +1,131 @@
+.hero {
+  width: 100vw !important;
+  background: #3b77c0;
+  padding: 180px 0 180px;
+  position: relative;
+}
+
+.hero__container {
+  width: 1240px;
+  max-width: 100%;
+  margin: 0 auto 0 auto;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.hero__container h1 {
+  color: white;
+  font-size: 52px;
+  margin: 20px 0;
+  z-index: 1000;
+}
+
+.hero__container h2 {
+  margin: 10px 0;
+  color: white;
+  z-index: 1000;
+}
+
+.hero__container button {
+  z-index: 1000;
+  display: block;
+  height: 50px;
+  background: linear-gradient(120deg, #3b77c0, #6a97d1);
+  background-size: 200%;
+  color: #fff;
+  cursor: pointer;
+  border: none;
+  border-radius: 10px;
+  width: 30%;
+  transition: 0.5s;
+  margin: 7.5% auto;
+  transition: 0.5s;
+  font-weight: 600;
+  font-size: 20px;
+}
+
+.hero__container button:hover {
+  background-position: right;
+}
+
+.hero__canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 80%;
+}
+
+.canvas {
+  /* background: red; */
+  z-index: -100;
+  overflow: -moz-hidden-unscrollable;
+}
+
+.svg__wave {
+  position: absolute;
+  fill: white;
+  bottom: 0;
+}
+
+.info__container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  /* justify-content: center; */
+  align-items: center;
+}
+
+.info__container h2 {
+  font-size: 36px;
+}
+
+.mission__text {
+  font-size: 24px;
+  padding-bottom: 20px;
+}
+
+.row {
+  display: flex;
+  width: 80%;
+  height: 100%;
+  margin: 20px;
+  padding: 20px;
+}
+
+.feature__container {
+  width: 33.3333333%;
+  background: #ebebeb;
+  margin: 10px;
+  padding: 10px;
+  border: 0.0625rem solid #bebebe;
+  box-shadow: 0px 1px 8px 0px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  border-radius: 3px;
+}
+
+.feature__container:hover {
+  box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.1);
+}
+
+.feature__title h2 {
+  padding: 20px 20px 20px 10px;
+}
+
+.feature__title h2 {
+  text-transform: uppercase;
+  font-size: 30px;
+}
+
+.feature__image {
+  font-size: 70px;
+}
+
+.feature__text {
+  font-size: 18px;
+  padding: 20px;
+}
