@@ -1,5 +1,5 @@
 import React, { Fragment, useRef, useEffect } from "react";
-import { withRouter } from "react-router-dom";
+import { withRouter, Link } from "react-router-dom";
 import { connect } from "react-redux";
 
 import { FiUsers, FiList } from "react-icons/fi";
@@ -80,7 +80,9 @@ const Landing = props => {
           <h1>The List</h1>
           <h2>An app for groups of people that can't make decisions</h2>
           <button>
-            {props.currentUser ? "Go to your dashboard" : "Create an account"}
+            <Link to={props.currentUser ? "/dashboard" : "/register"}>
+              {props.currentUser ? "Go to your dashboard" : "Create an account"}
+            </Link>
           </button>
         </div>
         <div className="hero__canvas">{canvasRender}</div>

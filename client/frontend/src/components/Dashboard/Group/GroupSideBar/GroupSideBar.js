@@ -1,10 +1,12 @@
-import React from "react";
+import React, { Fragment } from "react";
 import AddMember from "./AddMember/AddMember";
 import { connect } from "react-redux";
 
 import "./GroupSideBar.css";
 import { FaTimes } from "react-icons/fa";
 import ReactTooltip from "react-tooltip";
+import Backdrop from "../../../utils/UI/Backdrop/Backdrop";
+import * as uiActionCreators from "../../../../store/actions/uiActionCreators";
 
 const GroupSideBar = props => {
   let ownerName = null;
@@ -37,22 +39,44 @@ const GroupSideBar = props => {
     ));
   }
 
+  const mobileSidebarToggle = () => {
+    props.onMobileSidebarToggle();
+  };
+
+  let sidebarStyle = "group-side-bar__container";
+  if (props.mobileSidebarOpen) {
+    sidebarStyle = "group-side-bar__container-mobile open";
+  }
+
   return (
-    <div className="group-side-bar__container">
-      <h2>{props.currentGroup.name}</h2>
-      <small>Owner: {ownerName}</small>
-      <h3 className="group-side-bar__title">Members</h3>
-      <ul>{renderMembers}</ul>
-      <AddMember />
-    </div>
+    <Fragment>
+      <div className={sidebarStyle}>
+        <h2>{props.currentGroup.name}</h2>
+        <small>Owner: {ownerName}</small>
+        <h3 className="group-side-bar__title">Members</h3>
+        <ul>{renderMembers}</ul>
+        <AddMember />
+      </div>
+      {props.backdropActive && <Backdrop toggle={mobileSidebarToggle} />}
+    </Fragment>
   );
 };
 
 const mapStateToProps = state => {
   return {
     currentGroup: state.dashboard.currentGroup,
-    currentUser: state.user.user
+    currentUser: state.user.user,
+    mobileSidebarOpen: state.ui.mobileSidebarOpen,
+    backdropActive: state.ui.backdropActive
   };
 };
 
-export default connect(mapStateToProps)(GroupSideBar);
+const mapDispatchToProps = dispatch => {
+  return {
+    onMobileSidebarToggle: () => {
+      dispatch(uiActionCreators.mobileSidebarToggle());
+    }
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(GroupSideBar);

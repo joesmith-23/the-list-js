@@ -44,6 +44,10 @@
   color: #f0f0f0;
 }
 
+.navbar__logo {
+  padding: 0 0 0 5px;
+}
+
 .navbar__logo a {
   color: white;
   text-decoration: none;

@@ -50,3 +50,9 @@
   cursor: pointer;
   color: #555;
 }
+
+@media only screen and (max-width: 750px) {
+  .add-group__name {
+    width: 95%;
+  }
+}

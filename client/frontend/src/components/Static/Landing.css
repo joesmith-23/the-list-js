@@ -34,7 +34,6 @@
   height: 50px;
   background: linear-gradient(120deg, #3b77c0, #6a97d1);
   background-size: 200%;
-  color: #fff;
   cursor: pointer;
   border: none;
   border-radius: 10px;
@@ -44,6 +43,10 @@
   transition: 0.5s;
   font-weight: 600;
   font-size: 20px;
+}
+.hero__container a {
+  color: #fff;
+  text-decoration: none;
 }
 
 .hero__container button:hover {

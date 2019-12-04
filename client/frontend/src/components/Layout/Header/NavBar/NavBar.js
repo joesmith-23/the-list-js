@@ -2,9 +2,11 @@ import React from "react";
 import { Link, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 
+import HamburgerToggleButton from "../HamburgerToggleButton/HamburgerToggleButton";
 import * as authActionCreators from "../../../../store/actions/authActionCreators";
 import * as userActionCreators from "../../../../store/actions/userActionCreators";
 import * as dashboardActionCreators from "../../../../store/actions/dashboardActionCreators";
+import * as uiActionCreators from "../../../../store/actions/uiActionCreators";
 
 import "./NavBar.css";
 
@@ -50,9 +52,14 @@ const NavBar = props => {
     </ul>
   );
 
+  const mobileSidebarToggle = () => {
+    props.onMobileSidebarToggle();
+  };
+
   return (
     <header className="navbar">
       <nav className="navbar__navigation">
+        <HamburgerToggleButton toggle={mobileSidebarToggle} />
         <div className="navbar__logo">
           <Link to="/">The List</Link>
         </div>
@@ -78,7 +85,10 @@ const mapDispatchToProps = dispatch => {
     onLogoutRemoveUser: () => dispatch(userActionCreators.removeCurrentUser()),
     onLogoutRemoveDashboardData: () =>
       dispatch(dashboardActionCreators.removeCurrentData()),
-    onLoadLocalUser: () => dispatch(userActionCreators.initUserFromLocal())
+    onLoadLocalUser: () => dispatch(userActionCreators.initUserFromLocal()),
+    onMobileSidebarToggle: () => {
+      dispatch(uiActionCreators.mobileSidebarToggle());
+    }
   };
 };
 

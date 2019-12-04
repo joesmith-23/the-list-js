@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, Fragment } from "react";
 import { withRouter } from "react-router-dom";
 // import axios from "axios";
 import { connect } from "react-redux";
@@ -29,17 +29,6 @@ const Dashboard = props => {
   //   [leaveGroupHandler]
   // );
 
-  // Set the title depending on if the user is logged in or not
-  let pageTitle = props.token ? (
-    <div>
-      <h2>{`${
-        props.currentUser ? props.currentUser.firstName + "'s" : ""
-      } Groups`}</h2>
-    </div>
-  ) : (
-    <h2>You need to be logged in to access the dashboard</h2>
-  );
-
   // Create array to allow React to render the groups to the page
   let renderGroups = null;
   if (props.groups) {
@@ -61,10 +50,7 @@ const Dashboard = props => {
   return (
     <div>
       <div className="groups-content__container">
-        <SideBarMenu
-          title={pageTitle}
-          renderErrorMessage={renderErrorMessage}
-        />
+        <SideBarMenu renderErrorMessage={renderErrorMessage} />
         <div className="groups__wrapper">
           <ul className="groups-list__wrapper">{renderGroups}</ul>
         </div>

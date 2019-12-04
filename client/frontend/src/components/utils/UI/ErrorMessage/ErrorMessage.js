@@ -6,13 +6,11 @@ import "./ErrorMessage.css";
 
 const ErrorMessage = props => {
   return (
-    <div>
-      <div className="error-container">
-        {props.errorMessage}
-        <span className="error-cancel" onClick={() => props.setShow(false)}>
-          <FaTimes />
-        </span>
-      </div>
+    <div className="error-container">
+      {props.errorMessage}
+      <span className="error-cancel" onClick={() => props.setShow(false)}>
+        <FaTimes />
+      </span>
     </div>
   );
 };

@@ -9,13 +9,15 @@ import axios from "axios";
 import dashboardReducer from "./store/reducers/dashboardReducer";
 import authReducer from "./store/reducers/authReducer";
 import userReducer from "./store/reducers/userReducer";
+import uiReducer from "./store/reducers/uiReducer";
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const rootReducer = combineReducers({
   auth: authReducer,
   dashboard: dashboardReducer,
-  user: userReducer
+  user: userReducer,
+  ui: uiReducer
 });
 
 const store = createStore(

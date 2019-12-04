@@ -41,3 +41,29 @@
 .settings__text a:hover {
   color: #222;
 }
+
+.sidebar__container-mobile {
+  width: 300px;
+  height: 100%;
+  background: white;
+  box-shadow: 2px 0px 5px rgba(0, 0, 0, 0.5);
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 2000;
+  padding-left: 10px;
+}
+
+.sidebar__container-mobile h2 {
+  margin-top: 55px;
+}
+
+/* .sidebar__container {
+    display: none;
+  } */
+
+@media only screen and (max-width: 750px) {
+  .sidebar__container {
+    display: none;
+  }
+}
