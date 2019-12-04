@@ -1,7 +1,7 @@
 import React, { useState, Fragment, useEffect } from "react";
 import { connect } from "react-redux";
 import { Route, withRouter } from "react-router-dom";
-import NavBar from "./Header/NavBar";
+import NavBar from "./Header/NavBar/NavBar";
 import Footer from "./Footer/Footer";
 import Landing from "../Static/Landing";
 import About from "../Static/About";

@@ -2,11 +2,11 @@ import React from "react";
 import { Link, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 
-import * as authActionCreators from "../../../store/actions/authActionCreators";
-import * as userActionCreators from "../../../store/actions/userActionCreators";
-import * as dashboardActionCreators from "../../../store/actions/dashboardActionCreators";
+import * as authActionCreators from "../../../../store/actions/authActionCreators";
+import * as userActionCreators from "../../../../store/actions/userActionCreators";
+import * as dashboardActionCreators from "../../../../store/actions/dashboardActionCreators";
 
-import "../../../App.css";
+import "./NavBar.css";
 
 const NavBar = props => {
   const token = localStorage.getItem("token");

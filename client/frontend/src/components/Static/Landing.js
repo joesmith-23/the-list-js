@@ -59,6 +59,20 @@ const Landing = props => {
     </svg>
   );
 
+  let canvasRender = null;
+  if (window.innerWidth > 1025) {
+    canvasRender = (
+      <canvas
+        ref={canvas}
+        width={window.innerWidth}
+        height={window.innerHeight}
+        className="canvas"
+      >
+        Your browser does not support the HTML5 canvas tag.
+      </canvas>
+    );
+  }
+
   return (
     <Fragment>
       <section className="hero">
@@ -69,16 +83,7 @@ const Landing = props => {
             {props.currentUser ? "Go to your dashboard" : "Create an account"}
           </button>
         </div>
-        <div className="hero__canvas">
-          <canvas
-            ref={canvas}
-            width={window.innerWidth}
-            height={window.innerHeight}
-            className="canvas"
-          >
-            Your browser does not support the HTML5 canvas tag.
-          </canvas>
-        </div>
+        <div className="hero__canvas">{canvasRender}</div>
         {svg}
       </section>
       <section>
@@ -94,7 +99,6 @@ const Landing = props => {
                 <h2>Create Groups</h2>
               </div>
               <div className="feature__image">
-                {" "}
                 <FiUsers />
               </div>
               <div className="feature__text">
