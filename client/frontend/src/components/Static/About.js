@@ -1,8 +1,12 @@
 import React from "react";
 
 const About = () => {
+  let style = {
+    padding: "30px"
+  };
+
   return (
-    <div>
+    <div style={style}>
       <h2>About</h2>
       <p>
         This is a project that was born out of the deperate need of an app to

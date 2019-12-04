@@ -10,8 +10,7 @@ import Register from "../Auth/Register";
 import Login from "../Auth/Login";
 import Group from "../Dashboard/Group/Group";
 
-import { FaTimes } from "react-icons/fa";
-
+import ErrorMessage from "../utils/UI/ErrorMessage/ErrorMessage";
 import * as dashboardActionCreators from "../../store/actions/dashboardActionCreators";
 import * as userActionCreators from "../../store/actions/userActionCreators";
 import * as authActionCreators from "../../store/actions/authActionCreators";
@@ -48,6 +47,10 @@ const Layout = props => {
     props
   ]);
 
+  const setShowHandler = show => {
+    setShow(show);
+  };
+
   return (
     <Fragment>
       <title>The List</title>
@@ -60,12 +63,7 @@ const Layout = props => {
         }
       >
         {show && (
-          <div className="error-container">
-            {errorMessage}
-            <span className="error-cancel" onClick={() => setShow(false)}>
-              <FaTimes />
-            </span>
-          </div>
+          <ErrorMessage errorMessage={errorMessage} setShow={setShowHandler} />
         )}
         <Route exact path="/" component={Landing} />
         <Route exact path="/about" component={About} />

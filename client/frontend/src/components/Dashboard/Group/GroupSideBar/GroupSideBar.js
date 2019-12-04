@@ -1,5 +1,5 @@
 import React from "react";
-import AddMember from "./AddMember";
+import AddMember from "./AddMember/AddMember";
 import { connect } from "react-redux";
 
 import "./GroupSideBar.css";

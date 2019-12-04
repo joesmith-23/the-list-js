@@ -3,10 +3,11 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { connect } from "react-redux";
 
-import "./GroupCard.css";
 import { AiOutlineDelete } from "react-icons/ai";
 import { IoMdArrowRoundForward } from "react-icons/io";
 import { FiUsers, FiList } from "react-icons/fi";
+
+import "./GroupCard.css";
 
 const GroupCard = props => {
   const [lists, setLists] = useState([]);

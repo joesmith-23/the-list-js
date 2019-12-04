@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
 
-import * as dashboardActionCreators from "../../../../store/actions/dashboardActionCreators";
+import * as dashboardActionCreators from "../../../../../store/actions/dashboardActionCreators";
 
 import "./AddMember.css";
 

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import ReactTooltip from "react-tooltip";
-import AddList from "./AddList";
+import AddList from "./AddList/AddList";
 
 import { FaTimes } from "react-icons/fa";
 

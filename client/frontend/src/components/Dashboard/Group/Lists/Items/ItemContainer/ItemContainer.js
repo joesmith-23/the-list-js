@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import AddItem from "./AddItem";
+import AddItem from "../AddItem/AddItem";
 import ReactTooltip from "react-tooltip";
 import { connect } from "react-redux";
 
