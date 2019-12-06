@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { withRouter } from "react-router-dom";
-// import axios from "axios";
 import { connect } from "react-redux";
 import * as dashboardActionCreators from "../../store/actions/dashboardActionCreators";
 import * as userActionCreators from "../../store/actions/userActionCreators";
@@ -21,13 +20,6 @@ const Dashboard = props => {
     props.onLeaveGroup(id);
     window.location.reload();
   };
-
-  // useEffect(
-  //   id => {
-  //     leaveGroupHandler(id);
-  //   },
-  //   [leaveGroupHandler]
-  // );
 
   // Create array to allow React to render the groups to the page
   let renderGroups = null;
@@ -54,14 +46,6 @@ const Dashboard = props => {
         <div className="groups__wrapper">
           <ul className="groups-list__wrapper">{renderGroups}</ul>
         </div>
-        {/* <input
-          onChange={
-            props.onCurrentUser
-            // console.log(groups, currentUser);
-          }
-          type="text"
-          name="text"
-        ></input> */}
       </div>
     </div>
   );

@@ -82,10 +82,8 @@ export const initCurrentGroup = props => {
     try {
       const response = await axios.get(`/api/groups/${props.match.params.id}`);
       let groupData = response.data.data.group;
-      console.log(groupData);
       dispatch(setCurrentGroup(groupData));
     } catch (error) {
-      // dispatch(setErrorMessage("ERROR"));
       dispatch(setErrorMessage(error.response.data.message));
     }
   };
@@ -111,10 +109,8 @@ export const initLists = props => {
     try {
       const response = await axios.get(`/api/lists/${props.match.params.id}`);
       let listData = response.data.data.lists;
-      // console.log(listData);
       dispatch(setLists(listData));
     } catch (error) {
-      // dispatch(setErrorMessage("ERROR"));
       dispatch(setErrorMessage(error.response.data.message));
     }
   };
@@ -164,7 +160,6 @@ export const deleteList = id => {
       // /api/lists/:group_id/:list_id
       await axios.delete(`/api/lists/${dashboard.currentGroup._id}/${id}`);
     } catch (error) {
-      console.log(error);
       dispatch(setErrorMessage(error.response.data.message));
     }
   };
@@ -248,7 +243,6 @@ export const leaveGroup = id => {
       await axios.delete(`/api/groups/${groupId}/${user.user._id}/remove-self`);
       dispatch(leaveGroupHandler(user.user._id, groupId));
     } catch (error) {
-      console.log(error);
       dispatch(setErrorMessage(error.response.data.message));
     }
   };
@@ -296,7 +290,6 @@ export const deleteItem = itemId => {
       );
       dispatch(deleteItemHandler(itemId));
     } catch (error) {
-      console.log(error);
       dispatch(setErrorMessage(error.response.data.message));
     }
   };

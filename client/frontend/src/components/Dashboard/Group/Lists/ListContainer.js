@@ -63,4 +63,4 @@ const ListContainer = ({
   );
 };
 
-export default ListContainer;
+export default React.memo(ListContainer);
