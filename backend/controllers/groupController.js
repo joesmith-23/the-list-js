@@ -92,18 +92,20 @@ exports.addUserToGroupWithEmail = catchAsync(async (req, res, next) => {
   // If user already in group, don't add them again
   // eslint-disable-next-line eqeqeq
   const userCheck = req.group.members.find(member => member == user.id);
-  if (userCheck) next(new AppError('User already member of group', 400));
+  if (!userCheck) {
+    req.group.members.unshift(user);
 
-  req.group.members.unshift(user);
+    req.group.save();
 
-  req.group.save();
-
-  res.status(200).json({
-    status: 'success',
-    data: {
-      user
-    }
-  });
+    res.status(200).json({
+      status: 'success',
+      data: {
+        user
+      }
+    });
+  } else {
+    next(new AppError('User already member of group', 400));
+  }
 });
 
 exports.getGroupMembers = catchAsync(async (req, res, next) => {
