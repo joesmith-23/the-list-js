@@ -49,7 +49,7 @@ const Landing = props => {
       x="0px"
       y="0px"
       viewBox="0 0 1920 300"
-      enable-background="new 0 0 1920 300"
+      enableBackground="new 0 0 1920 300"
     >
       <path
         className="svg__wave"

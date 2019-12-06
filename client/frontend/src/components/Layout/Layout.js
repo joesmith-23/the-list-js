@@ -1,6 +1,6 @@
 import React, { useState, Fragment, useEffect } from "react";
 import { connect } from "react-redux";
-import { Route, withRouter } from "react-router-dom";
+import { Route, withRouter, Switch } from "react-router-dom";
 import NavBar from "./Header/NavBar/NavBar";
 import Footer from "./Footer/Footer";
 import Landing from "../Static/Landing";
@@ -9,6 +9,7 @@ import Dashboard from "../Dashboard/Dashboard";
 import Register from "../Auth/Register";
 import Login from "../Auth/Login";
 import Group from "../Dashboard/Group/Group";
+import NoPage from "../Static/NoPage";
 
 import ErrorMessage from "../utils/UI/ErrorMessage/ErrorMessage";
 import * as dashboardActionCreators from "../../store/actions/dashboardActionCreators";
@@ -39,6 +40,9 @@ const Layout = props => {
       setShow(true);
       props.onRemoveErrorDashboard("");
     }
+    // return () => {
+    //   setShow(false);
+    // };
   }, [
     props.userError,
     props.authError,
@@ -65,17 +69,20 @@ const Layout = props => {
         {show && (
           <ErrorMessage errorMessage={errorMessage} setShow={setShowHandler} />
         )}
-        <Route exact path="/" component={Landing} />
-        <Route exact path="/about" component={About} />
-        <Route exact path="/login" component={Login} />
-        <Route exact path="/register" component={Register} />
-        <Route exact path="/dashboard" component={Dashboard} />
-        <Route
-          exact
-          path={"/dashboard/groups/:id"}
-          // render={props => <Group {...props} />}
-          component={Group}
-        />
+        <Switch>
+          <Route exact path="/" component={Landing} />
+          <Route exact path="/about" component={About} />
+          <Route exact path="/login" component={Login} />
+          <Route exact path="/register" component={Register} />
+          <Route exact path="/dashboard" component={Dashboard} />
+          <Route
+            exact
+            path={"/dashboard/groups/:id"}
+            // render={props => <Group {...props} />}
+            component={Group}
+          />
+          <Route component={NoPage} />
+        </Switch>
       </main>
       <Footer />
     </Fragment>

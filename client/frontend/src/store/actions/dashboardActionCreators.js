@@ -86,7 +86,7 @@ export const initCurrentGroup = props => {
       dispatch(setCurrentGroup(groupData));
     } catch (error) {
       // dispatch(setErrorMessage("ERROR"));
-      dispatch(setErrorMessage(error));
+      dispatch(setErrorMessage(error.response.data.message));
     }
   };
 };
@@ -249,7 +249,7 @@ export const leaveGroup = id => {
       dispatch(leaveGroupHandler(user.user._id, groupId));
     } catch (error) {
       console.log(error);
-      dispatch(setErrorMessage(error.response));
+      dispatch(setErrorMessage(error.response.data.message));
     }
   };
 };
@@ -274,7 +274,7 @@ export const addItem = body => {
       );
       dispatch(addItemHandler(res.data.data.list.items[0]));
     } catch (error) {
-      dispatch(setErrorMessage(error.response));
+      dispatch(setErrorMessage(error.response.data.message));
     }
   };
 };
@@ -297,7 +297,7 @@ export const deleteItem = itemId => {
       dispatch(deleteItemHandler(itemId));
     } catch (error) {
       console.log(error);
-      dispatch(setErrorMessage(error.response));
+      dispatch(setErrorMessage(error.response.data.message));
     }
   };
 };

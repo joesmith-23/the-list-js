@@ -14,7 +14,7 @@ const handleDuplicateFieldsDB = err => {
 const handleValidationErrorDB = err => {
   const errors = Object.values(err.errors).map(el => el.message);
 
-  const message = `Invalid input data: ${errors.join('. ')}`;
+  const message = `${errors.join('\n ')}`;
   return new AppError(message, 400);
 };
 
@@ -56,6 +56,7 @@ module.exports = (err, req, res, next) => {
     // eslint-disable-next-line node/no-unsupported-features/es-syntax
     let error = { ...err };
     error.message = err.message;
+    // console.log(error);
     if (error.name === 'CastError') error = handleCastErrorDB(error);
     if (error.code === 11000) error = handleDuplicateFieldsDB(error);
     if (error.name === 'ValidationError')
