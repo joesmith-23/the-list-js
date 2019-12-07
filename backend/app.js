@@ -1,4 +1,9 @@
 const express = require('express');
+const helmet = require('helmet');
+const mongoSanitize = require('express-mongo-sanitize');
+const xss = require('xss-clean');
+const compression = require('compression');
+
 const userRoutes = require('./routes/userRoutes');
 const listRoutes = require('./routes/listRoutes');
 const groupRoutes = require('./routes/groupRoutes');
@@ -10,6 +15,17 @@ const app = express();
 // GLOBAL MIDDLEWEAR
 // Body parser, limits the amount of data that can be sent
 app.use(express.json({ limit: '10kb' }));
+
+// Set security HTTP headers
+app.use(helmet());
+
+// Data sanitization against NoSQL query injection
+app.use(mongoSanitize());
+
+// Data sanitization against XSS
+app.use(xss());
+
+app.use(compression());
 
 // ROUTES
 app.use('/api/users', userRoutes);
