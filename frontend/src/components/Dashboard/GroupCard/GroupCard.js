@@ -20,10 +20,14 @@ const GroupCard = props => {
     const fetchLists = async () => {
       const response = await axios.get(`/api/lists/${props.group._id}`);
       let listData = response.data.data.lists;
-      // console.log(listData);
       setLists([...listData]);
     };
-    fetchLists();
+    let fetching = true;
+    if (fetching) {
+      fetchLists();
+    }
+    return () => (fetching = false);
+    // eslint-disable-next-line
   }, []);
 
   let renderLists = null;

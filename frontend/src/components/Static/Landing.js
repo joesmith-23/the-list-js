@@ -14,6 +14,7 @@ const Landing = props => {
     if (props.location.pathname === "/") {
       animatePurple();
     }
+    // eslint-disable-next-line
   }, []);
 
   let increment = 0.01;

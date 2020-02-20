@@ -1,6 +1,5 @@
 import React, { Fragment, useState } from "react";
 import { Link } from "react-router-dom";
-import axios from "axios";
 import { connect } from "react-redux";
 
 import * as authActionCreators from "../../store/actions/authActionCreators";
@@ -15,8 +14,7 @@ const Register = props => {
     lastName: "",
     email: "",
     password: "",
-    passwordConfirm: "",
-    token: ""
+    passwordConfirm: ""
   });
 
   // UI state
@@ -29,14 +27,7 @@ const Register = props => {
   const [passwordHidden, setPasswordHidden] = useState(true);
   const [passwordConfirmHidden, setPasswordConfirmHidden] = useState(true);
 
-  let {
-    firstName,
-    lastName,
-    email,
-    password,
-    passwordConfirm,
-    token
-  } = formData;
+  let { firstName, lastName, email, password, passwordConfirm } = formData;
 
   const onChange = e =>
     setFormData({
@@ -192,7 +183,7 @@ const Register = props => {
             <input
               className="register__button"
               type="submit"
-              value="Register"
+              value="REGISTER"
             />
           </form>
           <small className="register__login">

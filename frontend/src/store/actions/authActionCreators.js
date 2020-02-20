@@ -27,9 +27,14 @@ export const loginFail = error => {
   };
 };
 
+export const isLoading = type => {
+  return { type: actionTypes.IS_LOADING, isLoading: type };
+};
+
 export const login = (email, password, props) => {
   return async dispatch => {
     dispatch(loginStart());
+    dispatch(isLoading(true));
     const config = {
       headers: {
         "Content-Type": "application/json"
@@ -45,6 +50,7 @@ export const login = (email, password, props) => {
       const loginData = await axios.post("/api/users/login", body, config);
       const token = loginData.data.token;
       dispatch(loginSuccess(token));
+      dispatch(isLoading(false));
 
       localStorage.setItem("token", token);
 

@@ -73,6 +73,7 @@
 }
 
 .info__container {
+  background-color: white;
   position: relative;
   display: flex;
   flex-direction: column;

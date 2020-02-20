@@ -10,6 +10,7 @@ import dashboardReducer from "./store/reducers/dashboardReducer";
 import authReducer from "./store/reducers/authReducer";
 import userReducer from "./store/reducers/userReducer";
 import uiReducer from "./store/reducers/uiReducer";
+import isLoadingReducer from "./store/reducers/isLoadingReducer";
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
@@ -17,13 +18,16 @@ const rootReducer = combineReducers({
   auth: authReducer,
   dashboard: dashboardReducer,
   user: userReducer,
-  ui: uiReducer
+  ui: uiReducer,
+  isLoading: isLoadingReducer
 });
 
 const store = createStore(
   rootReducer,
   composeEnhancers(applyMiddleware(thunk))
 );
+
+axios.defaults.baseURL = "http://localhost:5000";
 
 axios.interceptors.request.use(function(config) {
   const token = store.getState().auth.token;

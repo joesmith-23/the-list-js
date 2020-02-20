@@ -29,7 +29,7 @@ const Ratings = props => {
           props.itemId
         );
       })
-      .catch(error => console.error(error));
+      .catch(error => console.error(error, "That's annoying..."));
   };
 
   return (

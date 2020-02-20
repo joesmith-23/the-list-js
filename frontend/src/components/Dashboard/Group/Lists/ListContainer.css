@@ -10,7 +10,7 @@
 .lists__card {
   display: flex;
   width: 100%;
-  padding: 5px 5px;
+  padding: 8px 8px;
   border-bottom: 2px solid #e6e6e6;
   position: relative;
 }
@@ -21,7 +21,7 @@
 
 .lists__card--active {
   border-bottom: 2px solid #965caf !important;
-  padding: 5px 6px;
+  padding: 8px 9px;
 }
 
 .lists__card--active .lists__delete {

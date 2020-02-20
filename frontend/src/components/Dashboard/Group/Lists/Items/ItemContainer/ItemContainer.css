@@ -11,8 +11,9 @@
 .item__card {
   display: flex;
   width: 100%;
-  padding: 5px 5px 5px 15px;
-  border-left: 2px solid #965caf !important;
+  padding: 8px 8px 8px 0px;
+  margin-left: 15px;
+  /* border-top: 2px solid #965caf !important; */
   animation-name: effect-fade-in;
   animation-duration: 500ms;
 }
@@ -62,6 +63,11 @@
 .item__chevron {
   color: #333;
   cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 2px;
 }
 
 .rotated {
@@ -81,6 +87,7 @@
   display: flex;
   justify-content: space-between;
   width: 100%;
+  margin-left: 5px;
 }
 
 .item__delete {

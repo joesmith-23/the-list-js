@@ -1,9 +1,10 @@
-import React, { useEffect } from "react";
+import React, { useEffect, Fragment } from "react";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import * as dashboardActionCreators from "../../store/actions/dashboardActionCreators";
 import * as userActionCreators from "../../store/actions/userActionCreators";
 
+import Loading from "../utils/Loading/Loading";
 import GroupCard from "./GroupCard/GroupCard";
 import SideBarMenu from "./SideBarMenu";
 import "./Dashboard.css";
@@ -14,6 +15,7 @@ const Dashboard = props => {
       props.onInitGroups();
       props.onInitUser();
     }
+    // eslint-disable-next-line
   }, []);
 
   const leaveGroupHandler = id => {
@@ -40,14 +42,18 @@ const Dashboard = props => {
   }
 
   return (
-    <div>
-      <div className="groups-content__container">
-        <SideBarMenu renderErrorMessage={renderErrorMessage} />
-        <div className="groups__wrapper">
-          <ul className="groups-list__wrapper">{renderGroups}</ul>
+    <Fragment>
+      {props.loading ? (
+        <Loading />
+      ) : (
+        <div className="groups-content__container">
+          <SideBarMenu renderErrorMessage={renderErrorMessage} />
+          <div className="groups__wrapper">
+            <ul className="groups-list__wrapper">{renderGroups}</ul>
+          </div>
         </div>
-      </div>
-    </div>
+      )}
+    </Fragment>
   );
 };
 
@@ -55,7 +61,8 @@ const mapStateToProps = state => {
   return {
     groups: state.dashboard.groups,
     currentUser: state.user.user,
-    token: state.auth.token
+    token: state.auth.token,
+    loading: state.isLoading.isLoading
   };
 };
 

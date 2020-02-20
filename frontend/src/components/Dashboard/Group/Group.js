@@ -5,45 +5,19 @@ import * as dashboardActionCreators from "../../../store/actions/dashboardAction
 import ItemContainer from "./Lists/Items/ItemContainer/ItemContainer";
 import ListContainer from "./Lists/ListContainer";
 import GroupSideBar from "./GroupSideBar/GroupSideBar";
+import Loading from "../../utils/Loading/Loading";
 import "./Group.css";
 
 const Group = props => {
   const [clickedListId, setClickedListId] = useState("");
   const [offset, setOffset] = useState(0);
 
-  // KEEPING THE BELOW FOR REFERENCE
-
-  // const fetchLists = async () => {
-  //   const response = await axios.get(`/api/lists/${props.match.params.id}`);
-  //   let listData = response.data.data.lists;
-  //   // console.log(listData);
-  //   setLists([...listData]);
-  // };
-
-  // const deleteList = async id => {
-  //   console.log(id);
-  //   // /api/lists/:group_id/:list_id
-  //   await axios.delete(`/api/lists/${props.currentGroup._id}/${id}`);
-  //   setLists(prevList => prevList.filter(el => el._id !== id));
-  // };
-
-  // const deleteMember = async id => {
-  //   console.log(id);
-  //   console.log(props.currentGroup._id);
-  //   // /api/groups/:group_id/:member_id
-  //   try {
-  //     await axios.delete(`/api/groups/${props.currentGroup._id}/${id}`);
-  //     setMembers(prevList => prevList.filter(el => el._id !== id));
-  //   } catch (error) {
-  //     console.log(error.response.data.message);
-  //   }
-  // };
-
   useEffect(() => {
     if (props.token) {
       props.onInitCurrentGroup();
       props.onInitLists();
     }
+    // eslint-disable-next-line
   }, []);
 
   // Destructure onSetActiveList for it to work in useCallback
@@ -86,7 +60,7 @@ const Group = props => {
 
   let renderGroupInfo = null;
   if (props.currentGroup) {
-    renderGroupInfo = (
+    renderGroupInfo = !props.loading ? (
       <div className="lists__container">
         <GroupSideBar deleteMember={deleteMemberHandler} />
         <div className="main-content__container">
@@ -103,6 +77,8 @@ const Group = props => {
           />
         </div>
       </div>
+    ) : (
+      <Loading />
     );
   }
 
@@ -113,7 +89,8 @@ const mapStateToProps = state => {
   return {
     token: state.auth.token,
     currentGroup: state.dashboard.currentGroup,
-    lists: state.dashboard.lists
+    lists: state.dashboard.lists,
+    loading: state.isLoading.isLoading
   };
 };
 

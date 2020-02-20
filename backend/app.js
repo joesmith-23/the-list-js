@@ -3,6 +3,7 @@ const helmet = require('helmet');
 const mongoSanitize = require('express-mongo-sanitize');
 const xss = require('xss-clean');
 const compression = require('compression');
+const cors = require('cors');
 
 const userRoutes = require('./routes/userRoutes');
 const listRoutes = require('./routes/listRoutes');
@@ -11,6 +12,12 @@ const AppError = require('./utils/appError');
 const globalErrorHandler = require('./utils/globalErrorHandler');
 
 const app = express();
+
+// Implement CORS
+app.use(cors());
+// Access-Control-Allow-Origin *
+
+app.options('*', cors());
 
 // GLOBAL MIDDLEWEAR
 // Body parser, limits the amount of data that can be sent

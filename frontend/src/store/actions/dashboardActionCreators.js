@@ -7,6 +7,10 @@ export const addGroupHandler = id => {
   };
 };
 
+export const isLoading = type => {
+  return { type: actionTypes.IS_LOADING, isLoading: type };
+};
+
 export const addGroup = body => {
   return async dispatch => {
     try {
@@ -52,10 +56,12 @@ export const setErrorMessage = error => {
 
 export const initGroups = () => {
   return async dispatch => {
+    dispatch(isLoading(true));
     try {
       const response = await axios.get("/api/groups/all-user-groups");
       let groupsData = response.data.data.groups;
       dispatch(setGroups(groupsData));
+      dispatch(isLoading(false));
     } catch (error) {
       // dispatch(setErrorMessage("ERROR"));
       dispatch(setErrorMessage(error.response.data.message));
@@ -79,10 +85,13 @@ export const setMembers = members => {
 
 export const initCurrentGroup = props => {
   return async dispatch => {
+    dispatch(isLoading(true));
     try {
       const response = await axios.get(`/api/groups/${props.match.params.id}`);
       let groupData = response.data.data.group;
+
       dispatch(setCurrentGroup(groupData));
+      dispatch(isLoading(false));
     } catch (error) {
       dispatch(setErrorMessage(error.response.data.message));
     }
