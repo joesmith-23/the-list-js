@@ -1,5 +1,4 @@
 import React, { useState, Fragment } from "react";
-import axios from "axios";
 import StarRatingComponent from "react-star-rating-component";
 import { connect } from "react-redux";
 
@@ -15,21 +14,7 @@ const Ratings = props => {
     const body = {
       value: itemRating
     };
-    // /api/lists/items/ratings/:group_id/:list_id/:item_id
-    await axios
-      .post(
-        `/api/lists/items/ratings/${props.groupId}/${props.listId}/${props.itemId}`,
-        body
-      )
-      .then(response => {
-        console.log(response);
-        props.onSetAverageRating(
-          response.data.data.item.averageRating.toFixed(1),
-          response.data.data.item.rating,
-          props.itemId
-        );
-      })
-      .catch(error => console.error(error, "That's annoying..."));
+    props.onAddRating(props.itemId, body);
   };
 
   return (
@@ -68,7 +53,9 @@ const mapDispatchToProps = dispatch => {
     onSetAverageRating: (rating, ratingList, itemId) =>
       dispatch(
         dashboardActionCreators.setAverageRating(rating, ratingList, itemId)
-      )
+      ),
+    onAddRating: (itemId, body) =>
+      dispatch(dashboardActionCreators.addRating(itemId, body))
   };
 };
 

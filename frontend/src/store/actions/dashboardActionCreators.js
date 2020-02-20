@@ -220,15 +220,6 @@ export const deleteMember = id => {
   };
 };
 
-export const setAverageRating = (rating, ratingList, itemId) => {
-  return {
-    type: actionTypes.SET_AVERAGE_RATING,
-    rating,
-    ratingList,
-    itemId
-  };
-};
-
 export const leaveGroupHandler = (userId, groupId) => {
   return {
     type: actionTypes.LEAVE_GROUP,
@@ -266,6 +257,13 @@ export const addItemHandler = newItem => {
   };
 };
 
+// export const addRatingHandler = newRating => {
+//   return {
+//     type: actionTypes.ADD_RATING,
+//     newRating
+//   };
+// };
+
 export const addItem = body => {
   return async (dispatch, getState) => {
     const { dashboard } = getState();
@@ -298,6 +296,37 @@ export const deleteItem = itemId => {
         `/api/lists/items/${dashboard.currentGroup._id}/${dashboard.activeList._id}/${itemId}`
       );
       dispatch(deleteItemHandler(itemId));
+    } catch (error) {
+      dispatch(setErrorMessage(error.response.data.message));
+    }
+  };
+};
+
+export const setAverageRating = (rating, ratingList, itemId) => {
+  return {
+    type: actionTypes.SET_AVERAGE_RATING,
+    rating,
+    ratingList,
+    itemId
+  };
+};
+
+export const addRating = (itemId, body) => {
+  return async (dispatch, getState) => {
+    const { dashboard } = getState();
+    try {
+      // /api/lists/items/ratings/:group_id/:list_id/:item_id
+      const response = await axios.post(
+        `/api/lists/items/ratings/${dashboard.currentGroup._id}/${dashboard.activeList._id}/${itemId}/`,
+        body
+      );
+      dispatch(
+        setAverageRating(
+          response.data.data.item.averageRating.toFixed(1),
+          response.data.data.item.rating,
+          itemId
+        )
+      );
     } catch (error) {
       dispatch(setErrorMessage(error.response.data.message));
     }
