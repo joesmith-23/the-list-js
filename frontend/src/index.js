@@ -27,7 +27,7 @@ const store = createStore(
   composeEnhancers(applyMiddleware(thunk))
 );
 
-axios.defaults.baseURL = "http://localhost:5000";
+axios.defaults.baseURL = "https://the-list-smiffyj.herokuapp.com";
 
 axios.interceptors.request.use(function(config) {
   const token = store.getState().auth.token;
