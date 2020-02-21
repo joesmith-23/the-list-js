@@ -12,13 +12,7 @@ import "./ItemContainer.css";
 const ItemContainer = props => {
   const [hidden, setHidden] = useState({});
 
-  // TODO - I think there needs to be some cleanup here to do with the opening and closing of the items
-
   const deleteItem = async itemId => {
-    // /api/lists/items/:group_id/:list_id/:item_id
-    // await axios.delete(
-    //   `/api/lists/items/${props.groupId}/${props.list._id}/${itemId}`
-    // );
     props.onDeleteItem(itemId);
   };
 
