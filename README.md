@@ -6,4 +6,4 @@ Users sign up, create a group, invite their friends, make lists of movies (or an
 
 It was built with Node.js, Express, MongoDB, Mongoose, React, Redux and a few other nifty little packages.
 
-It can be found here:
+It can be found here: https://the-list-smiffyj.netlify.com/
