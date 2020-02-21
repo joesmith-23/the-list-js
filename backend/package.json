@@ -1,6 +1,6 @@
 {
   "name": "the_list",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A list app where you can make lists (omg)",
   "main": "server.js",
   "scripts": {
